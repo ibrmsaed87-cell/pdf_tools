@@ -15,6 +15,17 @@
     <string name="action_organize_pdf">Organizar PDF</string>
 
     <string name="section_recent_files">Archivos Recientes</string>
+    <string name="empty_recent_title">No hay archivos recientes</string>
+    <string name="empty_recent_desc">Los archivos que abras o crees aparecerán aquí.</string>
+
+    <string name="home_subtitle">Herramientas PDF rápidas y simples</string>
+    <string name="coming_soon">Próximamente</string>
+
+    <string name="theme_system">Predeterminado del sistema</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Oscuro</string>
+
+    <string name="setting_about">Acerca de</string>
 
     <string name="setting_appearance">Apariencia</string>
     <string name="setting_language">Idioma</string>

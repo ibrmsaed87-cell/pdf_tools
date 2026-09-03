@@ -15,6 +15,17 @@
     <string name="action_organize_pdf">تنظيم PDF</string>
 
     <string name="section_recent_files">الملفات الحديثة</string>
+    <string name="empty_recent_title">لا توجد ملفات حديثة</string>
+    <string name="empty_recent_desc">ستظهر الملفات التي تفتحها أو تنشئها هنا.</string>
+
+    <string name="home_subtitle">أدوات PDF سريعة وبسيطة</string>
+    <string name="coming_soon">قريباً</string>
+
+    <string name="theme_system">النظام الافتراضي</string>
+    <string name="theme_light">فاتح</string>
+    <string name="theme_dark">داكن</string>
+
+    <string name="setting_about">حول</string>
 
     <string name="setting_appearance">المظهر</string>
     <string name="setting_language">اللغة</string>

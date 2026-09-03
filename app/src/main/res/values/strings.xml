@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">PDF Tools</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_files">Files</string>
+    <string name="nav_tools">Tools</string>
+    <string name="nav_settings">Settings</string>
+
+    <string name="action_scan_document">Scan Document</string>
+    <string name="action_image_to_pdf">Image to PDF</string>
+    <string name="action_compress_pdf">Compress PDF</string>
+    <string name="action_merge_pdf">Merge PDF</string>
+    <string name="action_split_pdf">Split PDF</string>
+    <string name="action_pdf_to_jpg">PDF to JPG</string>
+    <string name="action_organize_pdf">Organize PDF</string>
+
+    <string name="section_recent_files">Recent Files</string>
+
+    <string name="setting_appearance">Appearance</string>
+    <string name="setting_language">Language</string>
+    <string name="setting_privacy">Privacy</string>
+</resources>

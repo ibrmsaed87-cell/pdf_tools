@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">أدوات PDF</string>
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_files">الملفات</string>
+    <string name="nav_tools">الأدوات</string>
+    <string name="nav_settings">الإعدادات</string>
+
+    <string name="action_scan_document">مسح مستند</string>
+    <string name="action_image_to_pdf">صورة إلى PDF</string>
+    <string name="action_compress_pdf">ضغط PDF</string>
+    <string name="action_merge_pdf">دمج PDF</string>
+    <string name="action_split_pdf">تقسيم PDF</string>
+    <string name="action_pdf_to_jpg">PDF إلى JPG</string>
+    <string name="action_organize_pdf">تنظيم PDF</string>
+
+    <string name="section_recent_files">الملفات الحديثة</string>
+
+    <string name="setting_appearance">المظهر</string>
+    <string name="setting_language">اللغة</string>
+    <string name="setting_privacy">الخصوصية</string>
+</resources>

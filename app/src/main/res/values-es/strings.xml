@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Herramientas PDF</string>
+    <string name="nav_home">Inicio</string>
+    <string name="nav_files">Archivos</string>
+    <string name="nav_tools">Herramientas</string>
+    <string name="nav_settings">Ajustes</string>
+
+    <string name="action_scan_document">Escanear Documento</string>
+    <string name="action_image_to_pdf">Imagen a PDF</string>
+    <string name="action_compress_pdf">Comprimir PDF</string>
+    <string name="action_merge_pdf">Combinar PDF</string>
+    <string name="action_split_pdf">Dividir PDF</string>
+    <string name="action_pdf_to_jpg">PDF a JPG</string>
+    <string name="action_organize_pdf">Organizar PDF</string>
+
+    <string name="section_recent_files">Archivos Recientes</string>
+
+    <string name="setting_appearance">Apariencia</string>
+    <string name="setting_language">Idioma</string>
+    <string name="setting_privacy">Privacidad</string>
+</resources>

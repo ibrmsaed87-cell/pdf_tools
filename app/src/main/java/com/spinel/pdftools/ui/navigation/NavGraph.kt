@@ -24,6 +24,7 @@ import com.spinel.pdftools.ui.home.HomeScreen
 import com.spinel.pdftools.ui.settings.SettingsScreen
 import com.spinel.pdftools.ui.about.AboutScreen
 import com.spinel.pdftools.ui.about.PrivacyPolicyScreen
+import com.spinel.pdftools.ui.imagetopdf.ImageToPdfScreen
 import com.spinel.pdftools.ui.tools.ToolsScreen
 
 @Composable
@@ -89,11 +90,20 @@ fun AppNavigation() {
                             launchSingleTop = true
                             restoreState = true
                         }
+                    },
+                    onNavigateToImageToPdf = {
+                        navController.navigate(Screen.ImageToPdf.route)
                     }
                 ) 
             }
             composable(Screen.Files.route) { FilesScreen() }
-            composable(Screen.Tools.route) { ToolsScreen() }
+            composable(Screen.Tools.route) { 
+                ToolsScreen(
+                    onNavigateToImageToPdf = {
+                        navController.navigate(Screen.ImageToPdf.route)
+                    }
+                ) 
+            }
             composable(Screen.Settings.route) { 
                 SettingsScreen(
                     onNavigateToPrivacy = { navController.navigate(Screen.PrivacyPolicy.route) },
@@ -108,6 +118,11 @@ fun AppNavigation() {
                     onNavigateBack = { navController.popBackStack() },
                     onNavigateToPrivacy = { navController.navigate(Screen.PrivacyPolicy.route) }
                 ) 
+            }
+            composable(Screen.ImageToPdf.route) { 
+                ImageToPdfScreen(
+                    onNavigateBack = { navController.popBackStack() }
+                )
             }
         }
     }

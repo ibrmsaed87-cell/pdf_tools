@@ -1,6 +1,7 @@
-import re
+import os
 
 def add_strings(filepath, new_strings):
+    if not os.path.exists(filepath): return
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
     
@@ -14,41 +15,9 @@ def add_strings(filepath, new_strings):
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write(content)
 
-en = {
-    'settings_subtitle': 'Customize your experience',
-    'section_preferences': 'PREFERENCES',
-    'section_privacy_about': 'PRIVACY & ABOUT',
-    'desc_app_theme': 'App theme',
-    'desc_app_language': 'App language',
-    'lang_english': 'English',
-    'lang_arabic': 'العربية',
-    'lang_spanish': 'Español',
-    'privacy_policy': 'Privacy Policy'
-}
-
-ar = {
-    'settings_subtitle': 'تخصيص تجربتك',
-    'section_preferences': 'التفضيلات',
-    'section_privacy_about': 'الخصوصية وحول التطبيق',
-    'desc_app_theme': 'مظهر التطبيق',
-    'desc_app_language': 'لغة التطبيق',
-    'lang_english': 'English',
-    'lang_arabic': 'العربية',
-    'lang_spanish': 'Español',
-    'privacy_policy': 'سياسة الخصوصية'
-}
-
-es = {
-    'settings_subtitle': 'Personaliza tu experiencia',
-    'section_preferences': 'PREFERENCIAS',
-    'section_privacy_about': 'PRIVACIDAD Y ACERCA DE',
-    'desc_app_theme': 'Tema de la app',
-    'desc_app_language': 'Idioma de la app',
-    'lang_english': 'English',
-    'lang_arabic': 'العربية',
-    'lang_spanish': 'Español',
-    'privacy_policy': 'Política de privacidad'
-}
+en = { "hint_reorder_pages": "Press and hold to reorder" }
+ar = { "hint_reorder_pages": "اضغط مطولاً واسحب لإعادة الترتيب" }
+es = { "hint_reorder_pages": "Mantén pulsado y arrastra para reordenar" }
 
 add_strings('app/src/main/res/values/strings.xml', en)
 add_strings('app/src/main/res/values-ar/strings.xml', ar)

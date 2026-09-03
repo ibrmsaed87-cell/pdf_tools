@@ -30,7 +30,7 @@ data class ToolCategory(
 )
 
 @Composable
-fun ToolsScreen() {
+fun ToolsScreen(onNavigateToImageToPdf: () -> Unit = {}) {
     val categories = listOf(
         ToolCategory(
             titleResId = R.string.category_create,
@@ -60,7 +60,7 @@ fun ToolsScreen() {
             )
         )
     )
-
+    
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -98,7 +98,13 @@ fun ToolsScreen() {
                     description = stringResource(id = tool.descResId),
                     icon = tool.icon,
                     iconContainerColor = tool.iconContainerColor,
-                    onClick = { /* Coming soon */ }
+                    onClick = { 
+                        if (tool.titleResId == R.string.action_image_to_pdf) {
+                            onNavigateToImageToPdf()
+                        } else {
+                            /* Coming soon */
+                        }
+                    }
                 )
             }
         }

@@ -69,4 +69,26 @@
     <string name="about_version">الإصدار %1$s</string>
     <string name="about_copyright">© 2026 أدوات PDF. جميع الحقوق محفوظة.</string>
     <string name="privacy_policy_content">تقوم أدوات PDF بمعالجة مستنداتك محليًا. تبقى ملفاتك على جهازك وتحت سيطرتك. نحن نستخدم إطار عمل الوصول إلى التخزين الخاص بنظام أندرويد للوصول الآمن إلى الملفات التي تختارها. لا يتم رفع أي مستندات إلى خوادمنا. نحن لا نجمع بيانات التحليلات أو الإعلانات. قد يتم تحديث هذه السياسة في المستقبل إذا تطلبت الميزات الجديدة إفصاحًا إضافيًا.</string>
+    <string name="title_image_to_pdf">الصور إلى PDF</string>
+    <string name="desc_image_to_pdf_screen">حدد صورًا من جهازك لدمجها في مستند PDF واحد.</string>
+    <string name="action_select_images">تحديد الصور</string>
+    <string name="action_add_more_images">إضافة المزيد</string>
+    <string name="action_create_pdf">إنشاء PDF</string>
+    <string name="state_creating_pdf">جاري إنشاء PDF — %1$d من %2$d</string>
+    <string name="state_success_title">تم إنشاء PDF بنجاح!</string>
+    <string name="state_success_desc">تم حفظ المستند الجديد الخاص بك.</string>
+    <string name="action_done">تم</string>
+    <string name="error_generic">حدث خطأ ما.</string>
+    <string name="error_no_images">يرجى تحديد صورة واحدة على الأقل.</string>
+    <string name="content_desc_image_preview">معاينة الصورة المحددة</string>
+    <string name="content_desc_remove_image">إزالة الصورة</string>
+    <string name="page_number">صفحة %1$d</string>
+    <string name="hint_reorder_pages">اضغط مطولاً واسحب لإعادة الترتيب</string>
+    <string name="action_add_text">إضافة نص</string>
+    <string name="title_add_text_page">إضافة صفحة نص</string>
+    <string name="hint_title_optional">العنوان (اختياري)</string>
+    <string name="hint_body_required">النص</string>
+    <string name="action_cancel">إلغاء</string>
+    <string name="action_add_page">إضافة الصفحة</string>
+    <string name="content_desc_text_preview">معاينة صفحة النص</string>
 </resources>

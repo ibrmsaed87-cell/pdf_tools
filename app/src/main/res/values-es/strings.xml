@@ -69,4 +69,26 @@
     <string name="about_version">Versión %1$s</string>
     <string name="about_copyright">© 2026 PDF Tools. Todos los derechos reservados.</string>
     <string name="privacy_policy_content">PDF Tools procesa sus documentos localmente. Sus archivos permanecen en su dispositivo y bajo su control. Utilizamos el Storage Access Framework de Android para acceder de forma segura a los archivos que seleccione. Ningún documento se carga en nuestros servidores. No recopilamos datos de análisis ni de publicidad. Esta política podría actualizarse en el futuro si nuevas funciones requieren una divulgación adicional.</string>
+    <string name="title_image_to_pdf">Imagen a PDF</string>
+    <string name="desc_image_to_pdf_screen">Selecciona imágenes de tu dispositivo para combinarlas en un solo documento PDF.</string>
+    <string name="action_select_images">Seleccionar imágenes</string>
+    <string name="action_add_more_images">Añadir más</string>
+    <string name="action_create_pdf">Crear PDF</string>
+    <string name="state_creating_pdf">Creando PDF — %1$d de %2$d</string>
+    <string name="state_success_title">¡PDF creado con éxito!</string>
+    <string name="state_success_desc">Tu nuevo documento ha sido guardado.</string>
+    <string name="action_done">Hecho</string>
+    <string name="error_generic">Algo salió mal.</string>
+    <string name="error_no_images">Por favor selecciona al menos una imagen.</string>
+    <string name="content_desc_image_preview">Vista previa de la imagen seleccionada</string>
+    <string name="content_desc_remove_image">Eliminar imagen</string>
+    <string name="page_number">Página %1$d</string>
+    <string name="hint_reorder_pages">Mantén pulsado y arrastra para reordenar</string>
+    <string name="action_add_text">Agregar texto</string>
+    <string name="title_add_text_page">Agregar página de texto</string>
+    <string name="hint_title_optional">Título (opcional)</string>
+    <string name="hint_body_required">Texto</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_add_page">Agregar página</string>
+    <string name="content_desc_text_preview">Vista previa de la página de texto</string>
 </resources>

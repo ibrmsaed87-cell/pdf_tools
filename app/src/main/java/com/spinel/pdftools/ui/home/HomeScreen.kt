@@ -28,7 +28,7 @@ import com.spinel.pdftools.ui.theme.AccentPurple
 import com.spinel.pdftools.ui.theme.AccentTeal
 
 @Composable
-fun HomeScreen(onNavigateToTools: () -> Unit = {}) {
+fun HomeScreen(onNavigateToTools: () -> Unit = {}, onNavigateToImageToPdf: () -> Unit = {}) {
     val quickTools = listOf(
         ToolItem(R.string.action_image_to_pdf, R.string.desc_image_to_pdf, Icons.Filled.Image, AccentBlue),
         ToolItem(R.string.action_compress_pdf, R.string.desc_compress_pdf, Icons.Filled.Compress, AccentTeal),
@@ -37,7 +37,6 @@ fun HomeScreen(onNavigateToTools: () -> Unit = {}) {
         ToolItem(R.string.action_pdf_to_jpg, R.string.desc_pdf_to_jpg, Icons.Filled.PictureAsPdf, AccentBlue),
         ToolItem(R.string.action_organize_pdf, R.string.desc_organize_pdf, Icons.Filled.GridView, AccentTeal)
     )
-
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -85,7 +84,13 @@ fun HomeScreen(onNavigateToTools: () -> Unit = {}) {
                 description = stringResource(id = tool.descResId),
                 icon = tool.icon,
                 iconContainerColor = tool.iconContainerColor,
-                onClick = { /* Coming soon */ }
+                onClick = { 
+                    if (tool.titleResId == R.string.action_image_to_pdf) {
+                        onNavigateToImageToPdf()
+                    } else {
+                        /* Coming soon */
+                    }
+                }
             )
         }
         

@@ -1,6 +1,10 @@
-package com.spinel.pdftools.ui.settings
+import re
 
+with open('app/src/main/java/com/spinel/pdftools/ui/settings/SettingsScreen.kt', 'r', encoding='utf-8') as f:
+    content = f.read()
 
+# Make sure imports are present
+imports_to_add = """
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Language
@@ -16,34 +20,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.graphics.Color
+"""
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.os.LocaleListCompat
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.spinel.pdftools.R
-import com.spinel.pdftools.common.util.ThemeManager
-import com.spinel.pdftools.common.util.ThemeMode
-import kotlinx.coroutines.launch
+# replace imports (we will insert it after the first import)
+content = content.replace('import androidx.compose.foundation.clickable', imports_to_add + '\nimport androidx.compose.foundation.clickable')
 
 
+replacement = """
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(onNavigateToPrivacy: () -> Unit = {}, onNavigateToAbout: () -> Unit = {}) {
+fun SettingsScreen() {
     val context = LocalContext.current
     val themeManager = ThemeManager(context)
     val themeMode by themeManager.themeMode.collectAsStateWithLifecycle(initialValue = ThemeMode.SYSTEM)
@@ -118,7 +104,7 @@ fun SettingsScreen(onNavigateToPrivacy: () -> Unit = {}, onNavigateToAbout: () -
                 subtitle = null,
                 icon = Icons.Filled.PrivacyTip,
                 iconTint = com.spinel.pdftools.ui.theme.AccentTeal,
-                onClick = onNavigateToPrivacy,
+                onClick = { /* Coming soon */ },
                 showDivider = true
             )
             PremiumSettingsRow(
@@ -126,7 +112,7 @@ fun SettingsScreen(onNavigateToPrivacy: () -> Unit = {}, onNavigateToAbout: () -
                 subtitle = null,
                 icon = Icons.Filled.Info,
                 iconTint = com.spinel.pdftools.ui.theme.AccentOrange,
-                onClick = onNavigateToAbout,
+                onClick = { /* Coming soon */ },
                 showDivider = false
             )
         }
@@ -316,27 +302,14 @@ fun BottomSheetRadioItem(
     }
 }
 
+"""
 
-@Composable
-fun SettingsCard(content: @Composable () -> Unit) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
-    ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            content()
-        }
-    }
-}
-
-@Composable
-fun SettingsSectionTitle(title: String) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.labelLarge,
-        color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(horizontal = 8.dp).padding(bottom = 12.dp)
-    )
-}
+# We need to replace everything from @Composable fun SettingsScreen to the end of the file.
+start_idx = content.find('@Composable\nfun SettingsScreen()')
+if start_idx != -1:
+    content = content[:start_idx] + replacement
+    
+    with open('app/src/main/java/com/spinel/pdftools/ui/settings/SettingsScreen.kt', 'w', encoding='utf-8') as f:
+        f.write(content)
+else:
+    print("Could not find start idx")

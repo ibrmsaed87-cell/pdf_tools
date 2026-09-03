@@ -1,44 +1,55 @@
 import re
 
-def update_file(path, replacements):
-    with open(path, 'r', encoding='utf-8') as f:
+def add_strings(filepath, new_strings):
+    with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    for key, val in replacements.items():
-        pattern = r'(<string name="' + key + r'">).*?(</string>)'
-        content = re.sub(pattern, r'\g<1>' + val + r'\g<2>', content)
-        
-    with open(path, 'w', encoding='utf-8') as f:
-        f.write(content)
+    insert_str = ""
+    for k, v in new_strings.items():
+        if f'<string name="{k}">' not in content:
+            insert_str += f'    <string name="{k}">{v}</string>\n'
+            
+    if insert_str:
+        content = content.replace('</resources>', f'{insert_str}</resources>')
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(content)
 
 en = {
-    'desc_image_to_pdf': 'Images → PDF',
-    'desc_compress_pdf': 'Reduce file size',
-    'desc_merge_pdf': 'Combine PDFs',
-    'desc_split_pdf': 'Extract pages',
-    'desc_pdf_to_jpg': 'PDF → Images',
-    'desc_organize_pdf': 'Reorder pages'
+    'settings_subtitle': 'Customize your experience',
+    'section_preferences': 'PREFERENCES',
+    'section_privacy_about': 'PRIVACY & ABOUT',
+    'desc_app_theme': 'App theme',
+    'desc_app_language': 'App language',
+    'lang_english': 'English',
+    'lang_arabic': 'العربية',
+    'lang_spanish': 'Español',
+    'privacy_policy': 'Privacy Policy'
 }
 
 ar = {
-    'desc_image_to_pdf': 'صور → PDF',
-    'desc_compress_pdf': 'تقليل حجم الملف',
-    'desc_merge_pdf': 'دمج ملفات PDF',
-    'desc_split_pdf': 'استخراج الصفحات',
-    'desc_pdf_to_jpg': 'PDF → صور',
-    'desc_organize_pdf': 'إعادة ترتيب الصفحات'
+    'settings_subtitle': 'تخصيص تجربتك',
+    'section_preferences': 'التفضيلات',
+    'section_privacy_about': 'الخصوصية وحول التطبيق',
+    'desc_app_theme': 'مظهر التطبيق',
+    'desc_app_language': 'لغة التطبيق',
+    'lang_english': 'English',
+    'lang_arabic': 'العربية',
+    'lang_spanish': 'Español',
+    'privacy_policy': 'سياسة الخصوصية'
 }
 
 es = {
-    'desc_image_to_pdf': 'Imágenes → PDF',
-    'desc_compress_pdf': 'Reducir tamaño',
-    'desc_merge_pdf': 'Combinar PDFs',
-    'desc_split_pdf': 'Extraer páginas',
-    'desc_pdf_to_jpg': 'PDF → Imágenes',
-    'desc_organize_pdf': 'Reordenar páginas'
+    'settings_subtitle': 'Personaliza tu experiencia',
+    'section_preferences': 'PREFERENCIAS',
+    'section_privacy_about': 'PRIVACIDAD Y ACERCA DE',
+    'desc_app_theme': 'Tema de la app',
+    'desc_app_language': 'Idioma de la app',
+    'lang_english': 'English',
+    'lang_arabic': 'العربية',
+    'lang_spanish': 'Español',
+    'privacy_policy': 'Política de privacidad'
 }
 
-update_file('app/src/main/res/values/strings.xml', en)
-update_file('app/src/main/res/values-ar/strings.xml', ar)
-update_file('app/src/main/res/values-es/strings.xml', es)
-
+add_strings('app/src/main/res/values/strings.xml', en)
+add_strings('app/src/main/res/values-ar/strings.xml', ar)
+add_strings('app/src/main/res/values-es/strings.xml', es)

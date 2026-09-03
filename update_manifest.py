@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+import re
 
-        <application
+with open('app/src/main/AndroidManifest.xml', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+app_tag_replacement = """    <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -20,18 +21,14 @@
             <meta-data
                 android:name="autoStoreLocales"
                 android:value="true" />
-        </service>
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.MyApplication">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        </service>"""
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    </application>
+content = re.sub(
+    r'<application.*?:theme="@style/Theme\.MyApplication">',
+    app_tag_replacement,
+    content,
+    flags=re.DOTALL
+)
 
-</manifest>
+with open('app/src/main/AndroidManifest.xml', 'w', encoding='utf-8') as f:
+    f.write(content)

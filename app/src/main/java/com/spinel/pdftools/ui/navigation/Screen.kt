@@ -13,4 +13,6 @@ sealed class Screen(val route: String, val labelResId: Int, val icon: ImageVecto
     object Files : Screen("files", R.string.nav_files, Icons.Filled.Folder)
     object Tools : Screen("tools", R.string.nav_tools, Icons.Filled.Build)
     object Settings : Screen("settings", R.string.nav_settings, Icons.Filled.Settings)
+    object PrivacyPolicy : Screen("privacy_policy", R.string.privacy_policy, Icons.Filled.Settings)
+    object About : Screen("about", R.string.setting_about, Icons.Filled.Settings)
 }

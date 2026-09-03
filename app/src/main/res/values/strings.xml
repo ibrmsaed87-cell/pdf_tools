@@ -14,6 +14,17 @@
     <string name="action_organize_pdf">Organize PDF</string>
 
     <string name="section_recent_files">Recent Files</string>
+    <string name="section_quick_tools">Quick Tools</string>
+    <string name="action_view_all">View all</string>
+
+    <string name="desc_scan_document">Scan documents to high-quality PDF</string>
+    <string name="desc_image_to_pdf">Images → PDF</string>
+    <string name="desc_compress_pdf">Reduce file size</string>
+    <string name="desc_merge_pdf">Combine PDFs</string>
+    <string name="desc_split_pdf">Extract pages</string>
+    <string name="desc_pdf_to_jpg">PDF → Images</string>
+    <string name="desc_organize_pdf">Reorder pages</string>
+
     <string name="empty_recent_title">No recent files</string>
     <string name="empty_recent_desc">Files you open or create will appear here.</string>
 

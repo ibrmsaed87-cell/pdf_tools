@@ -23,7 +23,10 @@ private val DarkColorScheme =
     background = BackgroundDark,
     onBackground = OnBackgroundDark,
     surface = SurfaceDark,
-    onSurface = OnSurfaceDark
+    onSurface = OnSurfaceDark,
+    surfaceVariant = SurfaceVariantDark,
+    onSurfaceVariant = OnSurfaceVariantDark,
+    outline = OutlineDark
   )
 
 private val LightColorScheme =
@@ -39,14 +42,17 @@ private val LightColorScheme =
     background = BackgroundLight,
     onBackground = OnBackgroundLight,
     surface = SurfaceLight,
-    onSurface = OnSurfaceLight
+    onSurface = OnSurfaceLight,
+    surfaceVariant = SurfaceVariantLight,
+    onSurfaceVariant = OnSurfaceVariantLight,
+    outline = OutlineLight
   )
 
 @Composable
 fun Theme(
   darkTheme: Boolean = isSystemInDarkTheme(),
-  // Dynamic color is available on Android 12+
-  dynamicColor: Boolean = true,
+  // Disabling dynamic color to enforce premium identity
+  dynamicColor: Boolean = false,
   content: @Composable () -> Unit,
 ) {
   val colorScheme =
@@ -55,10 +61,9 @@ fun Theme(
         val context = LocalContext.current
         if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
       }
-
       darkTheme -> DarkColorScheme
       else -> LightColorScheme
     }
-
+  
   MaterialTheme(colorScheme = colorScheme, typography = Typography, content = content)
 }

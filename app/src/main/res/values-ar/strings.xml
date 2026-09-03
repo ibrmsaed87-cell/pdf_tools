@@ -15,6 +15,17 @@
     <string name="action_organize_pdf">تنظيم PDF</string>
 
     <string name="section_recent_files">الملفات الحديثة</string>
+    <string name="section_quick_tools">أدوات سريعة</string>
+    <string name="action_view_all">عرض الكل</string>
+
+    <string name="desc_scan_document">مسح المستندات ضوئياً إلى PDF عالي الجودة</string>
+    <string name="desc_image_to_pdf">صور → PDF</string>
+    <string name="desc_compress_pdf">تقليل حجم الملف</string>
+    <string name="desc_merge_pdf">دمج ملفات PDF</string>
+    <string name="desc_split_pdf">استخراج الصفحات</string>
+    <string name="desc_pdf_to_jpg">PDF → صور</string>
+    <string name="desc_organize_pdf">إعادة ترتيب الصفحات</string>
+
     <string name="empty_recent_title">لا توجد ملفات حديثة</string>
     <string name="empty_recent_desc">ستظهر الملفات التي تفتحها أو تنشئها هنا.</string>
 

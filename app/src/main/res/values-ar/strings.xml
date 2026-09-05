@@ -91,4 +91,21 @@
     <string name="action_cancel">إلغاء</string>
     <string name="action_add_page">إضافة الصفحة</string>
     <string name="content_desc_text_preview">معاينة صفحة النص</string>
+    <string name="action_edit">تعديل</string>
+    <string name="label_font_size">حجم الخط</string>
+    <string name="label_text_color">اللون</string>
+    <string name="label_alignment">المحاذاة</string>
+    <string name="content_desc_align_start">محاذاة للبداية</string>
+    <string name="content_desc_align_center">محاذاة للوسط</string>
+    <string name="content_desc_align_end">محاذاة للنهاية</string>
+    <string name="content_desc_bold">عريض</string>
+    <string name="action_save">حفظ</string>
+    <string name="action_add_images">إضافة صور</string>
+    <string name="msg_no_images_selected">لم يتم تحديد صور</string>
+    <string name="action_remove_image">إزالة الصورة</string>
+    <string name="msg_generating_pdf">جاري إنشاء ملف PDF...</string>
+    <string name="msg_pdf_saved">تم حفظ ملف PDF بنجاح!</string>
+    <string name="msg_error_generating">خطأ في إنشاء ملف PDF</string>
+    <string name="tab_title">ضبط العنوان</string>
+    <string name="tab_body">ضبط النص</string>
 </resources>

@@ -90,4 +90,21 @@
     <string name="action_cancel">Cancel</string>
     <string name="action_add_page">Add Page</string>
     <string name="content_desc_text_preview">Text page preview</string>
+    <string name="action_edit">Edit</string>
+    <string name="label_font_size">Font Size</string>
+    <string name="label_text_color">Color</string>
+    <string name="label_alignment">Alignment</string>
+    <string name="content_desc_align_start">Align Start</string>
+    <string name="content_desc_align_center">Align Center</string>
+    <string name="content_desc_align_end">Align End</string>
+    <string name="content_desc_bold">Bold</string>
+    <string name="action_save">Save</string>
+    <string name="action_add_images">Add images</string>
+    <string name="msg_no_images_selected">No images selected</string>
+    <string name="action_remove_image">Remove image</string>
+    <string name="msg_generating_pdf">Generating PDF...</string>
+    <string name="msg_pdf_saved">PDF saved successfully!</string>
+    <string name="msg_error_generating">Error generating PDF</string>
+    <string name="tab_title">Format Title</string>
+    <string name="tab_body">Format Text</string>
 </resources>

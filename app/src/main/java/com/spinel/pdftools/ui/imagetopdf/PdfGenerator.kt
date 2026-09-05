@@ -3,26 +3,21 @@ package com.spinel.pdftools.ui.imagetopdf
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.graphics.Matrix
-import android.graphics.Rect
 import android.graphics.Typeface
 import android.graphics.pdf.PdfDocument
-import android.media.ExifInterface
 import android.net.Uri
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.IOException
+import java.io.InputStream
 
 object PdfGenerator {
     private const val PAGE_WIDTH = 595
     private const val PAGE_HEIGHT = 842
-    private const val MAX_IMAGE_DIMENSION = 1600
 
-    @Suppress("BlockingMethodInNonBlockingContext")
     suspend fun generatePdf(
         context: Context,
         pages: List<DocumentPage>,
@@ -31,89 +26,140 @@ object PdfGenerator {
     ): Result<Unit> = withContext(Dispatchers.IO) {
         try {
             val pdfDocument = PdfDocument()
+            var pdfPageNumber = 1
 
             for ((index, pageItem) in pages.withIndex()) {
-                val pageInfo = PdfDocument.PageInfo.Builder(PAGE_WIDTH, PAGE_HEIGHT, index + 1).create()
-                val page = pdfDocument.startPage(pageInfo)
-                val canvas = page.canvas
-                
                 when (pageItem) {
                     is DocumentPage.Image -> {
-                        val bitmap = loadAndScaleBitmap(context, pageItem.uri)
-                        if (bitmap != null) {
-                            val scale = minOf(
-                                PAGE_WIDTH.toFloat() / bitmap.width,
-                                PAGE_HEIGHT.toFloat() / bitmap.height
-                            )
-                            
-                            val scaledWidth = bitmap.width * scale
-                            val scaledHeight = bitmap.height * scale
-                            
-                            val left = (PAGE_WIDTH - scaledWidth) / 2f
-                            val top = (PAGE_HEIGHT - scaledHeight) / 2f
-                            
-                            val srcRect = Rect(0, 0, bitmap.width, bitmap.height)
-                            val dstRect = Rect(left.toInt(), top.toInt(), (left + scaledWidth).toInt(), (top + scaledHeight).toInt())
-                            
-                            canvas.drawBitmap(bitmap, srcRect, dstRect, null)
-                            bitmap.recycle()
+                        val pageInfo = PdfDocument.PageInfo.Builder(PAGE_WIDTH, PAGE_HEIGHT, pdfPageNumber).create()
+                        val page = pdfDocument.startPage(pageInfo)
+
+                        context.contentResolver.openInputStream(pageItem.uri)?.use { inputStream ->
+                            val bitmap = decodeSampledBitmap(inputStream)
+                            if (bitmap != null) {
+                                val canvas = page.canvas
+                                val matrix = Matrix()
+                                
+                                val scale = Math.min(
+                                    PAGE_WIDTH.toFloat() / bitmap.width,
+                                    PAGE_HEIGHT.toFloat() / bitmap.height
+                                )
+                                
+                                val dx = (PAGE_WIDTH - bitmap.width * scale) / 2f
+                                val dy = (PAGE_HEIGHT - bitmap.height * scale) / 2f
+
+                                matrix.postScale(scale, scale)
+                                matrix.postTranslate(dx, dy)
+
+                                canvas.drawBitmap(bitmap, matrix, null)
+                                bitmap.recycle()
+                            }
                         }
+                        pdfDocument.finishPage(page)
+                        pdfPageNumber++
                     }
                     is DocumentPage.Text -> {
+                        val titleAlign = when (pageItem.titleStyle.alignment) {
+                            TextAlignment.Start -> Layout.Alignment.ALIGN_NORMAL
+                            TextAlignment.Center -> Layout.Alignment.ALIGN_CENTER
+                            TextAlignment.End -> Layout.Alignment.ALIGN_OPPOSITE
+                        }
+                        val bodyAlign = when (pageItem.bodyStyle.alignment) {
+                            TextAlignment.Start -> Layout.Alignment.ALIGN_NORMAL
+                            TextAlignment.Center -> Layout.Alignment.ALIGN_CENTER
+                            TextAlignment.End -> Layout.Alignment.ALIGN_OPPOSITE
+                        }
+                        
+                        val titleTypeface = if (pageItem.titleStyle.isBold) Typeface.create(Typeface.DEFAULT, Typeface.BOLD) else Typeface.DEFAULT
                         val titlePaint = TextPaint().apply {
-                            color = Color.BLACK
-                            textSize = 28f
-                            typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+                            color = pageItem.titleStyle.color.colorValue.toInt()
+                            textSize = pageItem.titleStyle.fontSize.toFloat()
+                            this.typeface = titleTypeface
                             isAntiAlias = true
                         }
+                        
+                        val bodyTypeface = if (pageItem.bodyStyle.isBold) Typeface.create(Typeface.DEFAULT, Typeface.BOLD) else Typeface.DEFAULT
                         val bodyPaint = TextPaint().apply {
-                            color = Color.BLACK
-                            textSize = 16f
-                            typeface = Typeface.DEFAULT
+                            color = pageItem.bodyStyle.color.colorValue.toInt()
+                            textSize = pageItem.bodyStyle.fontSize.toFloat()
+                            this.typeface = bodyTypeface
                             isAntiAlias = true
                         }
 
-                        var currentY = 50f
                         val marginX = 50f
                         val availableWidth = PAGE_WIDTH - 2 * marginX.toInt()
+                        val pageAvailableHeight = PAGE_HEIGHT - 100f
 
-                        if (pageItem.title.isNotBlank()) {
-                            val titleLayout = StaticLayout.Builder.obtain(pageItem.title, 0, pageItem.title.length, titlePaint, availableWidth)
-                                .setAlignment(Layout.Alignment.ALIGN_NORMAL)
+                        val titleLayout = if (pageItem.title.isNotBlank()) {
+                            StaticLayout.Builder.obtain(pageItem.title, 0, pageItem.title.length, titlePaint, availableWidth)
+                                .setAlignment(titleAlign)
                                 .build()
-                            
-                            canvas.save()
-                            canvas.translate(marginX, currentY)
-                            titleLayout.draw(canvas)
-                            canvas.restore()
-                            
-                            currentY += titleLayout.height + 24f
-                        }
+                        } else null
 
-                        if (pageItem.body.isNotBlank()) {
-                            val bodyLayout = StaticLayout.Builder.obtain(pageItem.body, 0, pageItem.body.length, bodyPaint, availableWidth)
-                                .setAlignment(Layout.Alignment.ALIGN_NORMAL)
+                        val bodyLayout = if (pageItem.body.isNotBlank()) {
+                            StaticLayout.Builder.obtain(pageItem.body, 0, pageItem.body.length, bodyPaint, availableWidth)
+                                .setAlignment(bodyAlign)
                                 .build()
-                            
-                            canvas.save()
-                            canvas.translate(marginX, currentY)
-                            bodyLayout.draw(canvas)
-                            canvas.restore()
+                        } else null
+
+                        var bodyStartLine = 0
+                        var isFirstPageOfText = true
+
+                        while (isFirstPageOfText || (bodyLayout != null && bodyStartLine < bodyLayout.lineCount)) {
+                            val pageInfo = PdfDocument.PageInfo.Builder(PAGE_WIDTH, PAGE_HEIGHT, pdfPageNumber).create()
+                            val page = pdfDocument.startPage(pageInfo)
+                            val canvas = page.canvas
+
+                            var currentY = 50f
+                            var remainingHeightForBody = pageAvailableHeight
+
+                            if (isFirstPageOfText && titleLayout != null) {
+                                canvas.save()
+                                canvas.translate(marginX, currentY)
+                                titleLayout.draw(canvas)
+                                canvas.restore()
+
+                                val titleHeight = titleLayout.height + 24f
+                                currentY += titleHeight
+                                remainingHeightForBody -= titleHeight
+                            }
+
+                            if (bodyLayout != null && bodyStartLine < bodyLayout.lineCount) {
+                                var bodyEndLine = bodyStartLine
+                                var currentBodyHeight = 0
+                                while (bodyEndLine < bodyLayout.lineCount) {
+                                    val h = bodyLayout.getLineBottom(bodyEndLine) - bodyLayout.getLineTop(bodyEndLine)
+                                    if (currentBodyHeight + h > remainingHeightForBody && bodyEndLine > bodyStartLine) {
+                                        break
+                                    }
+                                    currentBodyHeight += h
+                                    bodyEndLine++
+                                }
+
+                                val startY = bodyLayout.getLineTop(bodyStartLine).toFloat()
+                                val endY = bodyLayout.getLineBottom(bodyEndLine - 1).toFloat()
+
+                                canvas.save()
+                                canvas.translate(marginX, currentY - startY)
+                                canvas.clipRect(0f, startY, availableWidth.toFloat(), endY)
+                                bodyLayout.draw(canvas)
+                                canvas.restore()
+
+                                bodyStartLine = bodyEndLine
+                            }
+
+                            pdfDocument.finishPage(page)
+                            pdfPageNumber++
+                            isFirstPageOfText = false
                         }
                     }
                 }
-                
-                pdfDocument.finishPage(page)
-                
-                withContext(Dispatchers.Main) {
-                    onProgress(index + 1, pages.size)
-                }
+                onProgress(index + 1, pages.size)
             }
 
-            context.contentResolver.openOutputStream(outputUri)?.use { out ->
-                pdfDocument.writeTo(out)
-            } ?: throw IOException("Could not open output stream")
-            
+            context.contentResolver.openOutputStream(outputUri)?.use { outputStream ->
+                pdfDocument.writeTo(outputStream)
+            }
             pdfDocument.close()
             Result.success(Unit)
         } catch (e: Exception) {
@@ -122,50 +168,18 @@ object PdfGenerator {
         }
     }
 
-    private fun loadAndScaleBitmap(context: Context, uri: Uri): Bitmap? {
-        val resolver = context.contentResolver
+    private fun decodeSampledBitmap(inputStream: InputStream): Bitmap? {
+        val bytes = inputStream.readBytes()
         
-        var orientation = ExifInterface.ORIENTATION_NORMAL
-        try {
-            resolver.openInputStream(uri)?.use { stream ->
-                val exif = ExifInterface(stream)
-                orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
         val options = BitmapFactory.Options().apply {
             inJustDecodeBounds = true
         }
-        resolver.openInputStream(uri)?.use { stream ->
-            BitmapFactory.decodeStream(stream, null, options)
-        }
+        BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
 
-        options.inSampleSize = calculateInSampleSize(options, MAX_IMAGE_DIMENSION, MAX_IMAGE_DIMENSION)
+        options.inSampleSize = calculateInSampleSize(options, PAGE_WIDTH, PAGE_HEIGHT)
         options.inJustDecodeBounds = false
 
-        val bitmap = resolver.openInputStream(uri)?.use { stream ->
-            BitmapFactory.decodeStream(stream, null, options)
-        } ?: return null
-
-        val rotationDegrees = when (orientation) {
-            ExifInterface.ORIENTATION_ROTATE_90 -> 90f
-            ExifInterface.ORIENTATION_ROTATE_180 -> 180f
-            ExifInterface.ORIENTATION_ROTATE_270 -> 270f
-            else -> 0f
-        }
-
-        return if (rotationDegrees != 0f) {
-            val matrix = Matrix().apply { postRotate(rotationDegrees) }
-            val rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-            if (rotatedBitmap != bitmap) {
-                bitmap.recycle()
-            }
-            rotatedBitmap
-        } else {
-            bitmap
-        }
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
     }
 
     private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
@@ -175,7 +189,6 @@ object PdfGenerator {
         if (height > reqHeight || width > reqWidth) {
             val halfHeight: Int = height / 2
             val halfWidth: Int = width / 2
-
             while (halfHeight / inSampleSize >= reqHeight && halfWidth / inSampleSize >= reqWidth) {
                 inSampleSize *= 2
             }

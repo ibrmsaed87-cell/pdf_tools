@@ -91,4 +91,21 @@
     <string name="action_cancel">Cancelar</string>
     <string name="action_add_page">Agregar página</string>
     <string name="content_desc_text_preview">Vista previa de la página de texto</string>
+    <string name="action_edit">Editar</string>
+    <string name="label_font_size">Tamaño de fuente</string>
+    <string name="label_text_color">Color</string>
+    <string name="label_alignment">Alineación</string>
+    <string name="content_desc_align_start">Alinear al inicio</string>
+    <string name="content_desc_align_center">Alinear al centro</string>
+    <string name="content_desc_align_end">Alinear al final</string>
+    <string name="content_desc_bold">Negrita</string>
+    <string name="action_save">Guardar</string>
+    <string name="action_add_images">Agregar imágenes</string>
+    <string name="msg_no_images_selected">No hay imágenes seleccionadas</string>
+    <string name="action_remove_image">Eliminar imagen</string>
+    <string name="msg_generating_pdf">Generando PDF...</string>
+    <string name="msg_pdf_saved">PDF guardado correctamente!</string>
+    <string name="msg_error_generating">Error al generar el PDF</string>
+    <string name="tab_title">Formato del título</string>
+    <string name="tab_body">Formato del texto</string>
 </resources>

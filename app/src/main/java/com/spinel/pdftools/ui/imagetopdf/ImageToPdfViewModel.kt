@@ -20,7 +20,8 @@ sealed class GenerationState {
 data class ImageToPdfState(
     val pages: List<DocumentPage> = emptyList(),
     val generationState: GenerationState = GenerationState.Idle,
-    val isTextEditorVisible: Boolean = false
+    val isTextEditorVisible: Boolean = false,
+    val editingTextPageId: String? = null
 )
 
 class ImageToPdfViewModel : ViewModel() {
@@ -35,22 +36,28 @@ class ImageToPdfViewModel : ViewModel() {
             )
         }
     }
-    
-    fun showTextEditor() {
-        _state.update { it.copy(isTextEditorVisible = true) }
+
+    fun showTextEditor(pageId: String? = null) {
+        _state.update { it.copy(isTextEditorVisible = true, editingTextPageId = pageId) }
     }
-    
+
     fun hideTextEditor() {
-        _state.update { it.copy(isTextEditorVisible = false) }
+        _state.update { it.copy(isTextEditorVisible = false, editingTextPageId = null) }
     }
-    
-    fun addTextPage(title: String, body: String) {
-        val newPage = DocumentPage.Text(title = title, body = body)
+
+    fun saveTextPage(title: String, body: String, titleStyle: TextStyleConfig, bodyStyle: TextStyleConfig) {
         _state.update { currentState ->
-            currentState.copy(
-                pages = currentState.pages + newPage,
-                isTextEditorVisible = false
-            )
+            if (currentState.editingTextPageId != null) {
+                val updatedPages = currentState.pages.map {
+                    if (it.id == currentState.editingTextPageId && it is DocumentPage.Text) {
+                        it.copy(title = title, body = body, titleStyle = titleStyle, bodyStyle = bodyStyle)
+                    } else it
+                }
+                currentState.copy(pages = updatedPages, isTextEditorVisible = false, editingTextPageId = null)
+            } else {
+                val newPage = DocumentPage.Text(title = title, body = body, titleStyle = titleStyle, bodyStyle = bodyStyle)
+                currentState.copy(pages = currentState.pages + newPage, isTextEditorVisible = false, editingTextPageId = null)
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package com.spinel.pdftools
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.tom_roush.pdfbox.android.PDFBoxResourceLoader
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -15,6 +16,7 @@ import com.spinel.pdftools.ui.theme.Theme
 class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    PDFBoxResourceLoader.init(applicationContext)
     enableEdgeToEdge()
     
     val themeManager = ThemeManager(this)

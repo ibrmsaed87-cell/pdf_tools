@@ -25,7 +25,11 @@ import com.spinel.pdftools.ui.settings.SettingsScreen
 import com.spinel.pdftools.ui.about.AboutScreen
 import com.spinel.pdftools.ui.about.PrivacyPolicyScreen
 import com.spinel.pdftools.ui.imagetopdf.ImageToPdfScreen
+import com.spinel.pdftools.ui.scandocument.ScanDocumentScreen
 import com.spinel.pdftools.ui.tools.ToolsScreen
+import com.spinel.pdftools.ui.mergepdf.MergePdfScreen
+import com.spinel.pdftools.ui.splitpdf.SplitPdfScreen
+
 
 @Composable
 fun AppNavigation() {
@@ -93,6 +97,18 @@ fun AppNavigation() {
                     },
                     onNavigateToImageToPdf = {
                         navController.navigate(Screen.ImageToPdf.route)
+                    },
+                    onNavigateToScanDocument = {
+                        navController.navigate(Screen.ScanDocument.route)
+                    },
+                    onNavigateToMergePdf = {
+                        navController.navigate(Screen.MergePdf.route)
+                    },
+                    onNavigateToSplitPdf = {
+                        navController.navigate(Screen.SplitPdf.route)
+                    },
+                    onNavigateToCompressPdf = {
+                        navController.navigate(Screen.CompressPdf.route)
                     }
                 ) 
             }
@@ -101,6 +117,18 @@ fun AppNavigation() {
                 ToolsScreen(
                     onNavigateToImageToPdf = {
                         navController.navigate(Screen.ImageToPdf.route)
+                    },
+                    onNavigateToScanDocument = {
+                        navController.navigate(Screen.ScanDocument.route)
+                    },
+                    onNavigateToMergePdf = {
+                        navController.navigate(Screen.MergePdf.route)
+                    },
+                    onNavigateToSplitPdf = {
+                        navController.navigate(Screen.SplitPdf.route)
+                    },
+                    onNavigateToCompressPdf = {
+                        navController.navigate(Screen.CompressPdf.route)
                     }
                 ) 
             }
@@ -121,6 +149,26 @@ fun AppNavigation() {
             }
             composable(Screen.ImageToPdf.route) { 
                 ImageToPdfScreen(
+                    onNavigateBack = { navController.popBackStack() }
+                )
+            }
+            composable(Screen.ScanDocument.route) { 
+                ScanDocumentScreen(
+                    onNavigateBack = { navController.popBackStack() }
+                )
+            }
+            composable(Screen.MergePdf.route) { 
+                MergePdfScreen(
+                    onNavigateBack = { navController.popBackStack() }
+                )
+            }
+            composable(Screen.SplitPdf.route) { 
+                SplitPdfScreen(
+                    onNavigateBack = { navController.popBackStack() }
+                )
+            }
+            composable(Screen.CompressPdf.route) { 
+                com.spinel.pdftools.ui.compresspdf.CompressPdfScreen(
                     onNavigateBack = { navController.popBackStack() }
                 )
             }

@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="app_name">أدوات PDF</string>
     <string name="nav_home">الرئيسية</string>
     <string name="nav_files">الملفات</string>
     <string name="nav_tools">الأدوات</string>
     <string name="nav_settings">الإعدادات</string>
-
     <string name="action_scan_document">مسح مستند</string>
     <string name="action_image_to_pdf">صورة إلى PDF</string>
     <string name="action_compress_pdf">ضغط PDF</string>
@@ -13,11 +12,9 @@
     <string name="action_split_pdf">تقسيم PDF</string>
     <string name="action_pdf_to_jpg">PDF إلى JPG</string>
     <string name="action_organize_pdf">تنظيم PDF</string>
-
     <string name="section_recent_files">الملفات الحديثة</string>
     <string name="section_quick_tools">أدوات سريعة</string>
     <string name="action_view_all">عرض الكل</string>
-
     <string name="desc_scan_document">مسح المستندات ضوئياً إلى PDF عالي الجودة</string>
     <string name="desc_image_to_pdf">صور → PDF</string>
     <string name="desc_compress_pdf">تقليل حجم الملف</string>
@@ -25,19 +22,14 @@
     <string name="desc_split_pdf">استخراج الصفحات</string>
     <string name="desc_pdf_to_jpg">PDF → صور</string>
     <string name="desc_organize_pdf">إعادة ترتيب الصفحات</string>
-
     <string name="empty_recent_title">لا توجد ملفات حديثة</string>
     <string name="empty_recent_desc">ستظهر الملفات التي تفتحها أو تنشئها هنا.</string>
-
     <string name="home_subtitle">أدوات PDF سريعة وبسيطة</string>
     <string name="coming_soon">قريباً</string>
-
     <string name="theme_system">النظام الافتراضي</string>
     <string name="theme_light">فاتح</string>
     <string name="theme_dark">داكن</string>
-
     <string name="setting_about">حول</string>
-
     <string name="setting_appearance">المظهر</string>
     <string name="setting_language">اللغة</string>
     <string name="setting_privacy">الخصوصية</string>
@@ -108,4 +100,69 @@
     <string name="msg_error_generating">خطأ في إنشاء ملف PDF</string>
     <string name="tab_title">ضبط العنوان</string>
     <string name="tab_body">ضبط النص</string>
+    <string name="permission_camera_rationale">الوصول إلى الكاميرا مطلوب لمسح المستندات ضوئياً.</string>
+    <string name="action_grant_permission">منح الإذن</string>
+    <string name="action_retake">إعادة التقاط</string>
+    <string name="action_use_photo">استخدام الصورة</string>
+    <string name="msg_scan_accepted">تم مسح المستند ضوئياً وحفظه بنجاح!</string>
+    <string name="action_take_photo">التقاط صورة</string>
+    <string name="title_scan_document">مسح مستند</string>
+    <string name="action_crop_document">قص المستند</string>
+    <string name="action_apply_crop">تطبيق القص</string>
+    <string name="action_edit_crop">تعديل القص</string>
+    <string name="action_use_scan">استخدام المسح</string>
+    <string name="msg_invalid_crop">منطقة القص غير صالحة. يرجى ضبط الزوايا.</string>
+    <string name="title_merge_pdf">دمج PDF</string>
+    <string name="action_select_pdfs">تحديد ملفات PDF</string>
+    <string name="action_add_pdfs">إضافة ملفات PDF</string>
+    <string name="msg_min_pdfs_required">مطلوب ملفي PDF على الأقل</string>
+    <string name="action_merge_pdfs">دمج ملفات PDF</string>
+    <string name="action_remove">إزالة</string>
+    <string name="msg_pdf_saved_successfully">تم حفظ ملف PDF بنجاح!</string>
+    <string name="err_unable_to_read_pdf">تعذر قراءة ملف PDF: %s</string>
+    <string name="err_unable_to_merge_pdf">تعذر دمج ملفات PDF</string>
+    <string name="title_split_pdf">تقسيم PDF</string>
+    <string name="action_select_pdf">تحديد ملف PDF</string>
+    <string name="action_change_pdf">تغيير ملف PDF</string>
+    <string name="msg_total_pages">%d صفحات</string>
+    <string name="msg_selection_mode">وضع التحديد</string>
+    <string name="mode_all_pages">كل الصفحات</string>
+    <string name="mode_custom_pages">صفحات مخصصة</string>
+    <string name="label_page_range">نطاق الصفحات</string>
+    <string name="msg_page_range_hint">مثال: 1-3، 5، 8-10</string>
+    <string name="action_extract_pages">استخراج الصفحات المحددة</string>
+    <string name="err_invalid_page_range">نطاق صفحات غير صالح</string>
+    <string name="err_page_does_not_exist">الصفحة غير موجودة</string>
+    <string name="err_at_least_one_page">مطلوب صفحة واحدة على الأقل</string>
+    <string name="msg_extracting_pages">جاري استخراج الصفحات...</string>
+    <string name="err_extraction_failed">فشل الاستخراج</string>
+    <string name="title_scanned_document">المستند الممسوح</string>
+    <string name="action_save_pdf">حفظ PDF</string>
+    <string name="err_pdf_generation_failed">فشل إنشاء PDF</string>
+    <string name="err_no_pages_to_save">لا توجد صفحات للحفظ</string>
+    <string name="msg_no_pages">لم يتم مسح أي صفحات بعد.</string>
+    <string name="msg_delete_page">حذف الصفحة؟</string>
+    <string name="empty_created_title">لا توجد ملفات منشأة بعد</string>
+    <string name="empty_created_desc">ستظهر الملفات التي تم إنشاؤها بواسطة التطبيق هنا.</string>
+    <string name="empty_opened_title">لا توجد ملفات مفتوحة بعد</string>
+    <string name="empty_opened_desc">ستظهر ملفات PDF التي تفتحها هنا.</string>
+    <string name="error_cannot_open_pdf">تعذر فتح ملف PDF</string>
+    <string name="title_compress_pdf">ضغط ملف PDF</string>
+    <string name="compress_desc">تقليل حجم ملف PDF مع الحفاظ على جودة جيدة.</string>
+    <string name="action_change_file">تغيير الملف</string>
+    <string name="title_compression_level">مستوى الضغط</string>
+    <string name="level_low_title">ضغط خفيف</string>
+    <string name="level_low_desc">جودة أعلى، تقليل حجم أقل.</string>
+    <string name="level_medium_title">ضغط متوسط</string>
+    <string name="level_medium_desc">مُوصى به. توازن بين الجودة والحجم.</string>
+    <string name="level_high_title">ضغط قوي</string>
+    <string name="level_high_desc">جودة صور أقل، تقليل حجم أكبر.</string>
+    <string name="action_compress">ضغط الملف</string>
+    <string name="msg_compressing">جاري التحليل والضغط...</string>
+    <string name="msg_saving">جاري الحفظ...</string>
+    <string name="msg_compressed_success">تم الضغط بنجاح</string>
+    <string name="msg_loading_pdf">جاري تحميل المستند...</string>
+    <string name="msg_analyzing_pdf">جاري تحليل الصفحات...</string>
+    <string name="msg_compressing_image">جاري ضغط الصورة %1$d من %2$d...</string>
+    <string name="msg_saving_pdf">جاري حفظ PDF...</string>
 </resources>

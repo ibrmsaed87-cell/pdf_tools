@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="app_name">Herramientas PDF</string>
     <string name="nav_home">Inicio</string>
     <string name="nav_files">Archivos</string>
     <string name="nav_tools">Herramientas</string>
     <string name="nav_settings">Ajustes</string>
-
     <string name="action_scan_document">Escanear Documento</string>
     <string name="action_image_to_pdf">Imagen a PDF</string>
     <string name="action_compress_pdf">Comprimir PDF</string>
@@ -13,11 +12,9 @@
     <string name="action_split_pdf">Dividir PDF</string>
     <string name="action_pdf_to_jpg">PDF a JPG</string>
     <string name="action_organize_pdf">Organizar PDF</string>
-
     <string name="section_recent_files">Archivos Recientes</string>
     <string name="section_quick_tools">Herramientas rápidas</string>
     <string name="action_view_all">Ver todo</string>
-
     <string name="desc_scan_document">Escanea documentos a PDF de alta calidad</string>
     <string name="desc_image_to_pdf">Imágenes → PDF</string>
     <string name="desc_compress_pdf">Reducir tamaño</string>
@@ -25,19 +22,14 @@
     <string name="desc_split_pdf">Extraer páginas</string>
     <string name="desc_pdf_to_jpg">PDF → Imágenes</string>
     <string name="desc_organize_pdf">Reordenar páginas</string>
-
     <string name="empty_recent_title">No hay archivos recientes</string>
     <string name="empty_recent_desc">Los archivos que abras o crees aparecerán aquí.</string>
-
     <string name="home_subtitle">Herramientas PDF rápidas y simples</string>
     <string name="coming_soon">Próximamente</string>
-
     <string name="theme_system">Predeterminado del sistema</string>
     <string name="theme_light">Claro</string>
     <string name="theme_dark">Oscuro</string>
-
     <string name="setting_about">Acerca de</string>
-
     <string name="setting_appearance">Apariencia</string>
     <string name="setting_language">Idioma</string>
     <string name="setting_privacy">Privacidad</string>
@@ -108,4 +100,69 @@
     <string name="msg_error_generating">Error al generar el PDF</string>
     <string name="tab_title">Formato del título</string>
     <string name="tab_body">Formato del texto</string>
+    <string name="permission_camera_rationale">Se requiere acceso a la cámara para escanear documentos.</string>
+    <string name="action_grant_permission">Conceder permiso</string>
+    <string name="action_retake">Volver a tomar</string>
+    <string name="action_use_photo">Usar foto</string>
+    <string name="msg_scan_accepted">¡Documento escaneado y guardado con éxito!</string>
+    <string name="action_take_photo">Tomar foto</string>
+    <string name="title_scan_document">Escanear Documento</string>
+    <string name="action_crop_document">Recortar Documento</string>
+    <string name="action_apply_crop">Aplicar recorte</string>
+    <string name="action_edit_crop">Editar recorte</string>
+    <string name="action_use_scan">Usar escaneo</string>
+    <string name="msg_invalid_crop">Área de recorte inválida. Por favor, ajuste las esquinas.</string>
+    <string name="title_merge_pdf">Unir PDF</string>
+    <string name="action_select_pdfs">Seleccionar PDFs</string>
+    <string name="action_add_pdfs">Agregar PDFs</string>
+    <string name="msg_min_pdfs_required">Se requieren al menos dos PDFs</string>
+    <string name="action_merge_pdfs">Unir PDFs</string>
+    <string name="action_remove">Eliminar</string>
+    <string name="msg_pdf_saved_successfully">¡PDF guardado con éxito!</string>
+    <string name="err_unable_to_read_pdf">No se pudo leer el PDF: %s</string>
+    <string name="err_unable_to_merge_pdf">No se pudo unir los PDFs</string>
+    <string name="title_split_pdf">Dividir PDF</string>
+    <string name="action_select_pdf">Seleccionar PDF</string>
+    <string name="action_change_pdf">Cambiar PDF</string>
+    <string name="msg_total_pages">%d páginas</string>
+    <string name="msg_selection_mode">Modo de selección</string>
+    <string name="mode_all_pages">Todas las páginas</string>
+    <string name="mode_custom_pages">Páginas personalizadas</string>
+    <string name="label_page_range">Rango de páginas</string>
+    <string name="msg_page_range_hint">Ej., 1-3, 5, 8-10</string>
+    <string name="action_extract_pages">Extraer páginas seleccionadas</string>
+    <string name="err_invalid_page_range">Rango de páginas inválido</string>
+    <string name="err_page_does_not_exist">La página no existe</string>
+    <string name="err_at_least_one_page">Se requiere al menos una página</string>
+    <string name="msg_extracting_pages">Extrayendo páginas...</string>
+    <string name="err_extraction_failed">La extracción falló</string>
+    <string name="title_scanned_document">Documento Escaneado</string>
+    <string name="action_save_pdf">Guardar PDF</string>
+    <string name="err_pdf_generation_failed">Error al generar PDF</string>
+    <string name="err_no_pages_to_save">No hay páginas para guardar</string>
+    <string name="msg_no_pages">No hay páginas escaneadas.</string>
+    <string name="msg_delete_page">¿Eliminar página?</string>
+    <string name="empty_created_title">No hay archivos creados</string>
+    <string name="empty_created_desc">Los archivos generados por la aplicación aparecerán aquí.</string>
+    <string name="empty_opened_title">No hay archivos abiertos</string>
+    <string name="empty_opened_desc">Los PDF que abra aparecerán aquí.</string>
+    <string name="error_cannot_open_pdf">No se puede abrir el PDF</string>
+    <string name="title_compress_pdf">Comprimir PDF</string>
+    <string name="compress_desc">Reducir el tamaño del PDF manteniendo buena calidad.</string>
+    <string name="action_change_file">Cambiar Archivo</string>
+    <string name="title_compression_level">Nivel de Compresión</string>
+    <string name="level_low_title">Compresión Baja</string>
+    <string name="level_low_desc">Mayor calidad, menor reducción de tamaño.</string>
+    <string name="level_medium_title">Compresión Media</string>
+    <string name="level_medium_desc">Recomendado. Equilibrio entre calidad y tamaño.</string>
+    <string name="level_high_title">Compresión Alta</string>
+    <string name="level_high_desc">Menor calidad de imagen, máxima reducción de tamaño.</string>
+    <string name="action_compress">Comprimir PDF</string>
+    <string name="msg_compressing">Analizando y comprimiendo...</string>
+    <string name="msg_saving">Guardando documento...</string>
+    <string name="msg_compressed_success">Compresión exitosa</string>
+    <string name="msg_loading_pdf">Cargando documento...</string>
+    <string name="msg_analyzing_pdf">Analizando páginas...</string>
+    <string name="msg_compressing_image">Comprimiendo imagen %1$d de %2$d...</string>
+    <string name="msg_saving_pdf">Guardando PDF...</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.spinel.pdftools.ui.imagetopdf
 
+import kotlinx.coroutines.launch
+
 import androidx.compose.material.icons.filled.CheckCircle
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -9,6 +11,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -491,18 +495,48 @@ private fun TextEditorBottomSheet(
     
     var selectedTab by remember { mutableIntStateOf(0) } // 0 = Title, 1 = Body
 
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
+    var allowDismiss by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+        confirmValueChange = { if (it == androidx.compose.material3.SheetValue.Hidden) allowDismiss else true }
+    )
+    val scrollState = rememberScrollState()
+    val scope = rememberCoroutineScope()
+    
     ModalBottomSheet(
-        onDismissRequest = onDismiss,
+        onDismissRequest = {
+            if (allowDismiss) onDismiss()
+        },
         sheetState = sheetState,
-        containerColor = MaterialTheme.colorScheme.surface
+        containerColor = MaterialTheme.colorScheme.surface,
+        properties = androidx.compose.material3.ModalBottomSheetProperties(
+            shouldDismissOnBackPress = false
+        )
     ) {
+        val keyboardController = androidx.compose.ui.platform.LocalSoftwareKeyboardController.current
+        val focusManager = androidx.compose.ui.platform.LocalFocusManager.current
+        val imeBottom = androidx.compose.foundation.layout.WindowInsets.ime.getBottom(androidx.compose.ui.platform.LocalDensity.current)
+        val isImeVisible = imeBottom > 0
+
+        androidx.activity.compose.BackHandler {
+            if (isImeVisible) {
+                keyboardController?.hide()
+                focusManager.clearFocus()
+            } else {
+                allowDismiss = true
+                scope.launch {
+                    sheetState.hide()
+                    onDismiss()
+                }
+            }
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
-                .windowInsetsPadding(WindowInsets.ime)
+                .imePadding()
+                .verticalScroll(scrollState)
         ) {
             Text(
                 text = if (editingPage == null) stringResource(R.string.title_add_text_page) else stringResource(R.string.action_edit),
@@ -649,8 +683,7 @@ private fun TextEditorBottomSheet(
                 label = { Text(stringResource(R.string.hint_body_required)) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f, fill = false)
-                    .heightIn(min = 100.dp, max = 200.dp),
+                    .heightIn(min = 200.dp),
                 minLines = 4,
                 maxLines = 10,
                 textStyle = androidx.compose.ui.text.TextStyle(
@@ -672,12 +705,24 @@ private fun TextEditorBottomSheet(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                TextButton(onClick = onDismiss) {
+                TextButton(onClick = {
+                    allowDismiss = true
+                    scope.launch {
+                        sheetState.hide()
+                        onDismiss()
+                    }
+                }) {
                     Text(stringResource(R.string.action_cancel))
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(
-                    onClick = { onSave(title, body, titleStyle, bodyStyle) },
+                    onClick = {
+                        allowDismiss = true
+                        scope.launch {
+                            sheetState.hide()
+                            onSave(title, body, titleStyle, bodyStyle)
+                        }
+                    },
                     enabled = body.isNotBlank()
                 ) {
                     Text(stringResource(R.string.action_save))
@@ -722,6 +767,10 @@ private fun GenerationOverlay(state: GenerationState, onDismiss: () -> Unit) {
                         )
                     }
                     is GenerationState.Success -> {
+                        val filesViewModel: com.spinel.pdftools.ui.files.FilesViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+                        androidx.compose.runtime.LaunchedEffect(state) {
+                            filesViewModel.onPdfCreated(state.outputUri)
+                        }
                         val context = LocalContext.current
                         Icon(
                             Icons.Default.CheckCircle,
@@ -787,3 +836,4 @@ private fun GenerationOverlay(state: GenerationState, onDismiss: () -> Unit) {
         }
     }
 }
+// force rebuild

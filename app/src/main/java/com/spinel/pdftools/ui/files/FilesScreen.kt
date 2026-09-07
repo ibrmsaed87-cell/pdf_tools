@@ -21,23 +21,60 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.platform.LocalContext
+import android.content.Intent
+import android.widget.Toast
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import com.spinel.pdftools.data.model.FileSource
+import com.spinel.pdftools.data.model.PdfMetadata
 import com.spinel.pdftools.R
+
+private fun formatFileSize(size: Long): String {
+    if (size <= 0) return "Unknown size"
+    val units = arrayOf("B", "KB", "MB", "GB", "TB")
+    var digitGroups = (Math.log10(size.toDouble()) / Math.log10(1024.0)).toInt()
+    if (digitGroups >= units.size) digitGroups = units.size - 1
+    return java.text.DecimalFormat("#,##0.#").format(size / Math.pow(1024.0, digitGroups.toDouble())) + " " + units[digitGroups]
+}
+
+private fun formatDate(timestamp: Long): String {
+    val formatter = java.text.SimpleDateFormat("dd MMM yyyy, HH:mm", java.util.Locale.getDefault())
+    return formatter.format(java.util.Date(timestamp))
+}
+
+private fun openPdf(context: android.content.Context, uriString: String) {
+    try {
+        val uri = Uri.parse(uriString)
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(uri, "application/pdf")
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        context.startActivity(Intent.createChooser(intent, context.getString(R.string.action_open_pdf)))
+    } catch (e: Exception) {
+        Toast.makeText(context, context.getString(R.string.error_cannot_open_pdf), Toast.LENGTH_SHORT).show()
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilesScreen() {
-    var selectedFilter by remember { mutableStateOf(0) }
+fun FilesScreen(viewModel: FilesViewModel = viewModel()) {
+    var selectedFilter by remember { mutableIntStateOf(0) }
     val filters = listOf(
         stringResource(id = R.string.filter_recent),
         stringResource(id = R.string.filter_created),
         stringResource(id = R.string.filter_opened)
     )
+    
+    val allFiles by viewModel.allFiles.collectAsState()
+    val context = LocalContext.current
 
     // SAF Launcher for PDF (Safe, no broad permissions required)
     val pdfPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument(),
         onResult = { uri: Uri? ->
-            // Ready for future integration: handle selected document URI
+            uri?.let { viewModel.onPdfOpenedFromPicker(it) }
         }
     )
 
@@ -87,62 +124,110 @@ fun FilesScreen() {
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Empty State
-        Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(bottom = 64.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(80.dp)
-                        .background(
-                            MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                            CircleShape
-                        ),
-                    contentAlignment = Alignment.Center
+        val filteredFiles = when (selectedFilter) {
+            1 -> allFiles.filter { it.source == FileSource.CREATED }
+            2 -> allFiles.filter { it.source == FileSource.OPENED }
+            else -> allFiles // RECENT: already sorted by lastOpenedAt
+        }
+
+        if (filteredFiles.isEmpty()) {
+            // Empty State
+            Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(bottom = 64.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Filled.FolderOpen,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(40.dp)
+                    Box(
+                        modifier = Modifier
+                            .size(80.dp)
+                            .background(
+                                MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                                CircleShape
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.FolderOpen,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(40.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(24.dp))
+                    
+                    val titleRes = when(selectedFilter) {
+                        1 -> R.string.empty_created_title
+                        2 -> R.string.empty_opened_title
+                        else -> R.string.empty_files_title
+                    }
+                    val descRes = when(selectedFilter) {
+                        1 -> R.string.empty_created_desc
+                        2 -> R.string.empty_opened_desc
+                        else -> R.string.empty_files_desc
+                    }
+                    
+                    Text(
+                        text = stringResource(id = titleRes),
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = stringResource(id = descRes),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(32.dp))
+                    Button(
+                        onClick = { pdfPickerLauncher.launch(arrayOf("application/pdf")) },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        ),
+                        shape = RoundedCornerShape(16.dp),
+                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 14.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Add,
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = stringResource(id = R.string.action_open_pdf),
+                            fontWeight = FontWeight.Medium,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                }
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier.weight(1f).fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                contentPadding = PaddingValues(bottom = 80.dp)
+            ) {
+                items(filteredFiles) { file ->
+                    FileItemCard(
+                        fileName = file.displayName,
+                        fileSize = formatFileSize(file.size),
+                        fileDate = formatDate(if (selectedFilter == 1) file.createdAt else file.lastOpenedAt),
+                        fileSource = if (file.source == FileSource.CREATED) stringResource(id = R.string.filter_created) else stringResource(id = R.string.filter_opened),
+                        onMenuClick = { /* No logic yet */ },
+                        onClick = { openPdf(context, file.uri) }
                     )
                 }
-                Spacer(modifier = Modifier.height(24.dp))
-                Text(
-                    text = stringResource(id = R.string.empty_files_title),
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = stringResource(id = R.string.empty_files_desc),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center
-                )
-                Spacer(modifier = Modifier.height(32.dp))
-                Button(
+            }
+            
+            // FAB for opened state if there are files
+            Box(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), contentAlignment = Alignment.BottomEnd) {
+                FloatingActionButton(
                     onClick = { pdfPickerLauncher.launch(arrayOf("application/pdf")) },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    ),
-                    shape = RoundedCornerShape(16.dp),
-                    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 14.dp)
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
                 ) {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = stringResource(id = R.string.action_open_pdf),
-                        fontWeight = FontWeight.Medium,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
+                    Icon(Icons.Filled.FileOpen, contentDescription = stringResource(id = R.string.action_open_pdf))
                 }
             }
         }

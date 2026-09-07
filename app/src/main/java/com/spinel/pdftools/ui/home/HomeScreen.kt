@@ -28,7 +28,7 @@ import com.spinel.pdftools.ui.theme.AccentPurple
 import com.spinel.pdftools.ui.theme.AccentTeal
 
 @Composable
-fun HomeScreen(onNavigateToTools: () -> Unit = {}, onNavigateToImageToPdf: () -> Unit = {}) {
+fun HomeScreen(onNavigateToTools: () -> Unit = {}, onNavigateToImageToPdf: () -> Unit = {}, onNavigateToScanDocument: () -> Unit = {}, onNavigateToMergePdf: () -> Unit = {}, onNavigateToSplitPdf: () -> Unit = {}, onNavigateToCompressPdf: () -> Unit = {}) {
     val quickTools = listOf(
         ToolItem(R.string.action_image_to_pdf, R.string.desc_image_to_pdf, Icons.Filled.Image, AccentBlue),
         ToolItem(R.string.action_compress_pdf, R.string.desc_compress_pdf, Icons.Filled.Compress, AccentTeal),
@@ -65,7 +65,7 @@ fun HomeScreen(onNavigateToTools: () -> Unit = {}, onNavigateToImageToPdf: () ->
                 title = stringResource(id = R.string.action_scan_document),
                 description = stringResource(id = R.string.desc_scan_document),
                 icon = Icons.Filled.DocumentScanner,
-                onClick = { /* Coming soon */ },
+                onClick = onNavigateToScanDocument,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
         }
@@ -87,6 +87,8 @@ fun HomeScreen(onNavigateToTools: () -> Unit = {}, onNavigateToImageToPdf: () ->
                 onClick = { 
                     if (tool.titleResId == R.string.action_image_to_pdf) {
                         onNavigateToImageToPdf()
+                    } else if (tool.titleResId == R.string.action_compress_pdf) {
+                        onNavigateToCompressPdf()
                     } else {
                         /* Coming soon */
                     }

@@ -6,6 +6,9 @@ import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.ContentCut
+import androidx.compose.material.icons.automirrored.filled.MergeType
+import androidx.compose.material.icons.filled.DocumentScanner
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.spinel.pdftools.R
 
@@ -17,4 +20,8 @@ sealed class Screen(val route: String, val labelResId: Int, val icon: ImageVecto
     object PrivacyPolicy : Screen("privacy_policy", R.string.privacy_policy, Icons.Filled.Settings)
     object About : Screen("about", R.string.setting_about, Icons.Filled.Settings)
     object ImageToPdf : Screen("image_to_pdf", R.string.title_image_to_pdf, Icons.Filled.Image)
+    object ScanDocument : Screen("scan_document", R.string.title_scan_document, Icons.Filled.DocumentScanner)
+    object MergePdf : Screen("merge_pdf", R.string.title_merge_pdf, Icons.AutoMirrored.Filled.MergeType)
+    object SplitPdf : Screen("split_pdf", R.string.title_split_pdf, Icons.Filled.ContentCut)
+    object CompressPdf : Screen("compress_pdf", R.string.title_compress_pdf, Icons.Filled.Build)
 }

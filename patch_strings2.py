@@ -23,28 +23,31 @@ def update_strings(filepath, new_strings, modifications):
     tree.write(filepath, encoding='utf-8', xml_declaration=True)
 
 en_new = {
-    'msg_compression_not_needed': 'Compression not needed',
-    'msg_compression_not_needed_desc': 'The file is already well optimized and cannot be reduced significantly without affecting quality.'
+    'msg_preparing': 'Preparing...',
+    'msg_ready_to_save': 'Ready to save',
+    'error_compression_failed': 'Compression failed.',
+    'error_invalid_pdf_size': 'Invalid PDF file or size is 0.',
+    'error_failed_to_save': 'Failed to save the file.'
 }
-en_mod = {
-    'msg_compressing_image': 'Processing image %1$d of %2$d...'
-}
+en_mod = {}
 
 ar_new = {
-    'msg_compression_not_needed': 'لا يحتاج إلى ضغط',
-    'msg_compression_not_needed_desc': 'الملف مضغوط بالفعل بشكل جيد، ولا يمكن تقليل حجمه بشكل ملحوظ دون التأثير على الجودة.'
+    'msg_preparing': 'جارٍ التحضير...',
+    'msg_ready_to_save': 'جاهز للحفظ',
+    'error_compression_failed': 'فشل الضغط.',
+    'error_invalid_pdf_size': 'ملف PDF غير صالح أو حجمه 0.',
+    'error_failed_to_save': 'فشل في حفظ الملف.'
 }
-ar_mod = {
-    'msg_compressing_image': 'جارٍ معالجة الصورة %1$d من %2$d...'
-}
+ar_mod = {}
 
 es_new = {
-    'msg_compression_not_needed': 'No necesita compresión',
-    'msg_compression_not_needed_desc': 'El archivo ya está bien optimizado y no se puede reducir significativamente sin afectar la calidad.'
+    'msg_preparing': 'Preparando...',
+    'msg_ready_to_save': 'Listo para guardar',
+    'error_compression_failed': 'La compresión falló.',
+    'error_invalid_pdf_size': 'Archivo PDF no válido o el tamaño es 0.',
+    'error_failed_to_save': 'Error al guardar el archivo.'
 }
-es_mod = {
-    'msg_compressing_image': 'Procesando imagen %1$d de %2$d...'
-}
+es_mod = {}
 
 update_strings('app/src/main/res/values/strings.xml', en_new, en_mod)
 update_strings('app/src/main/res/values-ar/strings.xml', ar_new, ar_mod)

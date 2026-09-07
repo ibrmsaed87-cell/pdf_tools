@@ -1,4 +1,6 @@
-package com.spinel.pdftools.ui.compresspdf
+import sys
+
+content = """package com.spinel.pdftools.ui.compresspdf
 
 import android.content.Intent
 import android.net.Uri
@@ -17,7 +19,6 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Compress
 import androidx.compose.material.icons.filled.ErrorOutline
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.FileOpen
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
@@ -319,17 +320,10 @@ fun CompressPdfScreen(
                     }
                 }
 
-                                is CompressState.NotReduced -> {
-                    Spacer(modifier = Modifier.height(48.dp))
-                    Icon(
-                        Icons.Default.Info,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(80.dp)
-                    )
+                is CompressState.NotReduced -> {
                     Spacer(modifier = Modifier.height(24.dp))
                     Text(
-                        text = stringResource(R.string.msg_compression_not_needed),
+                        text = stringResource(R.string.msg_compression_not_reduced),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center,
@@ -337,13 +331,29 @@ fun CompressPdfScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = currentState.message,
+                        text = stringResource(R.string.msg_compression_already_optimized),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.padding(horizontal = 32.dp)
                     )
-                    Spacer(modifier = Modifier.height(48.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
+                    
+                    if (currentState.diagnostics.isNotEmpty()) {
+                        androidx.compose.foundation.text.selection.SelectionContainer {
+                            Text(
+                                text = currentState.diagnostics,
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp)
+                                    .fillMaxWidth()
+                                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                                    .padding(8.dp),
+                                fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(24.dp))
+                    }
 
                     OutlinedButton(
                         onClick = onNavigateBack,
@@ -439,3 +449,9 @@ private fun formatFileSize(size: Long): String {
     if (digitGroups >= units.size) digitGroups = units.size - 1
     return java.text.DecimalFormat("#,##0.#").format(size / Math.pow(1024.0, digitGroups.toDouble())) + " " + units[digitGroups]
 }
+"""
+
+with open('app/src/main/java/com/spinel/pdftools/ui/compresspdf/CompressPdfScreen.kt', 'w', encoding='utf-8') as f:
+    f.write(content)
+
+print("Rewrote CompressPdfScreen")

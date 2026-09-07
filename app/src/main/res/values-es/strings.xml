@@ -163,6 +163,6 @@
     <string name="msg_compressed_success">Compresión exitosa</string>
     <string name="msg_loading_pdf">Cargando documento...</string>
     <string name="msg_analyzing_pdf">Analizando páginas...</string>
-    <string name="msg_compressing_image">Comprimiendo imagen %1$d de %2$d...</string>
+    <string name="msg_compressing_image">Procesando imagen %1$d de %2$d...</string>
     <string name="msg_saving_pdf">Guardando PDF...</string>
-</resources>
+<string name="msg_compression_not_needed">No necesita compresión</string><string name="msg_compression_not_needed_desc">El archivo ya está bien optimizado y no se puede reducir significativamente sin afectar la calidad.</string><string name="msg_preparing">Preparando...</string><string name="msg_ready_to_save">Listo para guardar</string><string name="error_compression_failed">La compresión falló.</string><string name="error_invalid_pdf_size">Archivo PDF no válido o el tamaño es 0.</string><string name="error_failed_to_save">Error al guardar el archivo.</string></resources>

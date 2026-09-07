@@ -163,6 +163,9 @@
     <string name="msg_compressed_success">Compression Successful</string>
     <string name="msg_loading_pdf">Loading document...</string>
     <string name="msg_analyzing_pdf">Analyzing pages...</string>
-    <string name="msg_compressing_image">Compressing image %1$d of %2$d...</string>
+    <string name="msg_compressing_image">Processing image %1$d of %2$d...</string>
     <string name="msg_saving_pdf">Saving PDF...</string>
-</resources>
+    <string name="msg_select_pdf_to_compress">Select a PDF to compress</string>
+    <string name="msg_compression_not_reduced">Not Reduced</string>
+    <string name="msg_compression_already_optimized">The original document is already highly optimized. Compression did not reduce the file size further.</string>
+<string name="msg_compression_not_needed">Compression not needed</string><string name="msg_compression_not_needed_desc">The file is already well optimized and cannot be reduced significantly without affecting quality.</string><string name="msg_preparing">Preparing...</string><string name="msg_ready_to_save">Ready to save</string><string name="error_compression_failed">Compression failed.</string><string name="error_invalid_pdf_size">Invalid PDF file or size is 0.</string><string name="error_failed_to_save">Failed to save the file.</string></resources>

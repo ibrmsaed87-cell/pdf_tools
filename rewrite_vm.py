@@ -1,4 +1,6 @@
-package com.spinel.pdftools.ui.compresspdf
+import sys
+
+content = """package com.spinel.pdftools.ui.compresspdf
 
 import android.app.Application
 import android.net.Uri
@@ -28,7 +30,7 @@ sealed class CompressState {
         val reductionPercent: Int,
         val uri: Uri
     ) : CompressState()
-    data class NotReduced(val message: String) : CompressState()
+    data class NotReduced(val message: String, val diagnostics: String = "") : CompressState()
     data class Error(val message: String) : CompressState()
 }
 
@@ -48,7 +50,7 @@ class CompressPdfViewModel(application: Application) : AndroidViewModel(applicat
         if (originalSize > 0) {
             _state.value = CompressState.Selected(uri, originalName, originalSize)
         } else {
-            _state.value = CompressState.Error(getApplication<Application>().getString(com.spinel.pdftools.R.string.error_invalid_pdf_size))
+            _state.value = CompressState.Error("Invalid PDF file or size is 0.")
         }
     }
     
@@ -56,7 +58,7 @@ class CompressPdfViewModel(application: Application) : AndroidViewModel(applicat
 
     fun compressPdf(uri: Uri, level: CompressionLevel) {
         viewModelScope.launch {
-            _state.value = CompressState.Compressing(0f, getApplication<Application>().getString(com.spinel.pdftools.R.string.msg_preparing))
+            _state.value = CompressState.Compressing(0f, "Preparing...")
 
             val result = PdfCompressor.compressPdf(getApplication(), uri, level) { progress, msg ->
                 _state.value = CompressState.Compressing(progress, msg)
@@ -65,16 +67,17 @@ class CompressPdfViewModel(application: Application) : AndroidViewModel(applicat
             compressedFile = result.file
             val diagnosticsReport = result.diagnostics.formatReport()
 
-                        if (compressedFile != null) {
-                _state.value = CompressState.Compressing(1f, getApplication<Application>().getString(com.spinel.pdftools.R.string.msg_ready_to_save))
-            } else {
-                if (result.diagnostics.finalDecision == "NOT_REDUCED") {
-                    _state.value = CompressState.NotReduced(getApplication<Application>().getString(com.spinel.pdftools.R.string.msg_compression_not_needed_desc))
+            if (compressedFile != null) {
+                val compSize = compressedFile!!.length()
+                if (compSize < originalSize) {
+                    _state.value = CompressState.Compressing(1f, "Ready to save")
                 } else {
-                    _state.value = CompressState.Error(getApplication<Application>().getString(com.spinel.pdftools.R.string.error_compression_failed))
-
-
+                    _state.value = CompressState.NotReduced("The compressed file is not smaller than the original.", diagnosticsReport)
+                    compressedFile?.delete()
+                    compressedFile = null
                 }
+            } else {
+                _state.value = CompressState.Error("Compression failed: ${diagnosticsReport}")
             }
         }
     }
@@ -109,7 +112,7 @@ class CompressPdfViewModel(application: Application) : AndroidViewModel(applicat
                     uri = destinationUri
                 )
             } catch (e: Exception) {
-                _state.value = CompressState.Error(getApplication<Application>().getString(com.spinel.pdftools.R.string.error_failed_to_save))
+                _state.value = CompressState.Error("Failed to save the file.")
             } finally {
                 fileToSave.delete()
                 compressedFile = null
@@ -155,3 +158,7 @@ class CompressPdfViewModel(application: Application) : AndroidViewModel(applicat
         compressedFile?.delete()
     }
 }
+"""
+with open('app/src/main/java/com/spinel/pdftools/ui/compresspdf/CompressPdfViewModel.kt', 'w', encoding='utf-8') as f:
+    f.write(content)
+print("Rewrote VM")

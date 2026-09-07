@@ -30,6 +30,7 @@ import com.spinel.pdftools.ui.tools.ToolsScreen
 import com.spinel.pdftools.ui.mergepdf.MergePdfScreen
 import com.spinel.pdftools.ui.splitpdf.SplitPdfScreen
 import com.spinel.pdftools.ui.organizepdf.OrganizePdfScreen
+import com.spinel.pdftools.ui.pdftojpg.PdfToJpgScreen
 
 
 @Composable
@@ -113,6 +114,10 @@ fun AppNavigation() {
                     },
                     onNavigateToOrganizePdf = {
                         navController.navigate(Screen.OrganizePdf.route)
+                    },
+                    onNavigateToPdfToJpg = {
+                        navController.navigate(Screen.PdfToJpg.route)
+                        
                     }
                 ) 
             }
@@ -136,6 +141,10 @@ fun AppNavigation() {
                     },
                     onNavigateToOrganizePdf = {
                         navController.navigate(Screen.OrganizePdf.route)
+                    },
+                    onNavigateToPdfToJpg = {
+                        navController.navigate(Screen.PdfToJpg.route)
+                        
                     }
                 ) 
             }
@@ -181,6 +190,11 @@ fun AppNavigation() {
             }
             composable(Screen.OrganizePdf.route) { 
                 OrganizePdfScreen(
+                    onNavigateBack = { navController.popBackStack() }
+                )
+            }
+            composable(Screen.PdfToJpg.route) {
+                PdfToJpgScreen(
                     onNavigateBack = { navController.popBackStack() }
                 )
             }

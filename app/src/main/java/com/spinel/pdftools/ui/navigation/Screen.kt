@@ -26,4 +26,5 @@ sealed class Screen(val route: String, val labelResId: Int, val icon: ImageVecto
     object SplitPdf : Screen("split_pdf", R.string.title_split_pdf, Icons.Filled.ContentCut)
     object CompressPdf : Screen("compress_pdf", R.string.title_compress_pdf, Icons.Filled.Build)
     object OrganizePdf : Screen("organize_pdf", R.string.title_organize_pdf, Icons.Filled.GridView)
+    object PdfToJpg : Screen("pdf_to_jpg", R.string.title_pdf_to_jpg, Icons.Filled.Image)
 }

@@ -30,7 +30,7 @@ data class ToolCategory(
 )
 
 @Composable
-fun ToolsScreen(onNavigateToImageToPdf: () -> Unit = {}, onNavigateToScanDocument: () -> Unit = {}, onNavigateToMergePdf: () -> Unit = {}, onNavigateToSplitPdf: () -> Unit = {}, onNavigateToCompressPdf: () -> Unit = {}, onNavigateToOrganizePdf: () -> Unit = {}) {
+fun ToolsScreen(onNavigateToImageToPdf: () -> Unit = {}, onNavigateToScanDocument: () -> Unit = {}, onNavigateToMergePdf: () -> Unit = {}, onNavigateToSplitPdf: () -> Unit = {}, onNavigateToCompressPdf: () -> Unit = {}, onNavigateToOrganizePdf: () -> Unit = {}, onNavigateToPdfToJpg: () -> Unit = {}) {
     val categories = listOf(
         ToolCategory(
             titleResId = R.string.category_create,
@@ -111,6 +111,8 @@ fun ToolsScreen(onNavigateToImageToPdf: () -> Unit = {}, onNavigateToScanDocumen
                             onNavigateToCompressPdf()
                         } else if (tool.titleResId == R.string.action_organize_pdf) {
                             onNavigateToOrganizePdf()
+                        } else if (tool.titleResId == R.string.action_pdf_to_jpg) {
+                            onNavigateToPdfToJpg()
                         } else {
                             /* Coming soon */
                         }

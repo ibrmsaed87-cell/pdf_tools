@@ -197,4 +197,15 @@
     <string name="err_failed_organize">فشل في تنظيم PDF</string>
     <string name="action_add_pdf">اختر PDF</string>
     <string name="action_rotate">تدوير</string>
+    <string name="title_pdf_to_jpg">PDF إلى JPG</string>
+    <string name="action_select_all">تحديد الكل</string>
+    <string name="action_deselect_all">إلغاء تحديد الكل</string>
+    <string name="action_convert_count">تحويل (%1$d)</string>
+    <string name="msg_converting_pages">جاري تحويل %1$d من %2$d</string>
+    <string name="msg_save_images">حفظ الصور</string>
+    <string name="msg_save_image">حفظ الصورة</string>
+    <string name="msg_images_saved">تم حفظ %1$d صورة بنجاح.</string>
+    <string name="err_failed_convert">فشل في تحويل PDF إلى JPG.</string>
+    <string name="action_convert_more">تحويل المزيد</string>
+    <string name="msg_ready_to_save_images">تم إنشاء الصور بنجاح. جاهز للحفظ.</string>
 </resources>

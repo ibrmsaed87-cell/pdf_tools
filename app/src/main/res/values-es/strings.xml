@@ -197,4 +197,15 @@
     <string name="err_failed_organize">Error al organizar PDF</string>
     <string name="action_add_pdf">Seleccionar PDF</string>
     <string name="action_rotate">Rotar</string>
+    <string name="title_pdf_to_jpg">PDF a JPG</string>
+    <string name="action_select_all">Seleccionar todo</string>
+    <string name="action_deselect_all">Deseleccionar todo</string>
+    <string name="action_convert_count">Convertir (%1$d)</string>
+    <string name="msg_converting_pages">Convirtiendo %1$d de %2$d</string>
+    <string name="msg_save_images">Guardar imágenes</string>
+    <string name="msg_save_image">Guardar imagen</string>
+    <string name="msg_images_saved">%1$d imágenes guardadas correctamente.</string>
+    <string name="err_failed_convert">Error al convertir PDF a JPG.</string>
+    <string name="action_convert_more">Convertir más</string>
+    <string name="msg_ready_to_save_images">Imágenes generadas correctamente. Listo para guardar.</string>
 </resources>

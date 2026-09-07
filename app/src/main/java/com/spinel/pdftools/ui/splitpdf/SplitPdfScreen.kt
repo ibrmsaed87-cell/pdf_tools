@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.spinel.pdftools.R
+import com.spinel.pdftools.ui.files.FilesViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -98,6 +99,10 @@ fun SplitPdfScreen(
                     ProcessingView()
                 }
                 is SplitState.Success -> {
+                    val filesViewModel: FilesViewModel = viewModel()
+                    LaunchedEffect(currentState) {
+                        filesViewModel.onPdfCreated(currentState.savedUri)
+                    }
                     SuccessView(
                         onDone = {
                             viewModel.reset()

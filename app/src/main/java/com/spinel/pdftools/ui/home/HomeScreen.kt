@@ -28,7 +28,7 @@ import com.spinel.pdftools.ui.theme.AccentPurple
 import com.spinel.pdftools.ui.theme.AccentTeal
 
 @Composable
-fun HomeScreen(onNavigateToTools: () -> Unit = {}, onNavigateToImageToPdf: () -> Unit = {}, onNavigateToScanDocument: () -> Unit = {}, onNavigateToMergePdf: () -> Unit = {}, onNavigateToSplitPdf: () -> Unit = {}, onNavigateToCompressPdf: () -> Unit = {}) {
+fun HomeScreen(onNavigateToTools: () -> Unit = {}, onNavigateToImageToPdf: () -> Unit = {}, onNavigateToScanDocument: () -> Unit = {}, onNavigateToMergePdf: () -> Unit = {}, onNavigateToSplitPdf: () -> Unit = {}, onNavigateToCompressPdf: () -> Unit = {}, onNavigateToOrganizePdf: () -> Unit = {}) {
     val quickTools = listOf(
         ToolItem(R.string.action_image_to_pdf, R.string.desc_image_to_pdf, Icons.Filled.Image, AccentBlue),
         ToolItem(R.string.action_compress_pdf, R.string.desc_compress_pdf, Icons.Filled.Compress, AccentTeal),
@@ -89,6 +89,12 @@ fun HomeScreen(onNavigateToTools: () -> Unit = {}, onNavigateToImageToPdf: () ->
                         onNavigateToImageToPdf()
                     } else if (tool.titleResId == R.string.action_compress_pdf) {
                         onNavigateToCompressPdf()
+                    } else if (tool.titleResId == R.string.action_merge_pdf) {
+                        onNavigateToMergePdf()
+                    } else if (tool.titleResId == R.string.action_split_pdf) {
+                        onNavigateToSplitPdf()
+                    } else if (tool.titleResId == R.string.action_organize_pdf) {
+                        onNavigateToOrganizePdf()
                     } else {
                         /* Coming soon */
                     }

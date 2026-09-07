@@ -33,7 +33,9 @@ data class PdfItem(
 sealed class MergeState {
     object Empty : MergeState()
     data class SelectedFiles(val items: List<PdfItem>) : MergeState()
-    object Processing : MergeState() // Used for loading files or merging
+    object Processing : MergeState() // Used for loading files
+    data class Merging(val current: Int, val total: Int) : MergeState()
+    data class ReadyToSave(val tempMergedFile: File) : MergeState()
     data class Success(val savedUri: Uri) : MergeState()
     data class Error(val message: String, val arg: String = "") : MergeState()
 }
@@ -43,6 +45,7 @@ class MergePdfViewModel : ViewModel() {
     val state: StateFlow<MergeState> = _state.asStateFlow()
 
     private val currentItems = mutableListOf<PdfItem>()
+    private var tempMergedFile: File? = null
 
     fun addItemsForTest(items: List<PdfItem>) {
         currentItems.addAll(items)
@@ -52,13 +55,11 @@ class MergePdfViewModel : ViewModel() {
     fun addPdfs(context: Context, uris: List<Uri>) {
         if (uris.isEmpty()) return
         
-        // Save current items to pass to state, update state to Processing
         _state.value = MergeState.Processing
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 for (uri in uris) {
-                    // Check for duplicates
                     if (currentItems.any { it.originalUri == uri }) continue
 
                     val name = getFileName(context, uri)
@@ -76,10 +77,12 @@ class MergePdfViewModel : ViewModel() {
                     
                     if (cacheFile.length() == 0L) {
                         cacheFile.delete()
-                        throw Exception("Zero byte file: $name")
+                        withContext(Dispatchers.Main) {
+                            _state.value = MergeState.Error("err_zero_pages", name)
+                        }
+                        return@launch
                     }
 
-                    // Get page count and check if encrypted/corrupt
                     var pageCount = 0
                     try {
                         val document = PDDocument.load(cacheFile, MemoryUsageSetting.setupTempFileOnly())
@@ -87,16 +90,24 @@ class MergePdfViewModel : ViewModel() {
                             document.close()
                             cacheFile.delete()
                             withContext(Dispatchers.Main) {
-                                _state.value = MergeState.Error("err_unable_to_read_pdf", name)
+                                _state.value = MergeState.Error("err_encrypted_pdf", name)
                             }
                             return@launch
                         }
                         pageCount = document.numberOfPages
+                        if (pageCount == 0) {
+                            document.close()
+                            cacheFile.delete()
+                            withContext(Dispatchers.Main) {
+                                _state.value = MergeState.Error("err_zero_pages", name)
+                            }
+                            return@launch
+                        }
                         document.close()
                     } catch (e: Exception) {
                         cacheFile.delete()
                         withContext(Dispatchers.Main) {
-                            _state.value = MergeState.Error("err_unable_to_read_pdf", name)
+                            _state.value = MergeState.Error("err_corrupt_pdf", name)
                         }
                         return@launch
                     }
@@ -110,7 +121,7 @@ class MergePdfViewModel : ViewModel() {
             } catch (e: Exception) {
                 e.printStackTrace()
                 withContext(Dispatchers.Main) {
-                    _state.value = MergeState.Error("err_unable_to_merge_pdf")
+                    _state.value = MergeState.Error("err_unable_to_read_pdf")
                 }
             }
         }
@@ -138,7 +149,7 @@ class MergePdfViewModel : ViewModel() {
         }
     }
 
-    fun mergePdfsAndSave(context: Context, destUri: Uri) {
+    fun processMerge(context: Context) {
         val currentState = _state.value
         if (currentState !is MergeState.SelectedFiles || currentItems.size < 2) return
 
@@ -146,27 +157,80 @@ class MergePdfViewModel : ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val merger = PDFMergerUtility()
-                for (item in currentItems) {
-                    merger.addSource(item.cacheFile)
-                }
+                tempMergedFile?.delete()
+                val tempOut = File(context.cacheDir, "merged_output_${UUID.randomUUID()}.pdf")
                 
-                val outputStream = context.contentResolver.openOutputStream(destUri)
-                if (outputStream != null) {
-                    merger.destinationStream = outputStream
-                    merger.mergeDocuments(MemoryUsageSetting.setupTempFileOnly())
-                    outputStream.close()
-                } else {
-                    throw Exception("Could not open destination stream")
+                val destDoc = PDDocument(MemoryUsageSetting.setupTempFileOnly())
+                val merger = PDFMergerUtility()
+                
+                var expectedPageCount = 0
+
+                for (i in currentItems.indices) {
+                    withContext(Dispatchers.Main) {
+                        _state.value = MergeState.Merging(i + 1, currentItems.size)
+                    }
+                    val item = currentItems[i]
+                    expectedPageCount += item.pageCount
+                    val sourceDoc = PDDocument.load(item.cacheFile, MemoryUsageSetting.setupTempFileOnly())
+                    merger.appendDocument(destDoc, sourceDoc)
+                    sourceDoc.close()
                 }
 
+                destDoc.save(tempOut)
+                destDoc.close()
+                
+                if (!tempOut.exists() || tempOut.length() == 0L) {
+                    throw Exception("Output file is empty")
+                }
+                
+                // Verify output
+                val verifyDoc = PDDocument.load(tempOut, MemoryUsageSetting.setupTempFileOnly())
+                val actualPageCount = verifyDoc.numberOfPages
+                verifyDoc.close()
+                
+                if (actualPageCount != expectedPageCount) {
+                    throw Exception("Page count mismatch")
+                }
+
+                tempMergedFile = tempOut
+                
                 withContext(Dispatchers.Main) {
-                    _state.value = MergeState.Success(destUri)
+                    _state.value = MergeState.ReadyToSave(tempOut)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
                 withContext(Dispatchers.Main) {
-                    _state.value = MergeState.Error("err_unable_to_merge_pdf")
+                    _state.value = MergeState.Error("err_failed_merge")
+                }
+            }
+        }
+    }
+    
+    fun saveMergedPdf(context: Context, destUri: Uri) {
+        val currentTempFile = tempMergedFile ?: return
+        
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val outputStream = context.contentResolver.openOutputStream(destUri)
+                if (outputStream != null) {
+                    val inputStream = currentTempFile.inputStream()
+                    inputStream.copyTo(outputStream)
+                    inputStream.close()
+                    outputStream.close()
+                    
+                    currentTempFile.delete()
+                    tempMergedFile = null
+                    
+                    withContext(Dispatchers.Main) {
+                        _state.value = MergeState.Success(destUri)
+                    }
+                } else {
+                    throw Exception("Could not open destination stream")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    _state.value = MergeState.Error("err_failed_save")
                 }
             }
         }
@@ -177,6 +241,8 @@ class MergePdfViewModel : ViewModel() {
             item.cacheFile.delete()
         }
         currentItems.clear()
+        tempMergedFile?.delete()
+        tempMergedFile = null
         _state.value = MergeState.Empty
     }
 
@@ -193,6 +259,7 @@ class MergePdfViewModel : ViewModel() {
         for (item in currentItems) {
             item.cacheFile.delete()
         }
+        tempMergedFile?.delete()
     }
 
     private fun getFileName(context: Context, uri: Uri): String {

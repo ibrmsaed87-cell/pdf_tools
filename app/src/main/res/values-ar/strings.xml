@@ -165,4 +165,36 @@
     <string name="msg_analyzing_pdf">جاري تحليل الصفحات...</string>
     <string name="msg_compressing_image">جارٍ معالجة الصورة %1$d من %2$d...</string>
     <string name="msg_saving_pdf">جاري حفظ PDF...</string>
-<string name="msg_compression_not_needed">لا يحتاج إلى ضغط</string><string name="msg_compression_not_needed_desc">الملف مضغوط بالفعل بشكل جيد، ولا يمكن تقليل حجمه بشكل ملحوظ دون التأثير على الجودة.</string><string name="msg_preparing">جارٍ التحضير...</string><string name="msg_ready_to_save">جاهز للحفظ</string><string name="error_compression_failed">فشل الضغط.</string><string name="error_invalid_pdf_size">ملف PDF غير صالح أو حجمه 0.</string><string name="error_failed_to_save">فشل في حفظ الملف.</string></resources>
+<string name="msg_compression_not_needed">لا يحتاج إلى ضغط</string>
+    <string name="msg_compression_not_needed_desc">الملف مضغوط بالفعل بشكل جيد، ولا يمكن تقليل حجمه بشكل ملحوظ دون التأثير على الجودة.</string>
+    <string name="msg_preparing">جارٍ التحضير...</string>
+    <string name="msg_ready_to_save">جاهز للحفظ</string>
+    <string name="error_compression_failed">فشل الضغط.</string>
+    <string name="error_invalid_pdf_size">ملف PDF غير صالح أو حجمه 0.</string>
+    <string name="error_failed_to_save">فشل في حفظ الملف.</string>
+
+    <!-- Merge PDF -->
+    <string name="msg_merging_progress">جاري دمج المستند %1$d من %2$d...</string>
+    <string name="msg_preparing_pdfs">جاري تجهيز ملفات PDF...</string>
+    <string name="msg_ready_to_save_merge">جاهز لحفظ ملف PDF المدمج</string>
+    <string name="action_save_merged_pdf">حفظ PDF المدمج</string>
+    <string name="err_invalid_pdf">مستند PDF غير صالح: %s</string>
+    <string name="err_corrupt_pdf">مستند PDF تالف: %s</string>
+    <string name="err_encrypted_pdf">لا يمكن دمج ملفات PDF المحمية بكلمة مرور: %s</string>
+    <string name="err_zero_pages">ملف PDF لا يحتوي على صفحات: %s</string>
+    <string name="err_failed_merge">فشل دمج ملفات PDF</string>
+    <string name="err_failed_save">فشل حفظ ملف PDF</string>
+    <!-- Organize PDF -->
+    <string name="title_organize_pdf">تنظيم PDF</string>
+    <string name="msg_loading_pages">جاري تحميل الصفحات...</string>
+    <string name="msg_organizing_progress">جاري تنظيم الصفحة %1$d من %2$d...</string>
+    <string name="msg_ready_to_save_organized">جاهز لحفظ ملف PDF المنظم</string>
+    <string name="action_save_organized">حفظ PDF المنظم</string>
+    <string name="err_cannot_delete_last_page">لا يمكن حذف الصفحة الأخيرة المتبقية.</string>
+    <string name="err_pdf_encrypted">ملفات PDF المحمية بكلمة مرور غير مدعومة.</string>
+    <string name="err_pdf_corrupt">مستند PDF تالف أو غير صالح.</string>
+    <string name="err_zero_page_pdf">لا يحتوي PDF على صفحات.</string>
+    <string name="err_failed_organize">فشل في تنظيم PDF</string>
+    <string name="action_add_pdf">اختر PDF</string>
+    <string name="action_rotate">تدوير</string>
+</resources>

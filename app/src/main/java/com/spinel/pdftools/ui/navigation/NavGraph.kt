@@ -29,6 +29,7 @@ import com.spinel.pdftools.ui.scandocument.ScanDocumentScreen
 import com.spinel.pdftools.ui.tools.ToolsScreen
 import com.spinel.pdftools.ui.mergepdf.MergePdfScreen
 import com.spinel.pdftools.ui.splitpdf.SplitPdfScreen
+import com.spinel.pdftools.ui.organizepdf.OrganizePdfScreen
 
 
 @Composable
@@ -109,6 +110,9 @@ fun AppNavigation() {
                     },
                     onNavigateToCompressPdf = {
                         navController.navigate(Screen.CompressPdf.route)
+                    },
+                    onNavigateToOrganizePdf = {
+                        navController.navigate(Screen.OrganizePdf.route)
                     }
                 ) 
             }
@@ -129,6 +133,9 @@ fun AppNavigation() {
                     },
                     onNavigateToCompressPdf = {
                         navController.navigate(Screen.CompressPdf.route)
+                    },
+                    onNavigateToOrganizePdf = {
+                        navController.navigate(Screen.OrganizePdf.route)
                     }
                 ) 
             }
@@ -169,6 +176,11 @@ fun AppNavigation() {
             }
             composable(Screen.CompressPdf.route) { 
                 com.spinel.pdftools.ui.compresspdf.CompressPdfScreen(
+                    onNavigateBack = { navController.popBackStack() }
+                )
+            }
+            composable(Screen.OrganizePdf.route) { 
+                OrganizePdfScreen(
                     onNavigateBack = { navController.popBackStack() }
                 )
             }

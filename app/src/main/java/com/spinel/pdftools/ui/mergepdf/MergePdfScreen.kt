@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.spinel.pdftools.R
+import com.spinel.pdftools.ui.files.FilesViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -61,7 +62,7 @@ fun MergePdfScreen(
         ActivityResultContracts.CreateDocument("application/pdf")
     ) { uri ->
         if (uri != null) {
-            viewModel.mergePdfsAndSave(context, uri)
+            viewModel.saveMergedPdf(context, uri)
         }
     }
 
@@ -99,15 +100,32 @@ fun MergePdfScreen(
                         onRemove = { viewModel.removePdf(it) },
                         onReorder = { from, to -> viewModel.reorderPdfs(from, to) },
                         onMerge = {
-                            val timeStamp = SimpleDateFormat("yyyy-MM-dd_HH-mm", Locale.US).format(Date())
-                            createDocumentLauncher.launch("Merged_$timeStamp.pdf")
+                            viewModel.processMerge(context)
                         }
                     )
                 }
                 is MergeState.Processing -> {
-                    ProcessingView()
+                    ProcessingView(stringResource(R.string.msg_preparing_pdfs))
+                }
+                is MergeState.Merging -> {
+                    ProcessingView(stringResource(R.string.msg_merging_progress, currentState.current, currentState.total))
+                }
+                is MergeState.ReadyToSave -> {
+                    ReadyToSaveView(
+                        onSave = {
+                            val timeStamp = SimpleDateFormat("yyyy-MM-dd_HH-mm", Locale.US).format(Date())
+                            createDocumentLauncher.launch("Merged_$timeStamp.pdf")
+                        },
+                        onCancel = {
+                            viewModel.dismissError() // Go back to SelectedFiles
+                        }
+                    )
                 }
                 is MergeState.Success -> {
+                    val filesViewModel: FilesViewModel = viewModel()
+                    LaunchedEffect(currentState) {
+                        filesViewModel.onPdfCreated(currentState.savedUri)
+                    }
                     SuccessView(
                         onDone = {
                             viewModel.reset()
@@ -131,10 +149,19 @@ fun MergePdfScreen(
                         onDismissRequest = { viewModel.dismissError() },
                         title = { Text("Error") },
                         text = {
-                            val msgRes = if (currentState.message == "err_unable_to_read_pdf") {
-                                stringResource(R.string.err_unable_to_read_pdf, currentState.arg)
+                            val msgRes = if (currentState.message.startsWith("err_")) {
+                                val stringId = context.resources.getIdentifier(currentState.message, "string", context.packageName)
+                                if (stringId != 0) {
+                                    if (currentState.arg.isNotEmpty()) {
+                                        stringResource(stringId, currentState.arg)
+                                    } else {
+                                        stringResource(stringId)
+                                    }
+                                } else {
+                                    currentState.message
+                                }
                             } else {
-                                stringResource(R.string.err_unable_to_merge_pdf)
+                                currentState.message
                             }
                             Text(msgRes)
                         },
@@ -364,7 +391,7 @@ fun DraggablePdfItem(
 }
 
 @Composable
-fun ProcessingView() {
+fun ProcessingView(message: String) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -375,9 +402,47 @@ fun ProcessingView() {
         CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Processing...",
+            text = message,
             style = MaterialTheme.typography.titleMedium
         )
+    }
+}
+
+@Composable
+fun ReadyToSaveView(onSave: () -> Unit, onCancel: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            imageVector = Icons.Filled.CheckCircle,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(72.dp)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = stringResource(R.string.msg_ready_to_save_merge),
+            style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.onBackground,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(32.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            OutlinedButton(onClick = onCancel, modifier = Modifier.weight(1f)) {
+                Text(stringResource(R.string.action_cancel))
+            }
+            Spacer(modifier = Modifier.width(16.dp))
+            Button(onClick = onSave, modifier = Modifier.weight(1f)) {
+                Text(stringResource(R.string.action_save_merged_pdf))
+            }
+        }
     }
 }
 

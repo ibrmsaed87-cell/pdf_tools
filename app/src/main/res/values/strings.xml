@@ -168,4 +168,36 @@
     <string name="msg_select_pdf_to_compress">Select a PDF to compress</string>
     <string name="msg_compression_not_reduced">Not Reduced</string>
     <string name="msg_compression_already_optimized">The original document is already highly optimized. Compression did not reduce the file size further.</string>
-<string name="msg_compression_not_needed">Compression not needed</string><string name="msg_compression_not_needed_desc">The file is already well optimized and cannot be reduced significantly without affecting quality.</string><string name="msg_preparing">Preparing...</string><string name="msg_ready_to_save">Ready to save</string><string name="error_compression_failed">Compression failed.</string><string name="error_invalid_pdf_size">Invalid PDF file or size is 0.</string><string name="error_failed_to_save">Failed to save the file.</string></resources>
+<string name="msg_compression_not_needed">Compression not needed</string>
+    <string name="msg_compression_not_needed_desc">The file is already well optimized and cannot be reduced significantly without affecting quality.</string>
+    <string name="msg_preparing">Preparing...</string>
+    <string name="msg_ready_to_save">Ready to save</string>
+    <string name="error_compression_failed">Compression failed.</string>
+    <string name="error_invalid_pdf_size">Invalid PDF file or size is 0.</string>
+    <string name="error_failed_to_save">Failed to save the file.</string>
+    
+    <!-- Merge PDF -->
+    <string name="msg_merging_progress">Merging document %1$d of %2$d...</string>
+    <string name="msg_preparing_pdfs">Preparing PDFs...</string>
+    <string name="msg_ready_to_save_merge">Ready to save merged PDF</string>
+    <string name="action_save_merged_pdf">Save Merged PDF</string>
+    <string name="err_invalid_pdf">Invalid PDF document: %s</string>
+    <string name="err_corrupt_pdf">Corrupt PDF document: %s</string>
+    <string name="err_encrypted_pdf">Password-protected PDFs cannot be merged: %s</string>
+    <string name="err_zero_pages">PDF has zero pages: %s</string>
+    <string name="err_failed_merge">Failed to merge PDFs</string>
+    <string name="err_failed_save">Failed to save PDF</string>
+    <!-- Organize PDF -->
+    <string name="title_organize_pdf">Organize PDF</string>
+    <string name="msg_loading_pages">Loading pages...</string>
+    <string name="msg_organizing_progress">Organizing page %1$d of %2$d...</string>
+    <string name="msg_ready_to_save_organized">Ready to save organized PDF</string>
+    <string name="action_save_organized">Save Organized PDF</string>
+    <string name="err_cannot_delete_last_page">Cannot delete the last remaining page.</string>
+    <string name="err_pdf_encrypted">Password-protected PDFs are not supported.</string>
+    <string name="err_pdf_corrupt">Corrupt or invalid PDF document.</string>
+    <string name="err_zero_page_pdf">PDF has no pages.</string>
+    <string name="err_failed_organize">Failed to organize PDF</string>
+    <string name="action_add_pdf">Select PDF</string>
+    <string name="action_rotate">Rotate</string>
+</resources>

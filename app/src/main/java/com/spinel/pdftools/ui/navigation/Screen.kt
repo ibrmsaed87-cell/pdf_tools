@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.ContentCut
 import androidx.compose.material.icons.automirrored.filled.MergeType
 import androidx.compose.material.icons.filled.DocumentScanner
+import androidx.compose.material.icons.filled.GridView
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.spinel.pdftools.R
 
@@ -24,4 +25,5 @@ sealed class Screen(val route: String, val labelResId: Int, val icon: ImageVecto
     object MergePdf : Screen("merge_pdf", R.string.title_merge_pdf, Icons.AutoMirrored.Filled.MergeType)
     object SplitPdf : Screen("split_pdf", R.string.title_split_pdf, Icons.Filled.ContentCut)
     object CompressPdf : Screen("compress_pdf", R.string.title_compress_pdf, Icons.Filled.Build)
+    object OrganizePdf : Screen("organize_pdf", R.string.title_organize_pdf, Icons.Filled.GridView)
 }

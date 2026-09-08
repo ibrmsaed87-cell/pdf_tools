@@ -31,6 +31,9 @@ import com.spinel.pdftools.ui.mergepdf.MergePdfScreen
 import com.spinel.pdftools.ui.splitpdf.SplitPdfScreen
 import com.spinel.pdftools.ui.organizepdf.OrganizePdfScreen
 import com.spinel.pdftools.ui.pdftojpg.PdfToJpgScreen
+import com.spinel.pdftools.ui.viewer.PdfViewerScreen
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 
 
 @Composable
@@ -121,7 +124,13 @@ fun AppNavigation() {
                     }
                 ) 
             }
-            composable(Screen.Files.route) { FilesScreen() }
+            composable(Screen.Files.route) { 
+                FilesScreen(
+                    onNavigateToPdfViewer = { uri ->
+                        navController.navigate(Screen.PdfViewer.createRoute(uri))
+                    }
+                ) 
+            }
             composable(Screen.Tools.route) { 
                 ToolsScreen(
                     onNavigateToImageToPdf = {
@@ -195,6 +204,16 @@ fun AppNavigation() {
             }
             composable(Screen.PdfToJpg.route) {
                 PdfToJpgScreen(
+                    onNavigateBack = { navController.popBackStack() }
+                )
+            }
+            composable(
+                route = Screen.PdfViewer.route,
+                arguments = listOf(navArgument("encodedUri") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val uriString = backStackEntry.arguments?.getString("encodedUri") ?: ""
+                PdfViewerScreen(
+                    uriString = uriString,
                     onNavigateBack = { navController.popBackStack() }
                 )
             }

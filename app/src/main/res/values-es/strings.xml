@@ -165,15 +165,13 @@
     <string name="msg_analyzing_pdf">Analizando páginas...</string>
     <string name="msg_compressing_image">Procesando imagen %1$d de %2$d...</string>
     <string name="msg_saving_pdf">Guardando PDF...</string>
-<string name="msg_compression_not_needed">No necesita compresión</string>
+    <string name="msg_compression_not_needed">No necesita compresión</string>
     <string name="msg_compression_not_needed_desc">El archivo ya está bien optimizado y no se puede reducir significativamente sin afectar la calidad.</string>
     <string name="msg_preparing">Preparando...</string>
     <string name="msg_ready_to_save">Listo para guardar</string>
     <string name="error_compression_failed">La compresión falló.</string>
     <string name="error_invalid_pdf_size">Archivo PDF no válido o el tamaño es 0.</string>
     <string name="error_failed_to_save">Error al guardar el archivo.</string>
-
-    <!-- Merge PDF -->
     <string name="msg_merging_progress">Uniendo documento %1$d de %2$d...</string>
     <string name="msg_preparing_pdfs">Preparando PDFs...</string>
     <string name="msg_ready_to_save_merge">Listo para guardar PDF unido</string>
@@ -184,7 +182,6 @@
     <string name="err_zero_pages">El PDF no tiene páginas: %s</string>
     <string name="err_failed_merge">No se pudo unir los PDFs</string>
     <string name="err_failed_save">No se pudo guardar el PDF</string>
-    <!-- Organize PDF -->
     <string name="title_organize_pdf">Organizar PDF</string>
     <string name="msg_loading_pages">Cargando páginas...</string>
     <string name="msg_organizing_progress">Organizando página %1$d de %2$d...</string>
@@ -208,4 +205,15 @@
     <string name="err_failed_convert">Error al convertir PDF a JPG.</string>
     <string name="action_convert_more">Convertir más</string>
     <string name="msg_ready_to_save_images">Imágenes generadas correctamente. Listo para guardar.</string>
+    <string name="title_pdf_viewer">Visor de PDF</string>
+    <string name="msg_page_x_of_y">Página %1$d / %2$d</string>
+    <string name="action_jump_to_page">Ir a la página</string>
+    <string name="action_go">Ir</string>
+    <string name="msg_rendering_page">Renderizando página…</string>
+    <string name="err_cannot_open_pdf">No se puede abrir el PDF.</string>
+    <string name="err_password_protected">Los PDF protegidos con contraseña no son compatibles.</string>
+    <string name="err_page_rendering_failed">Error al renderizar la página.</string>
+    <string name="err_invalid_page_number">Número de página no válido.</string>
+    <string name="action_enter_fullscreen">Pantalla completa</string>
+    <string name="action_exit_fullscreen">Salir de pantalla completa</string>
 </resources>

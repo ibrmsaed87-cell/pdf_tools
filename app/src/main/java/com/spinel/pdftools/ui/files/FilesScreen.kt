@@ -59,7 +59,10 @@ private fun openPdf(context: android.content.Context, uriString: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilesScreen(viewModel: FilesViewModel = viewModel()) {
+fun FilesScreen(
+    viewModel: FilesViewModel = viewModel(),
+    onNavigateToPdfViewer: (String) -> Unit = {}
+) {
     var selectedFilter by remember { mutableIntStateOf(0) }
     val filters = listOf(
         stringResource(id = R.string.filter_recent),
@@ -74,7 +77,10 @@ fun FilesScreen(viewModel: FilesViewModel = viewModel()) {
     val pdfPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument(),
         onResult = { uri: Uri? ->
-            uri?.let { viewModel.onPdfOpenedFromPicker(it) }
+            uri?.let { 
+                viewModel.onPdfOpenedFromPicker(it)
+                onNavigateToPdfViewer(it.toString())
+            }
         }
     )
 
@@ -215,7 +221,10 @@ fun FilesScreen(viewModel: FilesViewModel = viewModel()) {
                         fileDate = formatDate(if (selectedFilter == 1) file.createdAt else file.lastOpenedAt),
                         fileSource = if (file.source == FileSource.CREATED) stringResource(id = R.string.filter_created) else stringResource(id = R.string.filter_opened),
                         onMenuClick = { /* No logic yet */ },
-                        onClick = { openPdf(context, file.uri) }
+                        onClick = { 
+                            viewModel.onPdfOpenedFromPicker(file.uri.let { Uri.parse(it) })
+                            onNavigateToPdfViewer(file.uri) 
+                        }
                     )
                 }
             }

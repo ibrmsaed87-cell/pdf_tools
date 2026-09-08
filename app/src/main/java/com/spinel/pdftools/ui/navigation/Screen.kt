@@ -27,4 +27,7 @@ sealed class Screen(val route: String, val labelResId: Int, val icon: ImageVecto
     object CompressPdf : Screen("compress_pdf", R.string.title_compress_pdf, Icons.Filled.Build)
     object OrganizePdf : Screen("organize_pdf", R.string.title_organize_pdf, Icons.Filled.GridView)
     object PdfToJpg : Screen("pdf_to_jpg", R.string.title_pdf_to_jpg, Icons.Filled.Image)
+    object PdfViewer : Screen("pdf_viewer/{encodedUri}", R.string.title_pdf_viewer, Icons.Filled.DocumentScanner) {
+        fun createRoute(uri: String) = "pdf_viewer/${android.net.Uri.encode(uri)}"
+    }
 }

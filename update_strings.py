@@ -1,39 +1,40 @@
-import os
+import sys
+import xml.etree.ElementTree as ET
 
-def add_strings(filepath, strings_dict):
-    if not os.path.exists(filepath): return
-    with open(filepath, 'r', encoding='utf-8') as f:
-        content = f.read()
-
-    to_insert = ""
-    for k, v in strings_dict.items():
-        if f'name="{k}"' not in content:
-            to_insert += f'    <string name="{k}">{v}</string>\n'
-            
-    if to_insert:
-        content = content.replace("</resources>", to_insert + "</resources>")
-        with open(filepath, 'w', encoding='utf-8') as f:
-            f.write(content)
+def add_strings(file_path, new_strings):
+    try:
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+        
+        existing_names = set([elem.attrib['name'] for elem in root.findall('string')])
+        
+        changed = False
+        for name, value in new_strings.items():
+            if name not in existing_names:
+                new_elem = ET.SubElement(root, 'string', {'name': name})
+                new_elem.text = value
+                changed = True
+                
+        if changed:
+            ET.indent(tree, space="    ", level=0)
+            tree.write(file_path, encoding='utf-8', xml_declaration=True)
+            print(f"Updated {file_path}")
+    except Exception as e:
+        print(f"Error processing {file_path}: {e}")
 
 strings_en = {
-    "msg_loading_pdf": "Loading document...",
-    "msg_analyzing_pdf": "Analyzing pages...",
-    "msg_compressing_image": "Compressing image %1$d of %2$d...",
-    "msg_saving_pdf": "Saving PDF..."
+    "action_enter_fullscreen": "Enter fullscreen",
+    "action_exit_fullscreen": "Exit fullscreen"
 }
 
 strings_ar = {
-    "msg_loading_pdf": "جاري تحميل المستند...",
-    "msg_analyzing_pdf": "جاري تحليل الصفحات...",
-    "msg_compressing_image": "جاري ضغط الصورة %1$d من %2$d...",
-    "msg_saving_pdf": "جاري حفظ PDF..."
+    "action_enter_fullscreen": "ملء الشاشة",
+    "action_exit_fullscreen": "إنهاء ملء الشاشة"
 }
 
 strings_es = {
-    "msg_loading_pdf": "Cargando documento...",
-    "msg_analyzing_pdf": "Analizando páginas...",
-    "msg_compressing_image": "Comprimiendo imagen %1$d de %2$d...",
-    "msg_saving_pdf": "Guardando PDF..."
+    "action_enter_fullscreen": "Pantalla completa",
+    "action_exit_fullscreen": "Salir de pantalla completa"
 }
 
 add_strings('app/src/main/res/values/strings.xml', strings_en)

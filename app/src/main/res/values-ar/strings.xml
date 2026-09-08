@@ -165,15 +165,13 @@
     <string name="msg_analyzing_pdf">جاري تحليل الصفحات...</string>
     <string name="msg_compressing_image">جارٍ معالجة الصورة %1$d من %2$d...</string>
     <string name="msg_saving_pdf">جاري حفظ PDF...</string>
-<string name="msg_compression_not_needed">لا يحتاج إلى ضغط</string>
+    <string name="msg_compression_not_needed">لا يحتاج إلى ضغط</string>
     <string name="msg_compression_not_needed_desc">الملف مضغوط بالفعل بشكل جيد، ولا يمكن تقليل حجمه بشكل ملحوظ دون التأثير على الجودة.</string>
     <string name="msg_preparing">جارٍ التحضير...</string>
     <string name="msg_ready_to_save">جاهز للحفظ</string>
     <string name="error_compression_failed">فشل الضغط.</string>
     <string name="error_invalid_pdf_size">ملف PDF غير صالح أو حجمه 0.</string>
     <string name="error_failed_to_save">فشل في حفظ الملف.</string>
-
-    <!-- Merge PDF -->
     <string name="msg_merging_progress">جاري دمج المستند %1$d من %2$d...</string>
     <string name="msg_preparing_pdfs">جاري تجهيز ملفات PDF...</string>
     <string name="msg_ready_to_save_merge">جاهز لحفظ ملف PDF المدمج</string>
@@ -184,7 +182,6 @@
     <string name="err_zero_pages">ملف PDF لا يحتوي على صفحات: %s</string>
     <string name="err_failed_merge">فشل دمج ملفات PDF</string>
     <string name="err_failed_save">فشل حفظ ملف PDF</string>
-    <!-- Organize PDF -->
     <string name="title_organize_pdf">تنظيم PDF</string>
     <string name="msg_loading_pages">جاري تحميل الصفحات...</string>
     <string name="msg_organizing_progress">جاري تنظيم الصفحة %1$d من %2$d...</string>
@@ -208,4 +205,15 @@
     <string name="err_failed_convert">فشل في تحويل PDF إلى JPG.</string>
     <string name="action_convert_more">تحويل المزيد</string>
     <string name="msg_ready_to_save_images">تم إنشاء الصور بنجاح. جاهز للحفظ.</string>
+    <string name="title_pdf_viewer">عارض PDF</string>
+    <string name="msg_page_x_of_y">صفحة %1$d / %2$d</string>
+    <string name="action_jump_to_page">الانتقال إلى صفحة</string>
+    <string name="action_go">انتقال</string>
+    <string name="msg_rendering_page">جاري عرض الصفحة…</string>
+    <string name="err_cannot_open_pdf">تعذر فتح ملف PDF.</string>
+    <string name="err_password_protected">ملفات PDF المحمية بكلمة مرور غير مدعومة.</string>
+    <string name="err_page_rendering_failed">فشل عرض الصفحة.</string>
+    <string name="err_invalid_page_number">رقم الصفحة غير صالح.</string>
+    <string name="action_enter_fullscreen">ملء الشاشة</string>
+    <string name="action_exit_fullscreen">إنهاء ملء الشاشة</string>
 </resources>

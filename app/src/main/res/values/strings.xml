@@ -168,15 +168,13 @@
     <string name="msg_select_pdf_to_compress">Select a PDF to compress</string>
     <string name="msg_compression_not_reduced">Not Reduced</string>
     <string name="msg_compression_already_optimized">The original document is already highly optimized. Compression did not reduce the file size further.</string>
-<string name="msg_compression_not_needed">Compression not needed</string>
+    <string name="msg_compression_not_needed">Compression not needed</string>
     <string name="msg_compression_not_needed_desc">The file is already well optimized and cannot be reduced significantly without affecting quality.</string>
     <string name="msg_preparing">Preparing...</string>
     <string name="msg_ready_to_save">Ready to save</string>
     <string name="error_compression_failed">Compression failed.</string>
     <string name="error_invalid_pdf_size">Invalid PDF file or size is 0.</string>
     <string name="error_failed_to_save">Failed to save the file.</string>
-    
-    <!-- Merge PDF -->
     <string name="msg_merging_progress">Merging document %1$d of %2$d...</string>
     <string name="msg_preparing_pdfs">Preparing PDFs...</string>
     <string name="msg_ready_to_save_merge">Ready to save merged PDF</string>
@@ -187,7 +185,6 @@
     <string name="err_zero_pages">PDF has zero pages: %s</string>
     <string name="err_failed_merge">Failed to merge PDFs</string>
     <string name="err_failed_save">Failed to save PDF</string>
-    <!-- Organize PDF -->
     <string name="title_organize_pdf">Organize PDF</string>
     <string name="msg_loading_pages">Loading pages...</string>
     <string name="msg_organizing_progress">Organizing page %1$d of %2$d...</string>
@@ -211,5 +208,15 @@
     <string name="err_failed_convert">Failed to convert PDF to JPG.</string>
     <string name="action_convert_more">Convert More</string>
     <string name="msg_ready_to_save_images">Images generated successfully. Ready to save.</string>
-    
+    <string name="title_pdf_viewer">PDF Viewer</string>
+    <string name="msg_page_x_of_y">Page %1$d / %2$d</string>
+    <string name="action_jump_to_page">Jump to page</string>
+    <string name="action_go">Go</string>
+    <string name="msg_rendering_page">Rendering page…</string>
+    <string name="err_cannot_open_pdf">Unable to open PDF.</string>
+    <string name="err_password_protected">Password-protected PDFs are not supported.</string>
+    <string name="err_page_rendering_failed">Page rendering failed.</string>
+    <string name="err_invalid_page_number">Invalid page number.</string>
+    <string name="action_enter_fullscreen">Enter fullscreen</string>
+    <string name="action_exit_fullscreen">Exit fullscreen</string>
 </resources>

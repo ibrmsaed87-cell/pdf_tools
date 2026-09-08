@@ -30,6 +30,7 @@ import com.spinel.pdftools.ui.files.FilesViewModel
 @Composable
 fun SplitPdfScreen(
     onNavigateBack: () -> Unit,
+    onNavigateToViewer: (String) -> Unit = {},
     viewModel: SplitPdfViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -108,15 +109,7 @@ fun SplitPdfScreen(
                             viewModel.reset()
                         },
                         onOpen = {
-                            try {
-                                val intent = Intent(Intent.ACTION_VIEW).apply {
-                                    setDataAndType(currentState.savedUri, "application/pdf")
-                                    flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                                }
-                                context.startActivity(Intent.createChooser(intent, "Open PDF"))
-                            } catch (e: Exception) {
-                                // No app found
-                            }
+                            onNavigateToViewer(currentState.savedUri.toString())
                             viewModel.reset()
                         }
                     )

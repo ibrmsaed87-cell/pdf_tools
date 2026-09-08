@@ -56,6 +56,7 @@ import java.util.concurrent.Executors
 @Composable
 fun ScanDocumentScreen(
     onNavigateBack: () -> Unit,
+    onNavigateToViewer: (String) -> Unit = {},
     viewModel: ScanDocumentViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsState()
@@ -200,7 +201,8 @@ fun ScanDocumentScreen(
                         BackHandler { onNavigateBack() }
                         ScanSuccessView(
                             uri = scanState.uri,
-                            onDone = { onNavigateBack() }
+                            onDone = { onNavigateBack() },
+                            onNavigateToViewer = onNavigateToViewer
                         )
                     }
                 }
@@ -661,7 +663,8 @@ fun CorrectedPreviewView(
 @Composable
 fun ScanSuccessView(
     uri: Uri,
-    onDone: () -> Unit
+    onDone: () -> Unit,
+    onNavigateToViewer: (String) -> Unit
 ) {
     val context = LocalContext.current
     Column(
@@ -696,17 +699,7 @@ fun ScanSuccessView(
                 Text(stringResource(R.string.action_done))
             }
             Button(
-                onClick = {
-                    val intent = android.content.Intent(android.content.Intent.ACTION_VIEW).apply {
-                        setDataAndType(uri, "application/pdf")
-                        addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    }
-                    try {
-                        context.startActivity(intent)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                },
+                onClick = { onNavigateToViewer(uri.toString()) },
                 modifier = Modifier.weight(1f)
             ) {
                 Text(stringResource(R.string.action_open))

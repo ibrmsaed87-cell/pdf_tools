@@ -219,4 +219,14 @@
     <string name="err_invalid_page_number">Invalid page number.</string>
     <string name="action_enter_fullscreen">Enter fullscreen</string>
     <string name="action_exit_fullscreen">Exit fullscreen</string>
+    <string name="desc_create_pdf">Create a new document from scratch</string>
+    <string name="title_create_pdf">Create PDF</string>
+    <string name="action_edit_text">Edit text</string>
+    <string name="msg_empty_document">New document</string>
+    <string name="msg_creating_pdf">Creating PDF...</string>
+    <string name="action_view_pdf">View PDF</string>
+    <string name="err_blank_text_page">Text page cannot be empty</string>
+    <string name="text_editor_title">Title</string>
+    <string name="text_editor_title_optional">Title (Optional)</string>
+    <string name="text_editor_body">Body</string>
 </resources>

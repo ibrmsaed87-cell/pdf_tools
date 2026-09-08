@@ -23,18 +23,42 @@ def add_strings(file_path, new_strings):
         print(f"Error processing {file_path}: {e}")
 
 strings_en = {
-    "action_enter_fullscreen": "Enter fullscreen",
-    "action_exit_fullscreen": "Exit fullscreen"
+    "action_create_pdf": "Create PDF",
+    "desc_create_pdf": "Create a new document from scratch",
+    "title_create_pdf": "Create PDF",
+    "action_add_text": "Add Text",
+    "action_add_images": "Add Images",
+    "action_edit_text": "Edit text",
+    "msg_empty_document": "New document",
+    "msg_creating_pdf": "Creating PDF...",
+    "action_view_pdf": "View PDF",
+    "err_blank_text_page": "Text page cannot be empty"
 }
 
 strings_ar = {
-    "action_enter_fullscreen": "ملء الشاشة",
-    "action_exit_fullscreen": "إنهاء ملء الشاشة"
+    "action_create_pdf": "إنشاء PDF",
+    "desc_create_pdf": "إنشاء مستند جديد من الصفر",
+    "title_create_pdf": "إنشاء PDF",
+    "action_add_text": "إضافة نص",
+    "action_add_images": "إضافة صور",
+    "action_edit_text": "تعديل النص",
+    "msg_empty_document": "مستند جديد",
+    "msg_creating_pdf": "يتم إنشاء PDF...",
+    "action_view_pdf": "عرض PDF",
+    "err_blank_text_page": "لا يمكن أن تكون صفحة النص فارغة"
 }
 
 strings_es = {
-    "action_enter_fullscreen": "Pantalla completa",
-    "action_exit_fullscreen": "Salir de pantalla completa"
+    "action_create_pdf": "Crear PDF",
+    "desc_create_pdf": "Crear un nuevo documento desde cero",
+    "title_create_pdf": "Crear PDF",
+    "action_add_text": "Añadir texto",
+    "action_add_images": "Añadir imágenes",
+    "action_edit_text": "Editar texto",
+    "msg_empty_document": "Nuevo documento",
+    "msg_creating_pdf": "Creando PDF...",
+    "action_view_pdf": "Ver PDF",
+    "err_blank_text_page": "La página de texto no puede estar vacía"
 }
 
 add_strings('app/src/main/res/values/strings.xml', strings_en)

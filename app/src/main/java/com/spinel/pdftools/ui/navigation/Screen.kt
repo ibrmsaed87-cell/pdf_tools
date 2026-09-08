@@ -20,6 +20,7 @@ sealed class Screen(val route: String, val labelResId: Int, val icon: ImageVecto
     object Settings : Screen("settings", R.string.nav_settings, Icons.Filled.Settings)
     object PrivacyPolicy : Screen("privacy_policy", R.string.privacy_policy, Icons.Filled.Settings)
     object About : Screen("about", R.string.setting_about, Icons.Filled.Settings)
+    object CreatePdf : Screen("create_pdf", R.string.title_create_pdf, Icons.Filled.DocumentScanner)
     object ImageToPdf : Screen("image_to_pdf", R.string.title_image_to_pdf, Icons.Filled.Image)
     object ScanDocument : Screen("scan_document", R.string.title_scan_document, Icons.Filled.DocumentScanner)
     object MergePdf : Screen("merge_pdf", R.string.title_merge_pdf, Icons.AutoMirrored.Filled.MergeType)

@@ -25,6 +25,7 @@ import com.spinel.pdftools.ui.settings.SettingsScreen
 import com.spinel.pdftools.ui.about.AboutScreen
 import com.spinel.pdftools.ui.about.PrivacyPolicyScreen
 import com.spinel.pdftools.ui.imagetopdf.ImageToPdfScreen
+import com.spinel.pdftools.ui.createpdf.CreatePdfScreen
 import com.spinel.pdftools.ui.scandocument.ScanDocumentScreen
 import com.spinel.pdftools.ui.tools.ToolsScreen
 import com.spinel.pdftools.ui.mergepdf.MergePdfScreen
@@ -100,6 +101,9 @@ fun AppNavigation() {
                             restoreState = true
                         }
                     },
+                    onNavigateToCreatePdf = {
+                        navController.navigate(Screen.CreatePdf.route)
+                    },
                     onNavigateToImageToPdf = {
                         navController.navigate(Screen.ImageToPdf.route)
                     },
@@ -133,6 +137,9 @@ fun AppNavigation() {
             }
             composable(Screen.Tools.route) { 
                 ToolsScreen(
+                    onNavigateToCreatePdf = {
+                        navController.navigate(Screen.CreatePdf.route)
+                    },
                     onNavigateToImageToPdf = {
                         navController.navigate(Screen.ImageToPdf.route)
                     },
@@ -172,34 +179,48 @@ fun AppNavigation() {
                     onNavigateToPrivacy = { navController.navigate(Screen.PrivacyPolicy.route) }
                 ) 
             }
+            composable(Screen.CreatePdf.route) { 
+                CreatePdfScreen(
+                    onNavigateBack = { navController.popBackStack() },
+                    onNavigateToViewer = { uri -> 
+                        navController.navigate(Screen.PdfViewer.createRoute(uri))
+                    }
+                )
+            }
             composable(Screen.ImageToPdf.route) { 
                 ImageToPdfScreen(
-                    onNavigateBack = { navController.popBackStack() }
+                    onNavigateBack = { navController.popBackStack() },
+                    onNavigateToViewer = { uri -> navController.navigate(Screen.PdfViewer.createRoute(uri)) }
                 )
             }
             composable(Screen.ScanDocument.route) { 
                 ScanDocumentScreen(
-                    onNavigateBack = { navController.popBackStack() }
+                    onNavigateBack = { navController.popBackStack() },
+                    onNavigateToViewer = { uri -> navController.navigate(Screen.PdfViewer.createRoute(uri)) }
                 )
             }
             composable(Screen.MergePdf.route) { 
                 MergePdfScreen(
-                    onNavigateBack = { navController.popBackStack() }
+                    onNavigateBack = { navController.popBackStack() },
+                    onNavigateToViewer = { uri -> navController.navigate(Screen.PdfViewer.createRoute(uri)) }
                 )
             }
             composable(Screen.SplitPdf.route) { 
                 SplitPdfScreen(
-                    onNavigateBack = { navController.popBackStack() }
+                    onNavigateBack = { navController.popBackStack() },
+                    onNavigateToViewer = { uri -> navController.navigate(Screen.PdfViewer.createRoute(uri)) }
                 )
             }
             composable(Screen.CompressPdf.route) { 
                 com.spinel.pdftools.ui.compresspdf.CompressPdfScreen(
-                    onNavigateBack = { navController.popBackStack() }
+                    onNavigateBack = { navController.popBackStack() },
+                    onNavigateToViewer = { uri -> navController.navigate(Screen.PdfViewer.createRoute(uri)) }
                 )
             }
             composable(Screen.OrganizePdf.route) { 
                 OrganizePdfScreen(
-                    onNavigateBack = { navController.popBackStack() }
+                    onNavigateBack = { navController.popBackStack() },
+                    onNavigateToViewer = { uri -> navController.navigate(Screen.PdfViewer.createRoute(uri)) }
                 )
             }
             composable(Screen.PdfToJpg.route) {

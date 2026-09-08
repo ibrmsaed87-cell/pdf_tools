@@ -45,6 +45,7 @@ import kotlin.math.roundToInt
 @Composable
 fun MergePdfScreen(
     onNavigateBack: () -> Unit,
+    onNavigateToViewer: (String) -> Unit = {},
     viewModel: MergePdfViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -131,15 +132,7 @@ fun MergePdfScreen(
                             viewModel.reset()
                         },
                         onOpen = {
-                            try {
-                                val intent = Intent(Intent.ACTION_VIEW).apply {
-                                    setDataAndType(currentState.savedUri, "application/pdf")
-                                    flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                                }
-                                context.startActivity(Intent.createChooser(intent, "Open PDF"))
-                            } catch (e: Exception) {
-                                Toast.makeText(context, "No app found to open PDF", Toast.LENGTH_SHORT).show()
-                            }
+                            onNavigateToViewer(currentState.savedUri.toString())
                             viewModel.reset()
                         }
                     )

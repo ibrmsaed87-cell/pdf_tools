@@ -30,11 +30,13 @@ data class ToolCategory(
 )
 
 @Composable
-fun ToolsScreen(onNavigateToImageToPdf: () -> Unit = {}, onNavigateToScanDocument: () -> Unit = {}, onNavigateToMergePdf: () -> Unit = {}, onNavigateToSplitPdf: () -> Unit = {}, onNavigateToCompressPdf: () -> Unit = {}, onNavigateToOrganizePdf: () -> Unit = {}, onNavigateToPdfToJpg: () -> Unit = {}) {
+fun ToolsScreen(onNavigateToCreatePdf: () -> Unit = {},
+    onNavigateToImageToPdf: () -> Unit = {}, onNavigateToScanDocument: () -> Unit = {}, onNavigateToMergePdf: () -> Unit = {}, onNavigateToSplitPdf: () -> Unit = {}, onNavigateToCompressPdf: () -> Unit = {}, onNavigateToOrganizePdf: () -> Unit = {}, onNavigateToPdfToJpg: () -> Unit = {}) {
     val categories = listOf(
         ToolCategory(
             titleResId = R.string.category_create,
             tools = listOf(
+                ToolItem(R.string.action_create_pdf, R.string.desc_create_pdf, Icons.Filled.DocumentScanner, AccentPurple),
                 ToolItem(R.string.action_scan_document, R.string.desc_scan_document, Icons.Filled.DocumentScanner, AccentPurple),
                 ToolItem(R.string.action_image_to_pdf, R.string.desc_image_to_pdf, Icons.Filled.Image, AccentBlue)
             )
@@ -99,7 +101,10 @@ fun ToolsScreen(onNavigateToImageToPdf: () -> Unit = {}, onNavigateToScanDocumen
                     icon = tool.icon,
                     iconContainerColor = tool.iconContainerColor,
                     onClick = { 
-                        if (tool.titleResId == R.string.action_image_to_pdf) {
+                        if (tool.titleResId == R.string.action_create_pdf) {
+                            onNavigateToCreatePdf()
+                        } else if (tool.titleResId == R.string.action_image_to_pdf) {
+                            onNavigateToImageToPdf()
                             onNavigateToImageToPdf()
                         } else if (tool.titleResId == R.string.action_scan_document) {
                             onNavigateToScanDocument()

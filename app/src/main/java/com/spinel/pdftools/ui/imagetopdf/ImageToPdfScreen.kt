@@ -132,6 +132,7 @@ fun rememberDragDropGridState(
 @Composable
 fun ImageToPdfScreen(
     onNavigateBack: () -> Unit,
+    onNavigateToViewer: (String) -> Unit = {},
     viewModel: ImageToPdfViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsState()

@@ -216,4 +216,14 @@
     <string name="err_invalid_page_number">رقم الصفحة غير صالح.</string>
     <string name="action_enter_fullscreen">ملء الشاشة</string>
     <string name="action_exit_fullscreen">إنهاء ملء الشاشة</string>
+    <string name="desc_create_pdf">إنشاء مستند جديد من الصفر</string>
+    <string name="title_create_pdf">إنشاء PDF</string>
+    <string name="action_edit_text">تعديل النص</string>
+    <string name="msg_empty_document">مستند جديد</string>
+    <string name="msg_creating_pdf">يتم إنشاء PDF...</string>
+    <string name="action_view_pdf">عرض PDF</string>
+    <string name="err_blank_text_page">لا يمكن أن تكون صفحة النص فارغة</string>
+    <string name="text_editor_title">العنوان</string>
+    <string name="text_editor_title_optional">العنوان (اختياري)</string>
+    <string name="text_editor_body">النص</string>
 </resources>

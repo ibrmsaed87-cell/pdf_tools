@@ -216,4 +216,14 @@
     <string name="err_invalid_page_number">Número de página no válido.</string>
     <string name="action_enter_fullscreen">Pantalla completa</string>
     <string name="action_exit_fullscreen">Salir de pantalla completa</string>
+    <string name="desc_create_pdf">Crear un nuevo documento desde cero</string>
+    <string name="title_create_pdf">Crear PDF</string>
+    <string name="action_edit_text">Editar texto</string>
+    <string name="msg_empty_document">Nuevo documento</string>
+    <string name="msg_creating_pdf">Creando PDF...</string>
+    <string name="action_view_pdf">Ver PDF</string>
+    <string name="err_blank_text_page">La página de texto no puede estar vacía</string>
+    <string name="text_editor_title">Título</string>
+    <string name="text_editor_title_optional">Título (Opcional)</string>
+    <string name="text_editor_body">Texto</string>
 </resources>

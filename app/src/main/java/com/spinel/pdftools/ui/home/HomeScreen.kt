@@ -28,8 +28,10 @@ import com.spinel.pdftools.ui.theme.AccentPurple
 import com.spinel.pdftools.ui.theme.AccentTeal
 
 @Composable
-fun HomeScreen(onNavigateToTools: () -> Unit = {}, onNavigateToImageToPdf: () -> Unit = {}, onNavigateToScanDocument: () -> Unit = {}, onNavigateToMergePdf: () -> Unit = {}, onNavigateToSplitPdf: () -> Unit = {}, onNavigateToCompressPdf: () -> Unit = {}, onNavigateToOrganizePdf: () -> Unit = {}, onNavigateToPdfToJpg: () -> Unit = {}) {
+fun HomeScreen(onNavigateToTools: () -> Unit = {}, onNavigateToCreatePdf: () -> Unit = {},
+    onNavigateToImageToPdf: () -> Unit = {}, onNavigateToScanDocument: () -> Unit = {}, onNavigateToMergePdf: () -> Unit = {}, onNavigateToSplitPdf: () -> Unit = {}, onNavigateToCompressPdf: () -> Unit = {}, onNavigateToOrganizePdf: () -> Unit = {}, onNavigateToPdfToJpg: () -> Unit = {}) {
     val quickTools = listOf(
+        ToolItem(R.string.action_create_pdf, R.string.desc_create_pdf, Icons.Filled.DocumentScanner, AccentPurple),
         ToolItem(R.string.action_image_to_pdf, R.string.desc_image_to_pdf, Icons.Filled.Image, AccentBlue),
         ToolItem(R.string.action_compress_pdf, R.string.desc_compress_pdf, Icons.Filled.Compress, AccentTeal),
         ToolItem(R.string.action_merge_pdf, R.string.desc_merge_pdf, Icons.AutoMirrored.Filled.MergeType, AccentPurple),
@@ -85,7 +87,10 @@ fun HomeScreen(onNavigateToTools: () -> Unit = {}, onNavigateToImageToPdf: () ->
                 icon = tool.icon,
                 iconContainerColor = tool.iconContainerColor,
                 onClick = { 
-                    if (tool.titleResId == R.string.action_image_to_pdf) {
+                    if (tool.titleResId == R.string.action_create_pdf) {
+                        onNavigateToCreatePdf()
+                    } else if (tool.titleResId == R.string.action_image_to_pdf) {
+                        onNavigateToImageToPdf()
                         onNavigateToImageToPdf()
                     } else if (tool.titleResId == R.string.action_compress_pdf) {
                         onNavigateToCompressPdf()

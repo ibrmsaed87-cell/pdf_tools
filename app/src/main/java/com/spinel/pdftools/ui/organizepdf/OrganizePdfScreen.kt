@@ -52,6 +52,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun OrganizePdfScreen(
     onNavigateBack: () -> Unit,
+    onNavigateToViewer: (String) -> Unit = {},
     viewModel: OrganizePdfViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -166,11 +167,7 @@ fun OrganizePdfScreen(
                             onNavigateBack()
                         },
                         onOpen = {
-                            val intent = Intent(Intent.ACTION_VIEW).apply {
-                                setDataAndType(currentState.savedUri, "application/pdf")
-                                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                            }
-                            context.startActivity(Intent.createChooser(intent, "Open PDF"))
+                            onNavigateToViewer(currentState.savedUri.toString())
                         }
                     )
                 }

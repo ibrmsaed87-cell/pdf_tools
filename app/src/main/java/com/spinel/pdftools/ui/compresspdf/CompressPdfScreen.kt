@@ -39,7 +39,8 @@ import com.spinel.pdftools.utils.CompressionLevel
 @Composable
 fun CompressPdfScreen(
     viewModel: CompressPdfViewModel = viewModel(),
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
+    onNavigateToViewer: (String) -> Unit = {}
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
@@ -299,17 +300,7 @@ fun CompressPdfScreen(
                             Text(stringResource(R.string.action_done))
                         }
                         Button(
-                            onClick = {
-                                try {
-                                    val intent = Intent(Intent.ACTION_VIEW).apply {
-                                        setDataAndType(currentState.uri, "application/pdf")
-                                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                    }
-                                    context.startActivity(Intent.createChooser(intent, context.getString(R.string.action_open_pdf)))
-                                } catch (e: Exception) {
-                                    Toast.makeText(context, R.string.error_cannot_open_pdf, Toast.LENGTH_SHORT).show()
-                                }
-                            },
+                            onClick = { onNavigateToViewer(currentState.uri.toString()) },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(16.dp),
                             contentPadding = PaddingValues(vertical = 16.dp)

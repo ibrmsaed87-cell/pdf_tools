@@ -1,52 +1,28 @@
-import sys
-import xml.etree.ElementTree as ET
+import re
 import os
 
-def update_strings(filepath, new_strings, modifications):
-    tree = ET.parse(filepath)
-    root = tree.getroot()
-    
-    # Update existing
-    for string_elem in root.findall('string'):
-        name = string_elem.get('name')
-        if name in modifications:
-            string_elem.text = modifications[name]
-            
-    # Add new
-    existing_names = set(elem.get('name') for elem in root.findall('string'))
-    for key, value in new_strings.items():
-        if key not in existing_names:
-            new_elem = ET.Element('string', name=key)
-            new_elem.text = value
-            root.append(new_elem)
-            
-    tree.write(filepath, encoding='utf-8', xml_declaration=True)
+strings_to_add_en = """    <string name="text_editor_title">Title</string>
+    <string name="text_editor_title_optional">Title (Optional)</string>
+    <string name="text_editor_body">Body</string>"""
 
-en_new = {
-    'msg_compression_not_needed': 'Compression not needed',
-    'msg_compression_not_needed_desc': 'The file is already well optimized and cannot be reduced significantly without affecting quality.'
-}
-en_mod = {
-    'msg_compressing_image': 'Processing image %1$d of %2$d...'
-}
+strings_to_add_ar = """    <string name="text_editor_title">العنوان</string>
+    <string name="text_editor_title_optional">العنوان (اختياري)</string>
+    <string name="text_editor_body">النص</string>"""
 
-ar_new = {
-    'msg_compression_not_needed': 'لا يحتاج إلى ضغط',
-    'msg_compression_not_needed_desc': 'الملف مضغوط بالفعل بشكل جيد، ولا يمكن تقليل حجمه بشكل ملحوظ دون التأثير على الجودة.'
-}
-ar_mod = {
-    'msg_compressing_image': 'جارٍ معالجة الصورة %1$d من %2$d...'
-}
+strings_to_add_es = """    <string name="text_editor_title">Título</string>
+    <string name="text_editor_title_optional">Título (Opcional)</string>
+    <string name="text_editor_body">Texto</string>"""
 
-es_new = {
-    'msg_compression_not_needed': 'No necesita compresión',
-    'msg_compression_not_needed_desc': 'El archivo ya está bien optimizado y no se puede reducir significativamente sin afectar la calidad.'
-}
-es_mod = {
-    'msg_compressing_image': 'Procesando imagen %1$d de %2$d...'
-}
+def patch_file(filepath, strings_to_add):
+    if not os.path.exists(filepath):
+        return
+    with open(filepath, 'r') as f:
+        content = f.read()
+    if 'text_editor_title' not in content:
+        content = content.replace('</resources>', f'{strings_to_add}\n</resources>')
+        with open(filepath, 'w') as f:
+            f.write(content)
 
-update_strings('app/src/main/res/values/strings.xml', en_new, en_mod)
-update_strings('app/src/main/res/values-ar/strings.xml', ar_new, ar_mod)
-update_strings('app/src/main/res/values-es/strings.xml', es_new, es_mod)
-print("Updated strings.xml")
+patch_file('app/src/main/res/values/strings.xml', strings_to_add_en)
+patch_file('app/src/main/res/values-ar/strings.xml', strings_to_add_ar)
+patch_file('app/src/main/res/values-es/strings.xml', strings_to_add_es)

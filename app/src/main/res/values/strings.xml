@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">PDF Tools</string>
+    <string name="app_name">Docvra</string>
     <string name="nav_home">Home</string>
     <string name="nav_files">Files</string>
     <string name="nav_tools">Tools</string>
@@ -59,8 +59,8 @@
     <string name="action_delete">Delete</string>
     <string name="action_open">Open</string>
     <string name="about_version">Version %1$s</string>
-    <string name="about_copyright">© 2026 PDF Tools. All rights reserved.</string>
-    <string name="privacy_policy_content">PDF Tools processes your documents locally. Your files remain on your device and under your control. We use Android\'s Storage Access Framework to securely access files you select. No documents are uploaded to our servers. We do not collect analytics or advertising data. This policy may be updated in the future if new features require additional disclosure.</string>
+    <string name="about_copyright">© 2026 Docvra. All rights reserved.</string>
+    <string name="privacy_policy_content">Docvra processes your documents locally. Your files remain on your device and under your control. We use Android\'s Storage Access Framework to securely access files you select. No documents are uploaded to our servers. We do not collect analytics or advertising data. This policy may be updated in the future if new features require additional disclosure.</string>
     <string name="title_image_to_pdf">Image to PDF</string>
     <string name="desc_image_to_pdf_screen">Select images from your device to combine them into a single PDF document.</string>
     <string name="action_select_images">Select images</string>

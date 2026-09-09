@@ -59,8 +59,8 @@
     <string name="action_delete">Eliminar</string>
     <string name="action_open">Abrir</string>
     <string name="about_version">Versión %1$s</string>
-    <string name="about_copyright">© 2026 PDF Tools. Todos los derechos reservados.</string>
-    <string name="privacy_policy_content">PDF Tools procesa sus documentos localmente. Sus archivos permanecen en su dispositivo y bajo su control. Utilizamos el Storage Access Framework de Android para acceder de forma segura a los archivos que seleccione. Ningún documento se carga en nuestros servidores. No recopilamos datos de análisis ni de publicidad. Esta política podría actualizarse en el futuro si nuevas funciones requieren una divulgación adicional.</string>
+    <string name="about_copyright">© 2026 Docvra. Todos los derechos reservados.</string>
+    <string name="privacy_policy_content">Docvra procesa sus documentos localmente. Sus archivos permanecen en su dispositivo y bajo su control. Utilizamos el Storage Access Framework de Android para acceder de forma segura a los archivos que seleccione. Ningún documento se carga en nuestros servidores. No recopilamos datos de análisis ni de publicidad. Esta política podría actualizarse en el futuro si nuevas funciones requieren una divulgación adicional.</string>
     <string name="title_image_to_pdf">Imagen a PDF</string>
     <string name="desc_image_to_pdf_screen">Selecciona imágenes de tu dispositivo para combinarlas en un solo documento PDF.</string>
     <string name="action_select_images">Seleccionar imágenes</string>

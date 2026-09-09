@@ -22,6 +22,6 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "PDF Tools"
+rootProject.name = "Docvra"
 
 include(":app")

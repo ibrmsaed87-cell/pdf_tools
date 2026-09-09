@@ -3,7 +3,7 @@ package com.spinel.pdftools.ui.imagetopdf
 import android.net.Uri
 import java.util.UUID
 
-enum class TextAlignment { Start, Center, End }
+enum class TextAlignment { Left, Center, Right }
 
 enum class TextColor(val colorValue: Long) {
     Black(0xFF000000),
@@ -16,7 +16,7 @@ enum class TextColor(val colorValue: Long) {
 }
 
 data class TextStyleConfig(
-    val alignment: TextAlignment = TextAlignment.Start,
+    val alignment: TextAlignment = TextAlignment.Left,
     val fontSize: Int = 18,
     val isBold: Boolean = false,
     val color: TextColor = TextColor.Black

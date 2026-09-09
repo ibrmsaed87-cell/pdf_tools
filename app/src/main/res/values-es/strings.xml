@@ -226,4 +226,6 @@
     <string name="text_editor_title">Título</string>
     <string name="text_editor_title_optional">Título (Opcional)</string>
     <string name="text_editor_body">Texto</string>
+    <string name="action_flash_on">Encender flash</string>
+    <string name="action_flash_off">Apagar flash</string>
 </resources>

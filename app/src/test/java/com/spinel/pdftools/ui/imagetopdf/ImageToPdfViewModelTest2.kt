@@ -21,7 +21,7 @@ class ImageToPdfViewModelTest2 {
             fontSize = 16,
             isBold = false,
             color = TextColor.Blue,
-            alignment = TextAlignment.Start
+            alignment = TextAlignment.Left
         )
         
         viewModel.saveTextPage("Title", "Body", titleStyle, bodyStyle)
@@ -46,7 +46,7 @@ class ImageToPdfViewModelTest2 {
         assertEquals(24, page.bodyStyle.fontSize)
         assertEquals(true, page.bodyStyle.isBold)
         assertEquals(TextColor.Blue, page.bodyStyle.color)
-        assertEquals(TextAlignment.Start, page.bodyStyle.alignment)
+        assertEquals(TextAlignment.Left, page.bodyStyle.alignment)
         
         assertNotEquals(page.titleStyle.fontSize, page.bodyStyle.fontSize)
     }

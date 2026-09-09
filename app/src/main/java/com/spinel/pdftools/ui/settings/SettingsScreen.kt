@@ -50,7 +50,7 @@ fun SettingsScreen(onNavigateToPrivacy: () -> Unit = {}, onNavigateToAbout: () -
     val coroutineScope = rememberCoroutineScope()
     
     val currentLocales = AppCompatDelegate.getApplicationLocales()
-    val currentLanguage = if (!currentLocales.isEmpty) currentLocales.get(0)?.language ?: "en" else "en"
+    val currentLanguage = if (!currentLocales.isEmpty) currentLocales.get(0)?.language ?: "en" else context.resources.configuration.locales.get(0).language
     
     val setLanguage: (String) -> Unit = { langTag ->
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(langTag))

@@ -229,4 +229,6 @@
     <string name="text_editor_title">Title</string>
     <string name="text_editor_title_optional">Title (Optional)</string>
     <string name="text_editor_body">Body</string>
+    <string name="action_flash_on">Turn Flash On</string>
+    <string name="action_flash_off">Turn Flash Off</string>
 </resources>

@@ -446,9 +446,9 @@ private fun TextPreviewCard(
                         fontWeight = if (page.titleStyle.isBold) FontWeight.Bold else FontWeight.Normal,
                         fontSize = page.titleStyle.fontSize.sp,
                         textAlign = when(page.titleStyle.alignment) {
-                            TextAlignment.Start -> TextAlign.Start
+                            TextAlignment.Left -> TextAlign.Left
                             TextAlignment.Center -> TextAlign.Center
-                            TextAlignment.End -> TextAlign.End
+                            TextAlignment.Right -> TextAlign.Right
                         },
                         color = Color(page.titleStyle.color.colorValue)
                     )
@@ -462,9 +462,9 @@ private fun TextPreviewCard(
                         fontWeight = if (page.bodyStyle.isBold) FontWeight.Bold else FontWeight.Normal,
                         fontSize = page.bodyStyle.fontSize.sp,
                         textAlign = when(page.bodyStyle.alignment) {
-                            TextAlignment.Start -> TextAlign.Start
+                            TextAlignment.Left -> TextAlign.Left
                             TextAlignment.Center -> TextAlign.Center
-                            TextAlignment.End -> TextAlign.End
+                            TextAlignment.Right -> TextAlign.Right
                         },
                         color = Color(page.bodyStyle.color.colorValue)
                     )
@@ -533,11 +533,14 @@ private fun TextEditorBottomSheet(
     onDismiss: () -> Unit,
     onSave: (String, String, TextStyleConfig, TextStyleConfig) -> Unit
 ) {
+    val layoutDirection = androidx.compose.ui.platform.LocalLayoutDirection.current
+    val defaultAlignment = if (layoutDirection == androidx.compose.ui.unit.LayoutDirection.Rtl) TextAlignment.Right else TextAlignment.Left
+
     var title by remember { mutableStateOf(editingPage?.title ?: "") }
     var body by remember { mutableStateOf(editingPage?.body ?: "") }
     
-    var titleStyle by remember { mutableStateOf(editingPage?.titleStyle ?: TextStyleConfig(fontSize = 28, isBold = true)) }
-    var bodyStyle by remember { mutableStateOf(editingPage?.bodyStyle ?: TextStyleConfig()) }
+    var titleStyle by remember { mutableStateOf(editingPage?.titleStyle ?: TextStyleConfig(fontSize = 28, isBold = true, alignment = defaultAlignment)) }
+    var bodyStyle by remember { mutableStateOf(editingPage?.bodyStyle ?: TextStyleConfig(alignment = defaultAlignment)) }
     
     var selectedTab by remember { mutableIntStateOf(0) } // 0 = Title, 1 = Body
     var allowDismiss by remember { mutableStateOf(false) }
@@ -612,29 +615,31 @@ private fun TextEditorBottomSheet(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 // Alignment
-                Row(
-                    modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp))
-                ) {
-                    IconButton(onClick = { updateStyle(currentStyle.copy(alignment = TextAlignment.Start)) }) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.FormatAlignLeft, 
-                            contentDescription = "Align Start",
-                            tint = if (currentStyle.alignment == TextAlignment.Start) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                    IconButton(onClick = { updateStyle(currentStyle.copy(alignment = TextAlignment.Center)) }) {
-                        Icon(
-                            Icons.Default.FormatAlignCenter, 
-                            contentDescription = "Align Center",
-                            tint = if (currentStyle.alignment == TextAlignment.Center) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                    IconButton(onClick = { updateStyle(currentStyle.copy(alignment = TextAlignment.End)) }) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.FormatAlignRight, 
-                            contentDescription = "Align End",
-                            tint = if (currentStyle.alignment == TextAlignment.End) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                androidx.compose.runtime.CompositionLocalProvider(androidx.compose.ui.platform.LocalLayoutDirection provides androidx.compose.ui.unit.LayoutDirection.Ltr) {
+                    Row(
+                        modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp))
+                    ) {
+                        IconButton(onClick = { updateStyle(currentStyle.copy(alignment = TextAlignment.Left)) }) {
+                            Icon(
+                                Icons.AutoMirrored.Filled.FormatAlignLeft, 
+                                contentDescription = "Align Left",
+                                tint = if (currentStyle.alignment == TextAlignment.Left) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        IconButton(onClick = { updateStyle(currentStyle.copy(alignment = TextAlignment.Center)) }) {
+                            Icon(
+                                Icons.Default.FormatAlignCenter, 
+                                contentDescription = "Align Center",
+                                tint = if (currentStyle.alignment == TextAlignment.Center) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        IconButton(onClick = { updateStyle(currentStyle.copy(alignment = TextAlignment.Right)) }) {
+                            Icon(
+                                Icons.AutoMirrored.Filled.FormatAlignRight, 
+                                contentDescription = "Align Right",
+                                tint = if (currentStyle.alignment == TextAlignment.Right) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                     }
                 }
                 
@@ -702,9 +707,9 @@ private fun TextEditorBottomSheet(
             // Fields
             if (selectedTab == 0) {
                 val titleAlign = when (titleStyle.alignment) {
-                    TextAlignment.Start -> TextAlign.Start
+                    TextAlignment.Left -> TextAlign.Left
                     TextAlignment.Center -> TextAlign.Center
-                    TextAlignment.End -> TextAlign.End
+                    TextAlignment.Right -> TextAlign.Right
                 }
                 val needsLightBgTitle = isDark && (titleStyle.color == TextColor.Black || titleStyle.color == TextColor.DarkGray)
                 
@@ -731,9 +736,9 @@ private fun TextEditorBottomSheet(
                 )
             } else {
                 val bodyAlign = when (bodyStyle.alignment) {
-                    TextAlignment.Start -> TextAlign.Start
+                    TextAlignment.Left -> TextAlign.Left
                     TextAlignment.Center -> TextAlign.Center
-                    TextAlignment.End -> TextAlign.End
+                    TextAlignment.Right -> TextAlign.Right
                 }
                 val needsLightBgBody = isDark && (bodyStyle.color == TextColor.Black || bodyStyle.color == TextColor.DarkGray)
                 

@@ -15,6 +15,15 @@ import kotlinx.coroutines.withContext
 import java.io.InputStream
 
 object PdfGenerator {
+    private fun getPhysicalAlignment(align: TextAlignment, text: String): Layout.Alignment {
+        val isRtl = android.text.BidiFormatter.getInstance().isRtl(text)
+        return when (align) {
+            TextAlignment.Center -> Layout.Alignment.ALIGN_CENTER
+            TextAlignment.Left -> if (isRtl) Layout.Alignment.ALIGN_OPPOSITE else Layout.Alignment.ALIGN_NORMAL
+            TextAlignment.Right -> if (isRtl) Layout.Alignment.ALIGN_NORMAL else Layout.Alignment.ALIGN_OPPOSITE
+        }
+    }
+
     private const val PAGE_WIDTH = 595
     private const val PAGE_HEIGHT = 842
 
@@ -59,16 +68,8 @@ object PdfGenerator {
                         pdfPageNumber++
                     }
                     is DocumentPage.Text -> {
-                        val titleAlign = when (pageItem.titleStyle.alignment) {
-                            TextAlignment.Start -> Layout.Alignment.ALIGN_NORMAL
-                            TextAlignment.Center -> Layout.Alignment.ALIGN_CENTER
-                            TextAlignment.End -> Layout.Alignment.ALIGN_OPPOSITE
-                        }
-                        val bodyAlign = when (pageItem.bodyStyle.alignment) {
-                            TextAlignment.Start -> Layout.Alignment.ALIGN_NORMAL
-                            TextAlignment.Center -> Layout.Alignment.ALIGN_CENTER
-                            TextAlignment.End -> Layout.Alignment.ALIGN_OPPOSITE
-                        }
+                        val titleAlign = getPhysicalAlignment(pageItem.titleStyle.alignment, pageItem.title)
+                        val bodyAlign = getPhysicalAlignment(pageItem.bodyStyle.alignment, pageItem.body)
                         
                         val titleTypeface = if (pageItem.titleStyle.isBold) Typeface.create(Typeface.DEFAULT, Typeface.BOLD) else Typeface.DEFAULT
                         val titlePaint = TextPaint().apply {

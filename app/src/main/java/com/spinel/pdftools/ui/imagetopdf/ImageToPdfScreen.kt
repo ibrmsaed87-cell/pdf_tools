@@ -402,9 +402,9 @@ private fun TextPreviewCard(
             ) {
                 if (page.title.isNotBlank()) {
                     val titleAlign = when (page.titleStyle.alignment) {
-                        TextAlignment.Start -> TextAlign.Start
+                        TextAlignment.Left -> TextAlign.Left
                         TextAlignment.Center -> TextAlign.Center
-                        TextAlignment.End -> TextAlign.End
+                        TextAlignment.Right -> TextAlign.Right
                     }
                     Text(
                         text = page.title,
@@ -420,9 +420,9 @@ private fun TextPreviewCard(
                 }
                 
                 val bodyAlign = when (page.bodyStyle.alignment) {
-                    TextAlignment.Start -> TextAlign.Start
+                    TextAlignment.Left -> TextAlign.Left
                     TextAlignment.Center -> TextAlign.Center
-                    TextAlignment.End -> TextAlign.End
+                    TextAlignment.Right -> TextAlign.Right
                 }
                 Text(
                     text = page.body.ifBlank { "..." },
@@ -576,8 +576,8 @@ private fun TextEditorBottomSheet(
                     val scaleX = if (isRtl) -1f else 1f
 
                     IconToggleButton(
-                        checked = activeStyle.alignment == TextAlignment.Start,
-                        onCheckedChange = { if (selectedTab == 0) titleStyle = titleStyle.copy(alignment = TextAlignment.Start) else bodyStyle = bodyStyle.copy(alignment = TextAlignment.Start) }
+                        checked = activeStyle.alignment == TextAlignment.Left,
+                        onCheckedChange = { if (selectedTab == 0) titleStyle = titleStyle.copy(alignment = TextAlignment.Left) else bodyStyle = bodyStyle.copy(alignment = TextAlignment.Left) }
                     ) {
                         Icon(Icons.Filled.FormatAlignLeft, contentDescription = stringResource(R.string.content_desc_align_start), modifier = Modifier.scale(scaleX))
                     }
@@ -588,8 +588,8 @@ private fun TextEditorBottomSheet(
                         Icon(Icons.Filled.FormatAlignCenter, contentDescription = stringResource(R.string.content_desc_align_center))
                     }
                     IconToggleButton(
-                        checked = activeStyle.alignment == TextAlignment.End,
-                        onCheckedChange = { if (selectedTab == 0) titleStyle = titleStyle.copy(alignment = TextAlignment.End) else bodyStyle = bodyStyle.copy(alignment = TextAlignment.End) }
+                        checked = activeStyle.alignment == TextAlignment.Right,
+                        onCheckedChange = { if (selectedTab == 0) titleStyle = titleStyle.copy(alignment = TextAlignment.Right) else bodyStyle = bodyStyle.copy(alignment = TextAlignment.Right) }
                     ) {
                         Icon(Icons.Filled.FormatAlignRight, contentDescription = stringResource(R.string.content_desc_align_end), modifier = Modifier.scale(scaleX))
                     }
@@ -644,9 +644,9 @@ private fun TextEditorBottomSheet(
 
             // TITLE FIELD
             val titleAlign = when (titleStyle.alignment) {
-                TextAlignment.Start -> TextAlign.Start
+                TextAlignment.Left -> TextAlign.Left
                 TextAlignment.Center -> TextAlign.Center
-                TextAlignment.End -> TextAlign.End
+                TextAlignment.Right -> TextAlign.Right
             }
             val isDark = androidx.compose.foundation.isSystemInDarkTheme()
             val needsLightBgTitle = isDark && (titleStyle.color == TextColor.Black || titleStyle.color == TextColor.DarkGray)
@@ -673,9 +673,9 @@ private fun TextEditorBottomSheet(
             
             // BODY FIELD
             val bodyAlign = when (bodyStyle.alignment) {
-                TextAlignment.Start -> TextAlign.Start
+                TextAlignment.Left -> TextAlign.Left
                 TextAlignment.Center -> TextAlign.Center
-                TextAlignment.End -> TextAlign.End
+                TextAlignment.Right -> TextAlign.Right
             }
             val needsLightBgBody = isDark && (bodyStyle.color == TextColor.Black || bodyStyle.color == TextColor.DarkGray)
             OutlinedTextField(

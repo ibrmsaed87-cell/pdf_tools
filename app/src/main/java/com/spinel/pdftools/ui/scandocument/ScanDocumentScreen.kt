@@ -26,6 +26,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.FlashOn
+import androidx.compose.material.icons.filled.FlashOff
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
@@ -503,9 +505,14 @@ fun CameraView(
     onPhotoCaptured: (ImageCapture, Context, java.util.concurrent.Executor) -> Unit
 ) {
     val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
     val imageCapture = remember { ImageCapture.Builder().build() }
     val cameraExecutor = remember { Executors.newSingleThreadExecutor() }
+    
+    var cameraControl by remember { mutableStateOf<androidx.camera.core.CameraControl?>(null) }
+    var cameraInfo by remember { mutableStateOf<androidx.camera.core.CameraInfo?>(null) }
+    var isTorchOn by remember { mutableStateOf(false) }
+
     Box(modifier = Modifier.fillMaxSize()) {
         AndroidView(
             factory = { ctx ->
@@ -519,12 +526,14 @@ fun CameraView(
                     val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
                     try {
                         cameraProvider.unbindAll()
-                        cameraProvider.bindToLifecycle(
+                        val camera = cameraProvider.bindToLifecycle(
                             lifecycleOwner,
                             cameraSelector,
                             preview,
                             imageCapture
                         )
+                        cameraControl = camera.cameraControl
+                        cameraInfo = camera.cameraInfo
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -533,6 +542,26 @@ fun CameraView(
             },
             modifier = Modifier.fillMaxSize()
         )
+        
+        val hasFlash = cameraInfo?.hasFlashUnit() == true
+        if (hasFlash) {
+            IconButton(
+                onClick = { 
+                    isTorchOn = !isTorchOn
+                    cameraControl?.enableTorch(isTorchOn)
+                },
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(top = 24.dp, end = 24.dp)
+                    .background(Color.Black.copy(alpha = 0.5f), CircleShape)
+            ) {
+                Icon(
+                    imageVector = if (isTorchOn) Icons.Filled.FlashOn else Icons.Filled.FlashOff,
+                    contentDescription = if (isTorchOn) stringResource(R.string.action_flash_off) else stringResource(R.string.action_flash_on),
+                    tint = Color.White
+                )
+            }
+        }
         Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)

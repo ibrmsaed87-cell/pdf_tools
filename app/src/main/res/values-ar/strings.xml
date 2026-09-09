@@ -226,4 +226,6 @@
     <string name="text_editor_title">العنوان</string>
     <string name="text_editor_title_optional">العنوان (اختياري)</string>
     <string name="text_editor_body">النص</string>
+    <string name="action_flash_on">تشغيل الفلاش</string>
+    <string name="action_flash_off">إيقاف الفلاش</string>
 </resources>

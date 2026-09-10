@@ -13,6 +13,12 @@ import com.spinel.pdftools.common.util.ThemeMode
 import com.spinel.pdftools.ui.navigation.AppNavigation
 import com.spinel.pdftools.ui.theme.Theme
 
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
+import com.spinel.pdftools.monetization.ConsentManager
+import com.spinel.pdftools.monetization.LocalConsentManager
+
+
 class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -20,6 +26,11 @@ class MainActivity : AppCompatActivity() {
     enableEdgeToEdge()
     
     val themeManager = ThemeManager(this)
+    val consentManager = ConsentManager(this)
+
+    consentManager.gatherConsent(this) { consentGranted ->
+        // Internally handles initialization
+    }
     
     setContent {
       val themeMode by themeManager.themeMode.collectAsStateWithLifecycle(initialValue = ThemeMode.SYSTEM)
@@ -31,9 +42,12 @@ class MainActivity : AppCompatActivity() {
       }
 
       Theme(darkTheme = isDarkTheme) {
+        CompositionLocalProvider(LocalConsentManager provides consentManager) {
         AppNavigation()
+        }
       }
     }
   }
 }
 
+// cache bust

@@ -1,0 +1,9 @@
+--- app/src/main/java/com/spinel/pdftools/ui/mergepdf/MergePdfScreen.kt
++++ app/src/main/java/com/spinel/pdftools/ui/mergepdf/MergePdfScreen.kt
+@@ -130,8 +130,7 @@
+                     }
+                     SuccessView(
+                         onDone = { com.spinel.pdftools.monetization.InterstitialAdManager.showInterstitialIfEligible(context as android.app.Activity) { viewModel.reset() } 
+-                            viewModel.reset()
+                         },
+                         onOpen = {

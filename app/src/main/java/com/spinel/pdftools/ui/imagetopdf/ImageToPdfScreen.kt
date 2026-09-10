@@ -222,9 +222,11 @@ fun ImageToPdfScreen(
             }
 
             if (state.generationState !is GenerationState.Idle) {
-                GenerationOverlay(state.generationState) {
-                    viewModel.resetGenerationState()
-                }
+                GenerationOverlay(
+                    state = state.generationState,
+                    onDismiss = { viewModel.resetGenerationState() },
+                    onNavigateToViewer = onNavigateToViewer
+                )
             }
         }
         
@@ -735,7 +737,7 @@ private fun TextEditorBottomSheet(
 }
 
 @Composable
-private fun GenerationOverlay(state: GenerationState, onDismiss: () -> Unit) {
+private fun GenerationOverlay(state: GenerationState, onDismiss: () -> Unit, onNavigateToViewer: (String) -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -771,6 +773,7 @@ private fun GenerationOverlay(state: GenerationState, onDismiss: () -> Unit) {
                         val filesViewModel: com.spinel.pdftools.ui.files.FilesViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
                         androidx.compose.runtime.LaunchedEffect(state) {
                             filesViewModel.onPdfCreated(state.outputUri)
+                            
                         }
                         val context = LocalContext.current
                         Icon(
@@ -790,21 +793,15 @@ private fun GenerationOverlay(state: GenerationState, onDismiss: () -> Unit) {
                             horizontalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
                             OutlinedButton(
-                                onClick = onDismiss,
+                                onClick = { com.spinel.pdftools.monetization.InterstitialAdManager.showInterstitialIfEligible(context as android.app.Activity) { onDismiss() } },
                                 modifier = Modifier.weight(1f)
                             ) {
                                 Text(stringResource(R.string.action_done))
                             }
                             Button(
                                 onClick = {
-                                    val intent = android.content.Intent(android.content.Intent.ACTION_VIEW).apply {
-                                        setDataAndType(state.outputUri, "application/pdf")
-                                        addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                    }
-                                    try {
-                                        context.startActivity(intent)
-                                    } catch (e: Exception) {
-                                        e.printStackTrace()
+                                    com.spinel.pdftools.monetization.InterstitialAdManager.showInterstitialIfEligible(context as android.app.Activity) {
+                                        onNavigateToViewer(state.outputUri.toString())
                                     }
                                 },
                                 modifier = Modifier.weight(1f)

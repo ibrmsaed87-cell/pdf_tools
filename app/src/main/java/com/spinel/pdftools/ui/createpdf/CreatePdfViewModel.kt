@@ -106,6 +106,7 @@ class CreatePdfViewModel : ViewModel() {
             )
 
             if (result.isSuccess) {
+                com.spinel.pdftools.monetization.InterstitialAdManager.recordSuccessfulOperation()
                 _state.update { it.copy(generationState = GenerationState.Success(outputUri)) }
             } else {
                 _state.update { it.copy(generationState = GenerationState.Error("error_generic")) }

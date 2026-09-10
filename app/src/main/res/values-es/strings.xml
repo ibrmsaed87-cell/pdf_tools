@@ -228,4 +228,5 @@
     <string name="text_editor_body">Texto</string>
     <string name="action_flash_on">Encender flash</string>
     <string name="action_flash_off">Apagar flash</string>
+    <string name="setting_privacy_options">Opciones de privacidad</string>
 </resources>

@@ -262,6 +262,7 @@ class OrganizePdfViewModel : ViewModel() {
                     outputStream.close()
                     
                     withContext(Dispatchers.Main) {
+                        com.spinel.pdftools.monetization.InterstitialAdManager.recordSuccessfulOperation()
                         _state.value = OrganizeState.Success(destUri)
                     }
                 } else {

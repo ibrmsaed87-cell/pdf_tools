@@ -858,9 +858,11 @@ private fun GenerationOverlay(
                         )
                     }
                     is GenerationState.Success -> {
+                        val context = androidx.compose.ui.platform.LocalContext.current
                         val filesViewModel: com.spinel.pdftools.ui.files.FilesViewModel = viewModel()
                         LaunchedEffect(state) {
                             filesViewModel.onPdfCreated(state.outputUri)
+                            
                         }
                         Icon(
                             Icons.Default.CheckCircle,
@@ -879,13 +881,13 @@ private fun GenerationOverlay(
                             horizontalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
                             OutlinedButton(
-                                onClick = onDone,
+                                onClick = { com.spinel.pdftools.monetization.InterstitialAdManager.showInterstitialIfEligible(context as android.app.Activity) { onDone() } },
                                 modifier = Modifier.weight(1f)
                             ) {
                                 Text(stringResource(R.string.action_done))
                             }
                             Button(
-                                onClick = { onViewPdf(state.outputUri) },
+                                onClick = { com.spinel.pdftools.monetization.InterstitialAdManager.showInterstitialIfEligible(context as android.app.Activity) { onViewPdf(state.outputUri) } },
                                 modifier = Modifier.weight(1f)
                             ) {
                                 Text(stringResource(R.string.action_view_pdf))

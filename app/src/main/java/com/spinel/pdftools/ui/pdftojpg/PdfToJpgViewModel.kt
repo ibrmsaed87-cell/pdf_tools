@@ -318,6 +318,9 @@ class PdfToJpgViewModel : ViewModel() {
                 tempOutputDir?.deleteRecursively()
                 tempOutputDir = null
                 
+                kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                    com.spinel.pdftools.monetization.InterstitialAdManager.recordSuccessfulOperation()
+                }
                 _state.value = PdfToJpgState.Success(1)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -362,6 +365,9 @@ class PdfToJpgViewModel : ViewModel() {
                 if (savedCount == files.size) {
                     tempOutputDir?.deleteRecursively()
                     tempOutputDir = null
+                    kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                        com.spinel.pdftools.monetization.InterstitialAdManager.recordSuccessfulOperation()
+                    }
                     _state.value = PdfToJpgState.Success(savedCount)
                 } else {
                     throw Exception("Not all images were saved")

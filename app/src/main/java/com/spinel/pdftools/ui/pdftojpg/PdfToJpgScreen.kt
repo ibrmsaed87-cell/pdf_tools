@@ -121,7 +121,7 @@ fun PdfToJpgScreen(
                 }
             } else if (state is PdfToJpgState.Success || state is PdfToJpgState.Error) {
                 ExtendedFloatingActionButton(
-                    onClick = { viewModel.reset() },
+                    onClick = { com.spinel.pdftools.monetization.InterstitialAdManager.showInterstitialIfEligible(context as android.app.Activity) { viewModel.reset() } },
                     containerColor = MaterialTheme.colorScheme.secondary
                 ) {
                     Text(stringResource(R.string.action_convert_more))

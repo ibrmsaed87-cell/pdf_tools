@@ -239,6 +239,7 @@ fun CompressPdfScreen(
                     val filesViewModel: FilesViewModel = viewModel()
                     LaunchedEffect(currentState) {
                         filesViewModel.onPdfCreated(currentState.uri)
+                        
                     }
                     BackHandler { onNavigateBack() }
                     
@@ -292,7 +293,7 @@ fun CompressPdfScreen(
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         OutlinedButton(
-                            onClick = onNavigateBack,
+                            onClick = { com.spinel.pdftools.monetization.InterstitialAdManager.showInterstitialIfEligible(context as android.app.Activity) { onNavigateBack() } },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(16.dp),
                             contentPadding = PaddingValues(vertical = 16.dp)
@@ -300,7 +301,7 @@ fun CompressPdfScreen(
                             Text(stringResource(R.string.action_done))
                         }
                         Button(
-                            onClick = { onNavigateToViewer(currentState.uri.toString()) },
+                            onClick = { com.spinel.pdftools.monetization.InterstitialAdManager.showInterstitialIfEligible(context as android.app.Activity) { onNavigateToViewer(currentState.uri.toString()) } },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(16.dp),
                             contentPadding = PaddingValues(vertical = 16.dp)
@@ -337,7 +338,7 @@ fun CompressPdfScreen(
                     Spacer(modifier = Modifier.height(48.dp))
 
                     OutlinedButton(
-                        onClick = onNavigateBack,
+                        onClick = { com.spinel.pdftools.monetization.InterstitialAdManager.showInterstitialIfEligible(context as android.app.Activity) { onNavigateBack() } },
                         shape = RoundedCornerShape(16.dp),
                         contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
                     ) {
@@ -363,7 +364,7 @@ fun CompressPdfScreen(
                     )
                     Spacer(modifier = Modifier.height(48.dp))
                     OutlinedButton(
-                        onClick = onNavigateBack,
+                        onClick = { com.spinel.pdftools.monetization.InterstitialAdManager.showInterstitialIfEligible(context as android.app.Activity) { onNavigateBack() } },
                         shape = RoundedCornerShape(16.dp),
                         contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
                     ) {

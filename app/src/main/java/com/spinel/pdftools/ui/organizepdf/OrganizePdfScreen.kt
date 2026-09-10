@@ -160,14 +160,15 @@ fun OrganizePdfScreen(
                     val filesViewModel: FilesViewModel = viewModel()
                     LaunchedEffect(currentState) {
                         filesViewModel.onPdfCreated(currentState.savedUri)
+                        
                     }
                     SuccessView(
-                        onDone = {
-                            viewModel.reset()
-                            onNavigateBack()
+                        onDone = { com.spinel.pdftools.monetization.InterstitialAdManager.showInterstitialIfEligible(context as android.app.Activity) { viewModel.reset(); onNavigateBack() } 
                         },
                         onOpen = {
-                            onNavigateToViewer(currentState.savedUri.toString())
+                            com.spinel.pdftools.monetization.InterstitialAdManager.showInterstitialIfEligible(context as android.app.Activity) {
+                                onNavigateToViewer(currentState.savedUri.toString())
+                            }
                         }
                     )
                 }

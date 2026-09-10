@@ -199,6 +199,7 @@ fun ScanDocumentScreen(
                         val filesViewModel: com.spinel.pdftools.ui.files.FilesViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
                         androidx.compose.runtime.LaunchedEffect(scanState) {
                             filesViewModel.onPdfCreated(scanState.uri)
+                            
                         }
                         BackHandler { onNavigateBack() }
                         ScanSuccessView(
@@ -722,13 +723,13 @@ fun ScanSuccessView(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             OutlinedButton(
-                onClick = onDone,
+                onClick = { com.spinel.pdftools.monetization.InterstitialAdManager.showInterstitialIfEligible(context as android.app.Activity) { onDone() } },
                 modifier = Modifier.weight(1f)
             ) {
                 Text(stringResource(R.string.action_done))
             }
             Button(
-                onClick = { onNavigateToViewer(uri.toString()) },
+                onClick = { com.spinel.pdftools.monetization.InterstitialAdManager.showInterstitialIfEligible(context as android.app.Activity) { onNavigateToViewer(uri.toString()) } },
                 modifier = Modifier.weight(1f)
             ) {
                 Text(stringResource(R.string.action_open))

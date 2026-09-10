@@ -1,4 +1,7 @@
+
 package com.spinel.pdftools.ui.settings
+import com.spinel.pdftools.BuildConfig
+import com.spinel.pdftools.monetization.AdDebugInfo
 
 
 import androidx.compose.material.icons.Icons
@@ -36,6 +39,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spinel.pdftools.R
+import android.app.Activity
+import com.spinel.pdftools.monetization.LocalConsentManager
+
 import com.spinel.pdftools.common.util.ThemeManager
 import com.spinel.pdftools.common.util.ThemeMode
 import kotlinx.coroutines.launch
@@ -46,6 +52,8 @@ import kotlinx.coroutines.launch
 fun SettingsScreen(onNavigateToPrivacy: () -> Unit = {}, onNavigateToAbout: () -> Unit = {}) {
     val context = LocalContext.current
     val themeManager = ThemeManager(context)
+    val consentManager = LocalConsentManager.current
+    val isPrivacyOptionsRequired by consentManager?.isPrivacyOptionsRequired?.collectAsStateWithLifecycle() ?: androidx.compose.runtime.mutableStateOf(false)
     val themeMode by themeManager.themeMode.collectAsStateWithLifecycle(initialValue = ThemeMode.SYSTEM)
     val coroutineScope = rememberCoroutineScope()
     
@@ -77,6 +85,62 @@ fun SettingsScreen(onNavigateToPrivacy: () -> Unit = {}, onNavigateToAbout: () -
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+        }
+
+        if (BuildConfig.DEBUG) {
+            val umpCanReq by AdDebugInfo.umpCanRequestAds.collectAsStateWithLifecycle()
+            val umpPrivReq by AdDebugInfo.umpPrivacyOptionsRequired.collectAsStateWithLifecycle()
+            val adsInit by AdDebugInfo.mobileAdsInitialized.collectAsStateWithLifecycle()
+            val interPreload by AdDebugInfo.interstitialPreloadAttempted.collectAsStateWithLifecycle()
+            val interLoaded by AdDebugInfo.interstitialLoaded.collectAsStateWithLifecycle()
+            val lastLoadRes by AdDebugInfo.lastLoadResult.collectAsStateWithLifecycle()
+            val lastLoadErrCode by AdDebugInfo.lastLoadErrorCode.collectAsStateWithLifecycle()
+            val lastLoadErrMsg by AdDebugInfo.lastLoadErrorMessage.collectAsStateWithLifecycle()
+            val opsRecorded by AdDebugInfo.operationsRecorded.collectAsStateWithLifecycle()
+            val hasPending by AdDebugInfo.hasPendingOpportunity.collectAsStateWithLifecycle()
+            val lastEval by AdDebugInfo.lastSafeBoundaryEvaluation.collectAsStateWithLifecycle()
+            
+            // New Diagnostic Fields
+            val consentInfoUpdateStatus by AdDebugInfo.consentInfoUpdateStatus.collectAsStateWithLifecycle()
+            val consentInfoUpdateErrorCode by AdDebugInfo.consentInfoUpdateErrorCode.collectAsStateWithLifecycle()
+            val consentInfoUpdateErrorMessage by AdDebugInfo.consentInfoUpdateErrorMessage.collectAsStateWithLifecycle()
+            val consentFormResult by AdDebugInfo.consentFormResult.collectAsStateWithLifecycle()
+            val consentFormErrorCode by AdDebugInfo.consentFormErrorCode.collectAsStateWithLifecycle()
+            val consentFormErrorMessage by AdDebugInfo.consentFormErrorMessage.collectAsStateWithLifecycle()
+            val consentStatus by AdDebugInfo.consentStatus.collectAsStateWithLifecycle()
+            val privacyOptionsStatus by AdDebugInfo.privacyOptionsStatus.collectAsStateWithLifecycle()
+
+            SettingsSectionTitle(title = "Ad Debug Status")
+            SettingsCard {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(text = "Consent info update status: $consentInfoUpdateStatus", style = MaterialTheme.typography.bodyMedium)
+                    if (consentInfoUpdateStatus == "Failed") {
+                        Text(text = "Consent info update error code: $consentInfoUpdateErrorCode", style = MaterialTheme.typography.bodyMedium)
+                        Text(text = "Consent info update error message: $consentInfoUpdateErrorMessage", style = MaterialTheme.typography.bodyMedium)
+                    }
+                    Text(text = "Consent form result: $consentFormResult", style = MaterialTheme.typography.bodyMedium)
+                    if (consentFormResult == "Failed") {
+                        Text(text = "Consent form error code: $consentFormErrorCode", style = MaterialTheme.typography.bodyMedium)
+                        Text(text = "Consent form error message: $consentFormErrorMessage", style = MaterialTheme.typography.bodyMedium)
+                    }
+                    Text(text = "Current ConsentStatus: $consentStatus", style = MaterialTheme.typography.bodyMedium)
+                    Text(text = "Current PrivacyOptionsReqStatus: $privacyOptionsStatus", style = MaterialTheme.typography.bodyMedium)
+                    Text(text = "UMP canRequestAds: $umpCanReq", style = MaterialTheme.typography.bodyMedium)
+                    Text(text = "Privacy options required: $umpPrivReq", style = MaterialTheme.typography.bodyMedium)
+                    Text(text = "Mobile Ads initialized: $adsInit", style = MaterialTheme.typography.bodyMedium)
+                    Text(text = "Interstitial preload attempted: $interPreload", style = MaterialTheme.typography.bodyMedium)
+                    Text(text = "Interstitial loaded: $interLoaded", style = MaterialTheme.typography.bodyMedium)
+                    Text(text = "Last load result: $lastLoadRes", style = MaterialTheme.typography.bodyMedium)
+                    if (lastLoadRes == "Failed") {
+                        Text(text = "Last load error code: $lastLoadErrCode", style = MaterialTheme.typography.bodyMedium)
+                        Text(text = "Last load error message: $lastLoadErrMsg", style = MaterialTheme.typography.bodyMedium)
+                    }
+                    Text(text = "Successful ops recorded: $opsRecorded", style = MaterialTheme.typography.bodyMedium)
+                    Text(text = "Pending opportunity: $hasPending", style = MaterialTheme.typography.bodyMedium)
+                    Text(text = "Last safe-boundary eval: $lastEval", style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+            Spacer(modifier = Modifier.height(24.dp))
         }
 
         SettingsSectionTitle(title = stringResource(id = R.string.section_preferences))
@@ -113,6 +177,21 @@ fun SettingsScreen(onNavigateToPrivacy: () -> Unit = {}, onNavigateToAbout: () -
         SettingsSectionTitle(title = stringResource(id = R.string.section_privacy_about))
         
         SettingsCard {
+            if (isPrivacyOptionsRequired) {
+                PremiumSettingsRow(
+                    title = stringResource(id = R.string.setting_privacy_options),
+                    subtitle = null,
+                    icon = Icons.Filled.PrivacyTip,
+                    iconTint = com.spinel.pdftools.ui.theme.AccentBlue,
+                    onClick = {
+                        val activity = context as? Activity
+                        if (activity != null) {
+                            consentManager?.showPrivacyOptionsForm(activity)
+                        }
+                    },
+                    showDivider = true
+                )
+            }
             PremiumSettingsRow(
                 title = stringResource(id = R.string.privacy_policy),
                 subtitle = null,

@@ -1,0 +1,11 @@
+--- app/src/main/java/com/spinel/pdftools/ui/pdftojpg/PdfToJpgScreen.kt
++++ app/src/main/java/com/spinel/pdftools/ui/pdftojpg/PdfToJpgScreen.kt
+@@ -253,6 +253,9 @@
+                 }
+                 is PdfToJpgState.Success -> {
++                    LaunchedEffect(state) {
++                        com.spinel.pdftools.monetization.InterstitialAdManager.recordSuccessfulOperation()
++                    }
+                     Column(
+                         modifier = Modifier
+                             .fillMaxSize()

@@ -126,14 +126,16 @@ fun MergePdfScreen(
                     val filesViewModel: FilesViewModel = viewModel()
                     LaunchedEffect(currentState) {
                         filesViewModel.onPdfCreated(currentState.savedUri)
+                        
                     }
                     SuccessView(
-                        onDone = {
-                            viewModel.reset()
+                        onDone = { com.spinel.pdftools.monetization.InterstitialAdManager.showInterstitialIfEligible(context as android.app.Activity) { viewModel.reset() } 
                         },
                         onOpen = {
-                            onNavigateToViewer(currentState.savedUri.toString())
-                            viewModel.reset()
+                            com.spinel.pdftools.monetization.InterstitialAdManager.showInterstitialIfEligible(context as android.app.Activity) {
+                                onNavigateToViewer(currentState.savedUri.toString())
+                                viewModel.reset()
+                            }
                         }
                     )
                 }

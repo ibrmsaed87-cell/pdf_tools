@@ -228,4 +228,5 @@
     <string name="text_editor_body">النص</string>
     <string name="action_flash_on">تشغيل الفلاش</string>
     <string name="action_flash_off">إيقاف الفلاش</string>
+    <string name="setting_privacy_options">خيارات الخصوصية</string>
 </resources>

@@ -164,6 +164,7 @@ class SplitPdfViewModel : ViewModel() {
                 }
 
                 withContext(Dispatchers.Main) {
+                    com.spinel.pdftools.monetization.InterstitialAdManager.recordSuccessfulOperation()
                     _state.value = SplitState.Success(destUri)
                 }
             } catch (e: Exception) {

@@ -222,6 +222,7 @@ class MergePdfViewModel : ViewModel() {
                     tempMergedFile = null
                     
                     withContext(Dispatchers.Main) {
+                        com.spinel.pdftools.monetization.InterstitialAdManager.recordSuccessfulOperation()
                         _state.value = MergeState.Success(destUri)
                     }
                 } else {

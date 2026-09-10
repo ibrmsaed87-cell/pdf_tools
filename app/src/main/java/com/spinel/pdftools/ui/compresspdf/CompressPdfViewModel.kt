@@ -101,6 +101,9 @@ class CompressPdfViewModel(application: Application) : AndroidViewModel(applicat
                 val saved = originalSize - compSize
                 val percent = ((saved.toFloat() / originalSize) * 100).toInt()
                 
+                kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                    com.spinel.pdftools.monetization.InterstitialAdManager.recordSuccessfulOperation()
+                }
                 _state.value = CompressState.Success(
                     originalSize = originalSize,
                     compressedSize = compSize,

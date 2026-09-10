@@ -114,6 +114,9 @@ class ImageToPdfViewModel : ViewModel() {
             )
 
             if (result.isSuccess) {
+                kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                    com.spinel.pdftools.monetization.InterstitialAdManager.recordSuccessfulOperation()
+                }
                 _state.update { it.copy(generationState = GenerationState.Success(outputUri)) }
             } else {
                 _state.update { it.copy(generationState = GenerationState.Error("error_generic")) }

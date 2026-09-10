@@ -221,6 +221,7 @@ class ScanDocumentViewModel : ViewModel() {
                 pdfDocument.close()
                 
                 launch(Dispatchers.Main) {
+                    com.spinel.pdftools.monetization.InterstitialAdManager.recordSuccessfulOperation()
                     _state.value = ScanState.Success(destUri)
                     onSuccess()
                 }

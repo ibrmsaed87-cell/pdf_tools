@@ -1,0 +1,14 @@
+--- app/src/main/java/com/spinel/pdftools/ui/splitpdf/SplitPdfScreen.kt
++++ app/src/main/java/com/spinel/pdftools/ui/splitpdf/SplitPdfScreen.kt
+@@ -107,9 +107,9 @@
+                     }
+                     SuccessView(
+-                        onDone = { com.spinel.pdftools.monetization.InterstitialAdManager.showInterstitialIfEligible(context as android.app.Activity) {  } 
+-                            
++                        onDone = { com.spinel.pdftools.monetization.InterstitialAdManager.showInterstitialIfEligible(context as android.app.Activity) { viewModel.reset() } 
+                         },
+                         onOpen = {
+                             onNavigateToViewer(currentState.savedUri.toString())
+-                            
++                            viewModel.reset()
+                         }

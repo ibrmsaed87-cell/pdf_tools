@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.content.ActivityNotFoundException
 import android.net.Uri
 import android.content.Intent
-import com.spinel.pdftools.BuildConfig
 import com.google.firebase.messaging.FirebaseMessaging
 import android.util.Log
-import android.widget.Toast
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -46,14 +44,8 @@ class MainActivity : AppCompatActivity() {
         .addOnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.e("MainActivity", "FCM topic docvra_all subscription failed", task.exception)
-                if (BuildConfig.DEBUG) {
-                    Toast.makeText(this@MainActivity, "FCM topic subscription FAILED", Toast.LENGTH_SHORT).show()
-                }
             } else {
                 Log.d("MainActivity", "FCM topic docvra_all subscription succeeded")
-                if (BuildConfig.DEBUG) {
-                    Toast.makeText(this@MainActivity, "FCM topic subscribed: docvra_all", Toast.LENGTH_SHORT).show()
-                }
             }
         }
     

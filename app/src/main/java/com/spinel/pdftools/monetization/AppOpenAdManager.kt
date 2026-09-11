@@ -14,7 +14,7 @@ import com.google.android.ump.UserMessagingPlatform
 import java.util.Date
 
 object AppOpenAdManager : Application.ActivityLifecycleCallbacks {
-    private const val AD_UNIT_ID = "ca-app-pub-3940256099942544/9257395921"
+    private const val AD_UNIT_ID = "ca-app-pub-9118481973136364/5890204587"
     private const val LOG_TAG = "AppOpenAdManager"
 
     private var appOpenAd: AppOpenAd? = null

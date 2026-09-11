@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 object NativeAdManager {
     // TEST Native Advanced ID only during development
-    private const val AD_UNIT_ID = "ca-app-pub-3940256099942544/2247696110"
+    private const val AD_UNIT_ID = "ca-app-pub-9118481973136364/3564601173"
 
     private val _nativeAd = MutableStateFlow<NativeAd?>(null)
     val nativeAd: StateFlow<NativeAd?> = _nativeAd.asStateFlow()

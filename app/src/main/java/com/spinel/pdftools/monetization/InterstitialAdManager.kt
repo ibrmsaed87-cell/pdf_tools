@@ -13,7 +13,7 @@ import com.google.android.ump.UserMessagingPlatform
 
 object InterstitialAdManager {
     // TEST Interstitial ID only during development
-    private const val AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
+    private const val AD_UNIT_ID = "ca-app-pub-9118481973136364/5757067551"
     
     private var interstitialAd: InterstitialAd? = null
     private var isAdLoading = false

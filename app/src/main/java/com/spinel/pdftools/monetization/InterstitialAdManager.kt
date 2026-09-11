@@ -17,6 +17,8 @@ object InterstitialAdManager {
     
     private var interstitialAd: InterstitialAd? = null
     private var isAdLoading = false
+    var isShowingAd = false
+        private set
     
     private var totalSuccessfulOperations = 0
     private var hasPendingOpportunity = false
@@ -103,6 +105,7 @@ object InterstitialAdManager {
             interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
                 override fun onAdDismissedFullScreenContent() {
                     Log.d("InterstitialManager", "Ad dismissed.")
+                    isShowingAd = false
                     interstitialAd = null
                     AdDebugInfo.setBoundaryEvaluation("Dismissed")
                     // Preload next ad
@@ -112,6 +115,7 @@ object InterstitialAdManager {
 
                 override fun onAdFailedToShowFullScreenContent(adError: AdError) {
                     Log.d("InterstitialManager", "Ad failed to show: ${adError.message}")
+                    isShowingAd = false
                     interstitialAd = null
                     AdDebugInfo.setBoundaryEvaluation("Show failed")
                     onAdDismissedOrSkipped()
@@ -119,6 +123,7 @@ object InterstitialAdManager {
 
                 override fun onAdShowedFullScreenContent() {
                     Log.d("InterstitialManager", "Ad showed successfully.")
+                    isShowingAd = true
                     AdDebugInfo.setBoundaryEvaluation("Ad shown")
                     interstitialAd = null // nullify to prevent double showing
                 }

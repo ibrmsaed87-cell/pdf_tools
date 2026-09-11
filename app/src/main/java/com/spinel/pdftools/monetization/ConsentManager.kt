@@ -23,6 +23,9 @@ class ConsentManager(private val context: Context) {
     private val _isPrivacyOptionsRequired = MutableStateFlow(false)
     val isPrivacyOptionsRequired: StateFlow<Boolean> = _isPrivacyOptionsRequired.asStateFlow()
 
+    private val _canRequestAds = MutableStateFlow(consentInformation.canRequestAds())
+    val canRequestAds: StateFlow<Boolean> = _canRequestAds.asStateFlow()
+
     private fun getConsentStatusString(status: Int): String {
         return when (status) {
             ConsentInformation.ConsentStatus.UNKNOWN -> "UNKNOWN"
@@ -102,6 +105,7 @@ class ConsentManager(private val context: Context) {
     private fun updatePrivacyOptionsState() {
         _isPrivacyOptionsRequired.value =
             consentInformation.privacyOptionsRequirementStatus == ConsentInformation.PrivacyOptionsRequirementStatus.REQUIRED
+        _canRequestAds.value = consentInformation.canRequestAds()
     }
 
     private fun initializeMobileAdsIfAllowed() {
@@ -112,6 +116,8 @@ class ConsentManager(private val context: Context) {
                 Log.d("ConsentManager", "MobileAds initialized: $initializationStatus")
                 AdDebugInfo.setInitialized()
                 InterstitialAdManager.preloadAd(context)
+                NativeAdManager.loadAd(context)
+                AppOpenAdManager.loadAd(context)
             }
         }
     }

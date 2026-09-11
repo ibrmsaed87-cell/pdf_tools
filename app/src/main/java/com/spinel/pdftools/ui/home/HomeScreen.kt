@@ -17,6 +17,19 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+
+import android.Manifest
+import android.os.Build
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.LaunchedEffect
+import androidx.core.content.ContextCompat
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.remember
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.flow.first
+import com.spinel.pdftools.common.util.NotificationPreferenceManager
 import com.spinel.pdftools.R
 import com.spinel.pdftools.ui.components.PremiumEmptyState
 import com.spinel.pdftools.ui.components.PremiumPrimaryCard
@@ -28,8 +41,12 @@ import com.spinel.pdftools.ui.theme.AccentPurple
 import com.spinel.pdftools.ui.theme.AccentTeal
 
 @Composable
+
 fun HomeScreen(onNavigateToTools: () -> Unit = {}, onNavigateToCreatePdf: () -> Unit = {},
     onNavigateToImageToPdf: () -> Unit = {}, onNavigateToScanDocument: () -> Unit = {}, onNavigateToMergePdf: () -> Unit = {}, onNavigateToSplitPdf: () -> Unit = {}, onNavigateToCompressPdf: () -> Unit = {}, onNavigateToOrganizePdf: () -> Unit = {}, onNavigateToPdfToJpg: () -> Unit = {}) {
+    
+    NotificationPermissionEffect()
+    
     val quickTools = listOf(
         ToolItem(R.string.action_create_pdf, R.string.desc_create_pdf, Icons.Filled.DocumentScanner, AccentPurple),
         ToolItem(R.string.action_image_to_pdf, R.string.desc_image_to_pdf, Icons.Filled.Image, AccentBlue),
@@ -91,7 +108,6 @@ fun HomeScreen(onNavigateToTools: () -> Unit = {}, onNavigateToCreatePdf: () -> 
                         onNavigateToCreatePdf()
                     } else if (tool.titleResId == R.string.action_image_to_pdf) {
                         onNavigateToImageToPdf()
-                        onNavigateToImageToPdf()
                     } else if (tool.titleResId == R.string.action_compress_pdf) {
                         onNavigateToCompressPdf()
                     } else if (tool.titleResId == R.string.action_merge_pdf) {
@@ -110,6 +126,10 @@ fun HomeScreen(onNavigateToTools: () -> Unit = {}, onNavigateToCreatePdf: () -> 
         }
         
         item(span = { GridItemSpan(2) }) {
+            com.spinel.pdftools.monetization.NativeAdCard()
+        }
+        
+        item(span = { GridItemSpan(2) }) {
             Spacer(modifier = Modifier.height(12.dp))
             SectionHeader(
                 title = stringResource(id = R.string.section_recent_files)
@@ -124,3 +144,33 @@ fun HomeScreen(onNavigateToTools: () -> Unit = {}, onNavigateToCreatePdf: () -> 
 }
 
 data class ToolItem(val titleResId: Int, val descResId: Int, val icon: ImageVector, val iconContainerColor: Color)
+
+
+@Composable
+fun NotificationPermissionEffect() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        val context = LocalContext.current
+        val notificationPreferenceManager = remember { NotificationPreferenceManager(context) }
+        
+        val permissionLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission()
+        ) { isGranted ->
+            // Handled
+        }
+
+        LaunchedEffect(Unit) {
+            val hasRequested = notificationPreferenceManager.hasRequestedNotifications.first()
+            if (!hasRequested) {
+                val isGranted = ContextCompat.checkSelfPermission(
+                    context, 
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+                
+                if (!isGranted) {
+                    permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+                notificationPreferenceManager.setHasRequestedNotifications(true)
+            }
+        }
+    }
+}

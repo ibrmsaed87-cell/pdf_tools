@@ -232,4 +232,9 @@
     <string name="action_flash_on">Turn Flash On</string>
     <string name="action_flash_off">Turn Flash Off</string>
     <string name="setting_privacy_options">Privacy options</string>
+    <string name="ad_label">Ad</string>
+    <string name="notification_channel_name">General Notifications</string>
+    <string name="setting_notifications">Notifications</string>
+    <string name="setting_notifications_desc_enabled">Enabled</string>
+    <string name="setting_notifications_desc_disabled">Disabled - Tap to manage in system settings</string>
 </resources>

@@ -229,4 +229,9 @@
     <string name="action_flash_on">Encender flash</string>
     <string name="action_flash_off">Apagar flash</string>
     <string name="setting_privacy_options">Opciones de privacidad</string>
+    <string name="ad_label">Anuncio</string>
+    <string name="notification_channel_name">Notificaciones generales</string>
+    <string name="setting_notifications">Notificaciones</string>
+    <string name="setting_notifications_desc_enabled">Activado</string>
+    <string name="setting_notifications_desc_disabled">Desactivado - Toca para administrar en la configuración del sistema</string>
 </resources>

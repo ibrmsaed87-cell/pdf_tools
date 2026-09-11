@@ -39,6 +39,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spinel.pdftools.R
+import androidx.core.app.NotificationManagerCompat
+import android.content.Intent
+import android.provider.Settings
+import androidx.compose.material.icons.filled.Notifications
 import android.app.Activity
 import com.spinel.pdftools.monetization.LocalConsentManager
 
@@ -156,6 +160,21 @@ fun SettingsScreen(onNavigateToPrivacy: () -> Unit = {}, onNavigateToAbout: () -
                 icon = Icons.Filled.Palette,
                 iconTint = com.spinel.pdftools.ui.theme.AccentPurple,
                 onClick = { showAppearanceSheet = true },
+                showDivider = true
+            )
+
+            val areNotificationsEnabled = NotificationManagerCompat.from(context).areNotificationsEnabled()
+            PremiumSettingsRow(
+                title = stringResource(id = R.string.setting_notifications),
+                subtitle = if (areNotificationsEnabled) stringResource(id = R.string.setting_notifications_desc_enabled) else stringResource(id = R.string.setting_notifications_desc_disabled),
+                icon = Icons.Filled.Notifications,
+                iconTint = com.spinel.pdftools.ui.theme.AccentOrange,
+                onClick = {
+                    val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                        putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+                    }
+                    context.startActivity(intent)
+                },
                 showDivider = true
             )
             PremiumSettingsRow(

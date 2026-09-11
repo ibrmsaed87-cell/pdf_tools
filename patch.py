@@ -1,178 +1,72 @@
-import sys
+import os
 
-filepath = 'app/src/main/java/com/spinel/pdftools/ui/imagetopdf/ImageToPdfScreen.kt'
-with open(filepath, 'r', encoding='utf-8') as f:
+app_open_file = "app/src/main/java/com/spinel/pdftools/monetization/AppOpenAdManager.kt"
+main_file = "app/src/main/java/com/spinel/pdftools/MainActivity.kt"
+
+# Patch AppOpenAdManager
+with open(app_open_file, "r") as f:
     content = f.read()
 
-target = """            val activeStyle = if (selectedTab == 0) titleStyle else bodyStyle
-            val updateActiveStyle = { newStyle: TextStyleConfig ->
-                if (selectedTab == 0) titleStyle = newStyle else bodyStyle = newStyle
+target1 = """    private var backgroundTime: Long = 0L
+    private var currentActivity: Activity? = null"""
+
+replacement1 = """    private var backgroundTime: Long = 0L
+    private var currentActivity: Activity? = null
+    private var suppressNextAd = false
+
+    fun suppressNextAppOpen() {
+        suppressNextAd = true
+    }"""
+
+target2 = """        if (isMeaningfulReturn) {
+            Log.d(LOG_TAG, "Meaningful return or cold start detected. (Time since bg: $timeSinceBackground ms)")
+            val consentInformation = UserMessagingPlatform.getConsentInformation(activity)
+            if (consentInformation.canRequestAds()) {
+                 showAdIfAvailable(activity)
             }
+        } else {"""
 
-            // Formatting Controls
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // Alignment
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
-                    val scaleX = if (isRtl) -1f else 1f
-
-                    IconToggleButton(
-                        checked = activeStyle.alignment == TextAlignment.Start,
-                        onCheckedChange = { updateActiveStyle(activeStyle.copy(alignment = TextAlignment.Start)) }
-                    ) {
-                        Icon(Icons.Filled.FormatAlignLeft, contentDescription = stringResource(R.string.content_desc_align_start), modifier = Modifier.scale(scaleX))
-                    }
-                    IconToggleButton(
-                        checked = activeStyle.alignment == TextAlignment.Center,
-                        onCheckedChange = { updateActiveStyle(activeStyle.copy(alignment = TextAlignment.Center)) }
-                    ) {
-                        Icon(Icons.Filled.FormatAlignCenter, contentDescription = stringResource(R.string.content_desc_align_center))
-                    }
-                    IconToggleButton(
-                        checked = activeStyle.alignment == TextAlignment.End,
-                        onCheckedChange = { updateActiveStyle(activeStyle.copy(alignment = TextAlignment.End)) }
-                    ) {
-                        Icon(Icons.Filled.FormatAlignRight, contentDescription = stringResource(R.string.content_desc_align_end), modifier = Modifier.scale(scaleX))
-                    }
-                }
-
-                // Bold
-                IconToggleButton(
-                    checked = activeStyle.isBold,
-                    onCheckedChange = { updateActiveStyle(activeStyle.copy(isBold = it)) }
-                ) {
-                    Icon(Icons.Filled.FormatBold, contentDescription = stringResource(R.string.content_desc_bold))
-                }
-                
-                // Font Size
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = { if (activeStyle.fontSize > 12) updateActiveStyle(activeStyle.copy(fontSize = activeStyle.fontSize - 1)) }) {
-                        Icon(Icons.Filled.Remove, contentDescription = "Decrease")
-                    }
-                    Text("${activeStyle.fontSize}", style = MaterialTheme.typography.bodyMedium)
-                    IconButton(onClick = { if (activeStyle.fontSize < 40) updateActiveStyle(activeStyle.copy(fontSize = activeStyle.fontSize + 1)) }) {
-                        Icon(Icons.Filled.Add, contentDescription = "Increase")
-                    }
-                }
+replacement2 = """        if (isMeaningfulReturn) {
+            Log.d(LOG_TAG, "Meaningful return or cold start detected. (Time since bg: $timeSinceBackground ms)")
+            val consentInformation = UserMessagingPlatform.getConsentInformation(activity)
+            if (consentInformation.canRequestAds()) {
+                 if (suppressNextAd) {
+                     Log.d(LOG_TAG, "App Open Ad suppressed for this foreground transition.")
+                     suppressNextAd = false
+                 } else {
+                     showAdIfAvailable(activity)
+                 }
             }
+        } else {"""
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Color Palette
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                items(TextColor.values()) { tColor ->
-                    Box(
-                        modifier = Modifier
-                            .size(36.dp)
-                            .clip(CircleShape)
-                            .background(Color(tColor.colorValue))
-                            .border(
-                                width = if (activeStyle.color == tColor) 3.dp else 1.dp,
-                                color = if (activeStyle.color == tColor) MaterialTheme.colorScheme.primary else Color.LightGray,
-                                shape = CircleShape
-                            )
-                            .clickable { updateActiveStyle(activeStyle.copy(color = tColor)) }
-                    )
-                }
-            }"""
-
-replacement = """            val activeStyle = if (selectedTab == 0) titleStyle else bodyStyle
-            val updateStyle = { modify: (TextStyleConfig) -> TextStyleConfig ->
-                if (selectedTab == 0) titleStyle = modify(titleStyle) else bodyStyle = modify(bodyStyle)
-            }
-
-            // Formatting Controls
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // Alignment
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
-                    val scaleX = if (isRtl) -1f else 1f
-
-                    IconToggleButton(
-                        checked = activeStyle.alignment == TextAlignment.Start,
-                        onCheckedChange = { updateStyle { it.copy(alignment = TextAlignment.Start) } }
-                    ) {
-                        Icon(Icons.Filled.FormatAlignLeft, contentDescription = stringResource(R.string.content_desc_align_start), modifier = Modifier.scale(scaleX))
-                    }
-                    IconToggleButton(
-                        checked = activeStyle.alignment == TextAlignment.Center,
-                        onCheckedChange = { updateStyle { it.copy(alignment = TextAlignment.Center) } }
-                    ) {
-                        Icon(Icons.Filled.FormatAlignCenter, contentDescription = stringResource(R.string.content_desc_align_center))
-                    }
-                    IconToggleButton(
-                        checked = activeStyle.alignment == TextAlignment.End,
-                        onCheckedChange = { updateStyle { it.copy(alignment = TextAlignment.End) } }
-                    ) {
-                        Icon(Icons.Filled.FormatAlignRight, contentDescription = stringResource(R.string.content_desc_align_end), modifier = Modifier.scale(scaleX))
-                    }
-                }
-
-                // Bold
-                IconToggleButton(
-                    checked = activeStyle.isBold,
-                    onCheckedChange = { isBold -> updateStyle { it.copy(isBold = isBold) } }
-                ) {
-                    Icon(Icons.Filled.FormatBold, contentDescription = stringResource(R.string.content_desc_bold))
-                }
-                
-                // Font Size
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = { updateStyle { if (it.fontSize > 12) it.copy(fontSize = it.fontSize - 1) else it } }) {
-                        Icon(Icons.Filled.Remove, contentDescription = "Decrease")
-                    }
-                    Text("${activeStyle.fontSize}", style = MaterialTheme.typography.bodyMedium)
-                    IconButton(onClick = { updateStyle { if (it.fontSize < 40) it.copy(fontSize = it.fontSize + 1) else it } }) {
-                        Icon(Icons.Filled.Add, contentDescription = "Increase")
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Color Palette
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                items(TextColor.values()) { tColor ->
-                    Box(
-                        modifier = Modifier
-                            .size(36.dp)
-                            .clip(CircleShape)
-                            .background(Color(tColor.colorValue))
-                            .border(
-                                width = if (activeStyle.color == tColor) 3.dp else 1.dp,
-                                color = if (activeStyle.color == tColor) MaterialTheme.colorScheme.primary else Color.LightGray,
-                                shape = CircleShape
-                            )
-                            .clickable { updateStyle { it.copy(color = tColor) } }
-                    )
-                }
-            }"""
-
-if target in content:
-    with open(filepath, 'w', encoding='utf-8') as f:
-        f.write(content.replace(target, replacement))
-    print("PATCH APPLIED")
+if target1 in content and target2 in content:
+    content = content.replace(target1, replacement1)
+    content = content.replace(target2, replacement2)
+    with open(app_open_file, "w") as f:
+        f.write(content)
+    print("SUCCESS AppOpenAdManager")
 else:
-    print("TARGET NOT FOUND")
+    print("FAILED AppOpenAdManager")
+
+# Patch MainActivity
+with open(main_file, "r") as f:
+    content = f.read()
+
+target3 = """            val uri = Uri.parse(url)
+            val viewIntent = Intent(Intent.ACTION_VIEW, uri)
+            viewIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(viewIntent)"""
+
+replacement3 = """            val uri = Uri.parse(url)
+            val viewIntent = Intent(Intent.ACTION_VIEW, uri)
+            viewIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            AppOpenAdManager.suppressNextAppOpen()
+            startActivity(viewIntent)"""
+
+if target3 in content:
+    content = content.replace(target3, replacement3)
+    with open(main_file, "w") as f:
+        f.write(content)
+    print("SUCCESS MainActivity")
+else:
+    print("FAILED MainActivity")

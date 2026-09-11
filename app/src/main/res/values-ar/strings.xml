@@ -229,4 +229,9 @@
     <string name="action_flash_on">تشغيل الفلاش</string>
     <string name="action_flash_off">إيقاف الفلاش</string>
     <string name="setting_privacy_options">خيارات الخصوصية</string>
+    <string name="ad_label">إعلان</string>
+    <string name="notification_channel_name">إشعارات عامة</string>
+    <string name="setting_notifications">الإشعارات</string>
+    <string name="setting_notifications_desc_enabled">مفعلة</string>
+    <string name="setting_notifications_desc_disabled">معطلة - اضغط للإدارة في إعدادات النظام</string>
 </resources>

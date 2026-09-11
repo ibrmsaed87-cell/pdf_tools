@@ -7,6 +7,7 @@ plugins {
   alias(libs.plugins.roborazzi)
   alias(libs.plugins.secrets)
   alias(libs.plugins.google.services)
+  alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -25,11 +26,23 @@ android {
 
   signingConfigs {
     create("release") {
-      val keystorePath = System.getenv("KEYSTORE_PATH") ?: "${rootDir}/my-upload-key.jks"
-      storeFile = file(keystorePath)
-      storePassword = System.getenv("STORE_PASSWORD")
-      keyAlias = "upload"
-      keyPassword = System.getenv("KEY_PASSWORD")
+      val keystorePropertiesFile = rootProject.file("signing/keystore.properties")
+      if (keystorePropertiesFile.exists()) {
+          val props = keystorePropertiesFile.readLines().associate { 
+              val parts = it.split("=", limit=2)
+              parts[0] to (if(parts.size > 1) parts[1] else "")
+          }
+          storeFile = rootProject.file(props["storeFile"] ?: "")
+          storePassword = props["storePassword"] ?: ""
+          keyAlias = props["keyAlias"] ?: ""
+          keyPassword = props["keyPassword"] ?: ""
+      } else {
+          val keystorePath = System.getenv("KEYSTORE_PATH") ?: "${rootDir}/my-upload-key.jks"
+          storeFile = file(keystorePath)
+          storePassword = System.getenv("STORE_PASSWORD")
+          keyAlias = "upload"
+          keyPassword = System.getenv("KEY_PASSWORD")
+      }
     }
     create("debugConfig") {
       storeFile = file("${rootDir}/debug.keystore")
@@ -80,6 +93,9 @@ dependencies {
   implementation(libs.user.messaging.platform)
   implementation(platform(libs.androidx.compose.bom))
   implementation(platform(libs.firebase.bom))
+  implementation(libs.firebase.analytics)
+  implementation(libs.firebase.crashlytics)
+  implementation(libs.firebase.messaging)
   // implementation(libs.accompanist.permissions)
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.camera.camera2)

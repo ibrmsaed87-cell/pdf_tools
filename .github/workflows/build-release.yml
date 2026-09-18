@@ -25,7 +25,7 @@ jobs:
           gradle-version: "9.3.1"
           validate-wrappers: false
 
-      - name: Verify release signing files
+      - name: Verify Docvra release signing files
         run: |
           test -f signing/docvra-release.jks || { echo "Release keystore is missing"; exit 1; }
           test -f signing/keystore.properties || { echo "Keystore properties are missing"; exit 1; }
